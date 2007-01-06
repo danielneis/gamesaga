@@ -2,69 +2,74 @@
 require 'rubygame'
 Rubygame.init()
 
-size = [640, 480]
-speed = 10
-black = 0, 0, 0
 
 Rubygame.init()
 
 queue = Rubygame::Queue.instance
 
+# Create the SDL window
+size = [640, 480]
+screen = Rubygame::Screen.set_mode(size)
+screen.set_caption("teste do Rubygame")
+
 class Panda
 
     include Rubygame::Sprites::Sprite
 
-    @@pandapic = Rubygame::Image.load("samples/panda.png")
-    @@pandapic.set_colorkey(@@pandapic.get_at([0,0]))
-
     def initialize(x,y)
 	super()
-	@image = @@pandapic
-	@rect = Rubygame::Rect.new(x,y,*@@pandapic.size)
+	@pandapic = Rubygame::Image.load("samples/panda.png")
+	@pandapic.set_colorkey(@pandapic.get_at([0,0]))
+	@rect = Rubygame::Rect.new(x,y,*@pandapic.size)
+	@image = @pandapic
 	# @area is the area of the screen, which the panda will walk across
-	@area = Rubygame::Rect.new(0,0,[640,480])
+	screen = Rubygame::Screen.get_surface
+	@area = Rubygame::Rect.new(0,0,*screen.size)
 
-	@xvel = 9 # called self.move in the pygame example
+	@speed = 10
+
     end
 
-    def walk(x,y)
-	newpos = @rect.move(x,y)
-	# If the panda starts to walk off the screen
+    def walk(direction)
 	
-	#if (@rect.left < @area.left) or (@rect.right > @area.right)
-	#    @xvel = -@xvel		# reverse direction of movement
-	#    newpos = @rect.move(@xvel,0) # recalculate with changed velocity
-	#    @image = Rubygame::Transform.flip(@image, true, false) # flip x
-	#end
-	@rect = newpos
+	case direction
+	    when 'left'
+		if !(@rect.left < @area.left)
+		     @rect.move!(-@speed, 0)
+		end
+	    when 'right'
+		if !(@rect.right > @area.right)
+		     @rect.move!(@speed, 0)
+		end
+	    when 'up'
+		if !(@rect.top < @area.top)
+		     @rect.move!(0,-@speed)
+		end
+	    when 'down'
+		if !(@rect.bottom > @area.bottom)
+		     @rect.move!(0,@speed)
+		end
+	end
     end
 
-    def update(x,y)
-	walk(x,y)
+    def update(direction)
+	walk(direction)
     end
 
     private :walk
 
 end
 
-class PandaGroup < Rubygame::Sprites::Group
-	include Rubygame::Sprites::UpdateGroup
-end
-
-# Create the SDL window
-screen = Rubygame::Screen.set_mode(size)
-screen.set_caption("teste do Rubygame")
 
 # Create the very cute panda objects!
-panda1 = Panda.new(300,150)
+panda = Panda.new(300,150)
 
 # Create the grou and put the pandas on it
-pandas = PandaGroup.new
-pandas.push(panda1)
+allsprites = Rubygame::Sprites::Group.new()
+allsprites.push(panda)
 
 # Make the background surface
 background = Rubygame::Surface.new(screen.size)
-
 background.blit(screen,[0,0])
 
 catch(:rubygame_quit)    do
@@ -78,18 +83,18 @@ catch(:rubygame_quit)    do
 			when Rubygame::K_ESCAPE
 			    throw :rubygame_quit 
 			when Rubygame::K_UP
-			    pandas.update(0,-speed)
+			    allsprites.update('up')
 			when Rubygame::K_DOWN
-			    pandas.update(0,speed)
+			    allsprites.update('down')
 			when Rubygame::K_LEFT
-			    pandas.update(-speed,0)
+			    allsprites.update('left')
 			when Rubygame::K_RIGHT
-			    pandas.update(speed,0)
+			    allsprites.update('right')
 		    end
 	    end
 	end
 	background.blit(screen, [0, 0])
-	pandas.draw(screen)
+	allsprites.draw(screen)
 	screen.update()
     end
 end    
