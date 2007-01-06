@@ -1,24 +1,21 @@
 #!/usr/bin/env ruby
 require 'rubygame'
-require 'player.rb'
+require 'config.rb'
+require 'player.class.rb'
 
 Rubygame.init()
-
-# Global constants
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 350
 
 queue = Rubygame::Queue.instance
 
 # Create the SDL window
-size = [640, 480]
+size = [SCREEN_WIDTH, SCREEN_HEIGHT]
 screen = Rubygame::Screen.set_mode(size)
-screen.set_caption("teste do Rubygame")
+screen.set_caption("Joguinho...")
 
 # Create the player character
-player = Player.new(300,150)
+player = Player.new()
 
-# Create the grou and put the pandas on it
+# Create the group and put the characters on it
 allsprites = Rubygame::Sprites::Group.new()
 allsprites.push(player)
 
@@ -37,18 +34,18 @@ catch(:rubygame_quit)    do
 			when Rubygame::K_ESCAPE
 			    throw :rubygame_quit 
 			when Rubygame::K_UP
-			    player.state = :up
+			    player.set_state(:up)
 			when Rubygame::K_DOWN
-			    player.state = :down
+			    player.set_state(:down)
 			when Rubygame::K_LEFT
-			    player.state = :left
+			    player.set_state(:left)
 			when Rubygame::K_RIGHT
-			    player.state = :right
+			    player.set_state(:right)
 		    end
 		when Rubygame::KeyUpEvent
 		    case event.key
 			when Rubygame::K_UP, Rubygame::K_DOWN, Rubygame::K_LEFT, Rubygame::K_RIGHT
-			    player.state = :still
+			    player.set_state(:still)
 		    end
 	    end
 	end
