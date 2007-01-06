@@ -4,7 +4,7 @@ class Player
 
     def initialize
 	super()
-	@image = Rubygame::Image.load("samples/panda.png")
+	@image = Rubygame::Image.load("panda.png")
 	@image.set_colorkey(@image.get_at([0, 0]))
 	@rect = Rubygame::Rect.new(320, 240, *@image.size)
 	# @area is the area of the screen, which the player will walk across
