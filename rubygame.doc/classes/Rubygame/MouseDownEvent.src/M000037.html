@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (Rubygame::MouseDownEvent)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File event.rb, line 166</span>
+                <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">pos</span>,<span class="ruby-identifier">button</span>)
+                        <span class="ruby-ivar">@pos</span> = <span class="ruby-identifier">pos</span>
+                        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">button</span>.<span class="ruby-identifier">kind_of?</span> <span class="ruby-constant">Integer</span>
+                                <span class="ruby-ivar">@button</span> = <span class="ruby-identifier">button</span>
+                                <span class="ruby-ivar">@string</span> = <span class="ruby-constant">Rubygame</span><span class="ruby-operator">::</span><span class="ruby-constant">Mouse</span><span class="ruby-operator">::</span><span class="ruby-constant">MOUSE2STR</span>[<span class="ruby-identifier">button</span>] <span class="ruby-comment cmt">#a string or nil</span>
+                        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">kind_of?</span> <span class="ruby-constant">String</span>
+                                <span class="ruby-ivar">@button</span> = <span class="ruby-constant">Rubygame</span><span class="ruby-operator">::</span><span class="ruby-constant">Mouse</span><span class="ruby-operator">::</span><span class="ruby-constant">STR2MOUSE</span>[<span class="ruby-identifier">key</span>]
+                                <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@button</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">nil</span>
+                                        <span class="ruby-ivar">@string</span> = <span class="ruby-identifier">button</span>
+                                <span class="ruby-keyword kw">else</span>
+                                        <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>,<span class="ruby-value str">&quot;First argument of MouseDownEvent.new() must be an Integer Mouse button indentifier (like MOUSE_LEFT) or a String (like \&quot;left\&quot;). Got %s (%s)&quot;</span><span class="ruby-operator">%</span>[<span class="ruby-identifier">button</span>,<span class="ruby-identifier">button</span>.<span class="ruby-identifier">class</span>])
+                                <span class="ruby-keyword kw">end</span>
+                        <span class="ruby-keyword kw">end</span>
+                <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

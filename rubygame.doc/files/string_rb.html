@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: string.rb</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>string.rb</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>string.rb
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Wed Jan 04 02:08:19 BRST 2006</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+class String
+</p>
+<pre>
+      # (This is a work in progress. It does not yet work.)
+      #
+      # Modified version of String.===() to match keydown events
+      # example: the string, &quot;ctrl+alt+delete&quot; should matche
+      # KeyDownEvent.new(K_DELETE,[K_LCTRL,K_LALT])
+      # so you can case() on a keypress event, like this:
+      #
+      # case(ev)
+      # when &quot;w&quot;; player.go_up();
+      # when &quot;a&quot;; player.go_left();
+      # when &quot;s&quot;; player.go_down();
+      # when &quot;d&quot;; player.go_right();
+      # end
+      def ===(event)
+              if [Rubygame::KeyDownEvent, Rubygame::KeyUpEvent].include? event.class
+                      # parse self
+                      all_mods = {
+                              Rubygame::K_LALT=&gt;['alt','lalt','left_alt'],
+                              Rubygame::K_RALT=&gt;['alt','ralt','right_alt'],
+                              Rubygame::K_LCTRL=&gt;['ctrl','control','lctrl','lcontrol', #                                       'left_ctrl','left_control'],
+                              Rubygame::K_RCTRL=&gt;['ctrl','control','rctrl','rcontrol', #                                       'right_ctrl','right_control'],
+                              Rubygame::K_LSHIFT=&gt;['shift','lshift','left_shift'],
+                              Rubygame::K_RSHIFT=&gt;['shift','rshift','right_shift'],
+                      }
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

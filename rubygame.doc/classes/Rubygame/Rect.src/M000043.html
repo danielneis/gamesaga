@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new_from_object (Rubygame::Rect)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rect.rb, line 109</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-constant">Rect</span>.<span class="ruby-identifier">new_from_object</span>(<span class="ruby-identifier">object</span>)
+                <span class="ruby-keyword kw">case</span>(<span class="ruby-identifier">object</span>)
+                <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Rect</span>
+                        <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">dup</span>
+                <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Array</span> 
+                        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">4</span>
+                                <span class="ruby-keyword kw">return</span> <span class="ruby-constant">Rect</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>)
+                        <span class="ruby-keyword kw">else</span>
+                                <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>,<span class="ruby-value str">&quot;Array does not have enough indices to be made into a Rect (%d for 4).&quot;</span><span class="ruby-operator">%</span><span class="ruby-identifier">object</span>.<span class="ruby-identifier">length</span> )
+                        <span class="ruby-keyword kw">end</span>
+                <span class="ruby-keyword kw">else</span>
+                        <span class="ruby-keyword kw">begin</span>
+                                <span class="ruby-keyword kw">case</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">rect</span>)
+                                <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Rect</span>
+                                        <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">rect</span>.<span class="ruby-identifier">dup</span>
+                                <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Array</span>
+                                        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">rect</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">4</span>
+                                                <span class="ruby-keyword kw">return</span> <span class="ruby-constant">Rect</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">rect</span>)
+                                        <span class="ruby-keyword kw">else</span>
+                                                <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>,<span class="ruby-value str">&quot;Array does not have enough indices to be made into a Rect (%d for 4).&quot;</span><span class="ruby-operator">%</span><span class="ruby-identifier">object</span>.<span class="ruby-identifier">rect</span>.<span class="ruby-identifier">length</span> )
+                                        <span class="ruby-keyword kw">end</span>
+                                <span class="ruby-keyword kw">end</span>                         <span class="ruby-comment cmt"># case object.rect</span>
+                        <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">NoMethodError</span> <span class="ruby-comment cmt"># if no rect.rect</span>
+                                <span class="ruby-identifier">raise</span>(<span class="ruby-constant">TypeError</span>,<span class="ruby-value str">&quot;Object must be a Rect or Array [x,y,w,h], or have an attribute called 'rect'. (Got %s instance.)&quot;</span><span class="ruby-operator">%</span><span class="ruby-identifier">object</span>.<span class="ruby-identifier">class</span>)
+                        <span class="ruby-keyword kw">end</span>
+                <span class="ruby-keyword kw">end</span> <span class="ruby-comment cmt"># case object</span>
+        <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

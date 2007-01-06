@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>clamp! (Rubygame::Rect)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rect.rb, line 363</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">clamp!</span>(<span class="ruby-identifier">rect</span>)
+                <span class="ruby-identifier">nself</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">normalize</span>
+                <span class="ruby-identifier">rect</span> = <span class="ruby-constant">Rect</span>.<span class="ruby-identifier">new_from_object</span>(<span class="ruby-identifier">rect</span>)
+                <span class="ruby-comment cmt">#If self is inside given, there is no need to move self</span>
+                <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">rect</span>.<span class="ruby-identifier">contain?</span>(<span class="ruby-identifier">nself</span>)
+
+                        <span class="ruby-comment cmt">#If self is too wide:</span>
+                        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">2</span>] <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">rect</span>[<span class="ruby-value">2</span>]
+                                <span class="ruby-keyword kw">self</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">rect</span>.<span class="ruby-identifier">centerx</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">2</span>]<span class="ruby-operator">/</span><span class="ruby-value">2</span>
+                                <span class="ruby-comment cmt">#Else self is not too wide</span>
+                        <span class="ruby-keyword kw">else</span>
+                                <span class="ruby-comment cmt">#If self is to the left of arg</span>
+                                <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">rect</span>[<span class="ruby-value">0</span>]
+                                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">rect</span>[<span class="ruby-value">0</span>]
+                                <span class="ruby-comment cmt">#If self is to the right of arg</span>
+                                <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">nself</span>.<span class="ruby-identifier">right</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">rect</span>.<span class="ruby-identifier">right</span>
+                                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">rect</span>.<span class="ruby-identifier">right</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">2</span>]
+                                <span class="ruby-comment cmt">#Otherwise, leave x alone</span>
+                                <span class="ruby-keyword kw">end</span>
+                        <span class="ruby-keyword kw">end</span>
+
+                        <span class="ruby-comment cmt">#If self is too tall:</span>
+                        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">3</span>] <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">rect</span>[<span class="ruby-value">3</span>]
+                                <span class="ruby-keyword kw">self</span>[<span class="ruby-value">1</span>] = <span class="ruby-identifier">rect</span>.<span class="ruby-identifier">centery</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">3</span>]<span class="ruby-operator">/</span><span class="ruby-value">2</span>
+                                <span class="ruby-comment cmt">#Else self is not too tall</span>
+                        <span class="ruby-keyword kw">else</span>
+                                <span class="ruby-comment cmt">#If self is above arg</span>
+                                <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">rect</span>[<span class="ruby-value">1</span>]
+                                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">1</span>] = <span class="ruby-identifier">rect</span>[<span class="ruby-value">1</span>]
+                                <span class="ruby-comment cmt">#If self below arg</span>
+                                <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">nself</span>.<span class="ruby-identifier">bottom</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">rect</span>.<span class="ruby-identifier">bottom</span>
+                                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">1</span>] = <span class="ruby-identifier">rect</span>.<span class="ruby-identifier">bottom</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">3</span>]
+                                <span class="ruby-comment cmt">#Otherwise, leave y alone</span>
+                                <span class="ruby-keyword kw">end</span>
+                        <span class="ruby-keyword kw">end</span>
+                <span class="ruby-keyword kw">end</span>
+                <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">self</span>
+        <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

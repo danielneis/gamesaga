@@ -1,0 +1,1915 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Rubygame::Rect</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Rubygame::Rect</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/rect_rb.html">
+                rect.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Array
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+A <a href="Rect.html">Rect</a> is a representation of a rectangle, with
+four core attributes (x offset, y offset, width, and height) and a variety
+of functions for manipulating and accessing these attributes.
+</p>
+<p>
+Like all coordinates in <a href="../Rubygame.html">Rubygame</a> (and its
+base library, SDL), x and y offsets are measured from the top-left corner
+of the screen, with greater y offsets being lower. Thus, specifying the x
+and y offsets of the <a href="Rect.html">Rect</a> is equivalent to setting
+the location of its top-left corner.
+</p>
+<p>
+In <a href="../Rubygame.html">Rubygame</a>, Rects are used for collision
+detection and describing the area of a <a href="Surface.html">Surface</a>
+to operate on.
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000074">b</a>&nbsp;&nbsp;
+      <a href="#M000075">b=</a>&nbsp;&nbsp;
+      <a href="#M000098">bl</a>&nbsp;&nbsp;
+      <a href="#M000099">bl=</a>&nbsp;&nbsp;
+      <a href="#M000072">bottom</a>&nbsp;&nbsp;
+      <a href="#M000073">bottom=</a>&nbsp;&nbsp;
+      <a href="#M000096">bottomleft</a>&nbsp;&nbsp;
+      <a href="#M000097">bottomleft=</a>&nbsp;&nbsp;
+      <a href="#M000100">bottomright</a>&nbsp;&nbsp;
+      <a href="#M000101">bottomright=</a>&nbsp;&nbsp;
+      <a href="#M000102">br</a>&nbsp;&nbsp;
+      <a href="#M000103">br=</a>&nbsp;&nbsp;
+      <a href="#M000078">c</a>&nbsp;&nbsp;
+      <a href="#M000079">c=</a>&nbsp;&nbsp;
+      <a href="#M000076">center</a>&nbsp;&nbsp;
+      <a href="#M000077">center=</a>&nbsp;&nbsp;
+      <a href="#M000080">centerx</a>&nbsp;&nbsp;
+      <a href="#M000081">centerx=</a>&nbsp;&nbsp;
+      <a href="#M000084">centery</a>&nbsp;&nbsp;
+      <a href="#M000085">centery=</a>&nbsp;&nbsp;
+      <a href="#M000120">clamp</a>&nbsp;&nbsp;
+      <a href="#M000121">clamp!</a>&nbsp;&nbsp;
+      <a href="#M000122">clip</a>&nbsp;&nbsp;
+      <a href="#M000123">clip!</a>&nbsp;&nbsp;
+      <a href="#M000126">collide_array</a>&nbsp;&nbsp;
+      <a href="#M000127">collide_array_all</a>&nbsp;&nbsp;
+      <a href="#M000124">collide_hash</a>&nbsp;&nbsp;
+      <a href="#M000125">collide_hash_all</a>&nbsp;&nbsp;
+      <a href="#M000128">collide_point?</a>&nbsp;&nbsp;
+      <a href="#M000129">collide_rect?</a>&nbsp;&nbsp;
+      <a href="#M000130">contain?</a>&nbsp;&nbsp;
+      <a href="#M000082">cx</a>&nbsp;&nbsp;
+      <a href="#M000083">cx=</a>&nbsp;&nbsp;
+      <a href="#M000086">cy</a>&nbsp;&nbsp;
+      <a href="#M000087">cy=</a>&nbsp;&nbsp;
+      <a href="#M000062">h</a>&nbsp;&nbsp;
+      <a href="#M000063">h=</a>&nbsp;&nbsp;
+      <a href="#M000064">height</a>&nbsp;&nbsp;
+      <a href="#M000065">height=</a>&nbsp;&nbsp;
+      <a href="#M000131">inflate</a>&nbsp;&nbsp;
+      <a href="#M000132">inflate!</a>&nbsp;&nbsp;
+      <a href="#M000045">inspect</a>&nbsp;&nbsp;
+      <a href="#M000050">l</a>&nbsp;&nbsp;
+      <a href="#M000051">l=</a>&nbsp;&nbsp;
+      <a href="#M000048">left</a>&nbsp;&nbsp;
+      <a href="#M000049">left=</a>&nbsp;&nbsp;
+      <a href="#M000118">mb</a>&nbsp;&nbsp;
+      <a href="#M000119">mb=</a>&nbsp;&nbsp;
+      <a href="#M000116">midbottom</a>&nbsp;&nbsp;
+      <a href="#M000117">midbottom=</a>&nbsp;&nbsp;
+      <a href="#M000104">midleft</a>&nbsp;&nbsp;
+      <a href="#M000105">midleft=</a>&nbsp;&nbsp;
+      <a href="#M000112">midright</a>&nbsp;&nbsp;
+      <a href="#M000113">midright=</a>&nbsp;&nbsp;
+      <a href="#M000108">midtop</a>&nbsp;&nbsp;
+      <a href="#M000109">midtop=</a>&nbsp;&nbsp;
+      <a href="#M000106">ml</a>&nbsp;&nbsp;
+      <a href="#M000107">ml=</a>&nbsp;&nbsp;
+      <a href="#M000133">move</a>&nbsp;&nbsp;
+      <a href="#M000134">move!</a>&nbsp;&nbsp;
+      <a href="#M000114">mr</a>&nbsp;&nbsp;
+      <a href="#M000115">mr=</a>&nbsp;&nbsp;
+      <a href="#M000110">mt</a>&nbsp;&nbsp;
+      <a href="#M000111">mt=</a>&nbsp;&nbsp;
+      <a href="#M000042">new</a>&nbsp;&nbsp;
+      <a href="#M000043">new_from_object</a>&nbsp;&nbsp;
+      <a href="#M000135">normalize</a>&nbsp;&nbsp;
+      <a href="#M000136">normalize!</a>&nbsp;&nbsp;
+      <a href="#M000070">r</a>&nbsp;&nbsp;
+      <a href="#M000071">r=</a>&nbsp;&nbsp;
+      <a href="#M000068">right</a>&nbsp;&nbsp;
+      <a href="#M000069">right=</a>&nbsp;&nbsp;
+      <a href="#M000066">size</a>&nbsp;&nbsp;
+      <a href="#M000067">size=</a>&nbsp;&nbsp;
+      <a href="#M000056">t</a>&nbsp;&nbsp;
+      <a href="#M000057">t=</a>&nbsp;&nbsp;
+      <a href="#M000090">tl</a>&nbsp;&nbsp;
+      <a href="#M000091">tl=</a>&nbsp;&nbsp;
+      <a href="#M000044">to_s</a>&nbsp;&nbsp;
+      <a href="#M000054">top</a>&nbsp;&nbsp;
+      <a href="#M000055">top=</a>&nbsp;&nbsp;
+      <a href="#M000088">topleft</a>&nbsp;&nbsp;
+      <a href="#M000089">topleft=</a>&nbsp;&nbsp;
+      <a href="#M000092">topright</a>&nbsp;&nbsp;
+      <a href="#M000093">topright=</a>&nbsp;&nbsp;
+      <a href="#M000094">tr</a>&nbsp;&nbsp;
+      <a href="#M000095">tr=</a>&nbsp;&nbsp;
+      <a href="#M000137">union</a>&nbsp;&nbsp;
+      <a href="#M000138">union!</a>&nbsp;&nbsp;
+      <a href="#M000139">union_all</a>&nbsp;&nbsp;
+      <a href="#M000140">union_all!</a>&nbsp;&nbsp;
+      <a href="#M000058">w</a>&nbsp;&nbsp;
+      <a href="#M000059">w=</a>&nbsp;&nbsp;
+      <a href="#M000060">width</a>&nbsp;&nbsp;
+      <a href="#M000061">width=</a>&nbsp;&nbsp;
+      <a href="#M000046">x</a>&nbsp;&nbsp;
+      <a href="#M000047">x=</a>&nbsp;&nbsp;
+      <a href="#M000052">y</a>&nbsp;&nbsp;
+      <a href="#M000053">y=</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000042" class="method-detail">
+        <a name="M000042"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000042.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000042.html');return false;">
+          <span class="method-name">new</span><span class="method-args">(*argv)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Create a new <a href="Rect.html">Rect</a>, attempting to extract its own
+information from the given arguments. The arguments must fall into one of
+these cases:
+</p>
+<pre>
+  - 4 integers +(x, y, w, h)+.
+  - 1 Rect or Array containing 4 integers +([x, y, w, h])+.
+  - 2 Arrays containing 2 integers each +([x,y], [w,h])+.
+  - 1 object with a +rect+ attribute which is a valid Rect object.
+</pre>
+<p>
+All rect core attributes (x,y,w,h) must be integers.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000043" class="method-detail">
+        <a name="M000043"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000043.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000043.html');return false;">
+          <span class="method-name">new_from_object</span><span class="method-args">(object)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Extract or generate a <a href="Rect.html">Rect</a> from the given object,
+if possible, using the following process:
+</p>
+<pre>
+ 1. If it's a Rect already, return a duplicate Rect.
+ 2. Elsif it's an Array with at least 4 values, make a Rect from it.
+ 3. Elsif it has a +rect+ attribute., perform (1) and (2) on that.
+ 4. Otherwise, raise TypeError.
+</pre>
+<p>
+See also <a href="Surface.html#M000148">Surface#make_rect</a>()
+</p>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000074" class="method-detail">
+        <a name="M000074"></a>
+
+        <div class="method-heading">
+          <span class="method-name">b</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000072">bottom</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000075" class="method-detail">
+        <a name="M000075"></a>
+
+        <div class="method-heading">
+          <span class="method-name">b=</span><span class="method-args">(b)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000073">bottom=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000098" class="method-detail">
+        <a name="M000098"></a>
+
+        <div class="method-heading">
+          <span class="method-name">bl</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000096">bottomleft</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000099" class="method-detail">
+        <a name="M000099"></a>
+
+        <div class="method-heading">
+          <span class="method-name">bl=</span><span class="method-args">(bottomleft)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000097">bottomleft=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000072" class="method-detail">
+        <a name="M000072"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000072.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000072.html');return false;">
+          <span class="method-name">bottom</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the y coordinate of the bottom side of the <a
+href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000073" class="method-detail">
+        <a name="M000073"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000073.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000073.html');return false;">
+          <span class="method-name">bottom=</span><span class="method-args">(b)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the y coordinate of the bottom side of the <a href="Rect.html">Rect</a>
+by translating the <a href="Rect.html">Rect</a> (adjusting the y offset).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000096" class="method-detail">
+        <a name="M000096"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000096.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000096.html');return false;">
+          <span class="method-name">bottomleft</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x and y coordinates of the bottom-left corner of the <a
+href="Rect.html">Rect</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000097" class="method-detail">
+        <a name="M000097"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000097.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000097.html');return false;">
+          <span class="method-name">bottomleft=</span><span class="method-args">(bottomleft)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x and y coordinates of the bottom-left corner of the <a
+href="Rect.html">Rect</a> by translating the <a href="Rect.html">Rect</a>
+(adjusting the x and y offsets).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000100" class="method-detail">
+        <a name="M000100"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000100.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000100.html');return false;">
+          <span class="method-name">bottomright</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x and y coordinates of the bottom-right corner of the <a
+href="Rect.html">Rect</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000101" class="method-detail">
+        <a name="M000101"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000101.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000101.html');return false;">
+          <span class="method-name">bottomright=</span><span class="method-args">(bottomright)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x and y coordinates of the bottom-right corner of the <a
+href="Rect.html">Rect</a> by translating the <a href="Rect.html">Rect</a>
+(adjusting the x and y offsets).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000102" class="method-detail">
+        <a name="M000102"></a>
+
+        <div class="method-heading">
+          <span class="method-name">br</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000100">bottomright</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000103" class="method-detail">
+        <a name="M000103"></a>
+
+        <div class="method-heading">
+          <span class="method-name">br=</span><span class="method-args">(bottomright)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000101">bottomright=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000078" class="method-detail">
+        <a name="M000078"></a>
+
+        <div class="method-heading">
+          <span class="method-name">c</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000076">center</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000079" class="method-detail">
+        <a name="M000079"></a>
+
+        <div class="method-heading">
+          <span class="method-name">c=</span><span class="method-args">(center)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000077">center=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000076" class="method-detail">
+        <a name="M000076"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000076.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000076.html');return false;">
+          <span class="method-name">center</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x and y coordinates of the center of the <a
+href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000077" class="method-detail">
+        <a name="M000077"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000077.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000077.html');return false;">
+          <span class="method-name">center=</span><span class="method-args">(center)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x and y coordinates of the center of the <a
+href="Rect.html">Rect</a> by translating the <a href="Rect.html">Rect</a>
+(adjusting the x and y offsets).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000080" class="method-detail">
+        <a name="M000080"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000080.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000080.html');return false;">
+          <span class="method-name">centerx</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x coordinate of the center of the <a href="Rect.html">Rect</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000081" class="method-detail">
+        <a name="M000081"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000081.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000081.html');return false;">
+          <span class="method-name">centerx=</span><span class="method-args">(x)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x coordinate of the center of the <a href="Rect.html">Rect</a> by
+translating the <a href="Rect.html">Rect</a> (adjusting the x offset).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000084" class="method-detail">
+        <a name="M000084"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000084.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000084.html');return false;">
+          <span class="method-name">centery</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the y coordinate of the center of the <a href="Rect.html">Rect</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000085" class="method-detail">
+        <a name="M000085"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000085.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000085.html');return false;">
+          <span class="method-name">centery=</span><span class="method-args">(y)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the y coordinate of the center of the <a href="Rect.html">Rect</a> by
+translating the <a href="Rect.html">Rect</a> (adjusting the y offset).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000120" class="method-detail">
+        <a name="M000120"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000120.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000120.html');return false;">
+          <span class="method-name">clamp</span><span class="method-args">(rect)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+As <a href="Rect.html#M000121">clamp!</a>, but the original caller is not
+changed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000121" class="method-detail">
+        <a name="M000121"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000121.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000121.html');return false;">
+          <span class="method-name">clamp!</span><span class="method-args">(rect)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Translate the calling <a href="Rect.html">Rect</a> to be entirely inside
+the given <a href="Rect.html">Rect</a>. If the caller is too large along
+either axis to fit in the given rect, it is centered with respect to the
+given rect, along that axis.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000122" class="method-detail">
+        <a name="M000122"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000122.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000122.html');return false;">
+          <span class="method-name">clip</span><span class="method-args">(rect)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+As <a href="Rect.html#M000123">clip!</a>, but the original caller is not
+changed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000123" class="method-detail">
+        <a name="M000123"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000123.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000123.html');return false;">
+          <span class="method-name">clip!</span><span class="method-args">(rect)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Crop the calling <a href="Rect.html">Rect</a> to be entirely inside the
+given <a href="Rect.html">Rect</a>. If the caller does not intersect the
+given <a href="Rect.html">Rect</a> at all, its width and height are set to
+zero, but its x and y offsets are not changed.
+</p>
+<p>
+As a side effect, the <a href="Rect.html">Rect</a> is normalized.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000126" class="method-detail">
+        <a name="M000126"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000126.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000126.html');return false;">
+          <span class="method-name">collide_array</span><span class="method-args">(array_rects)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Iterate through all elements in the given Array, and return the
+<b>index</b> of the first element which is a <a href="Rect.html">Rect</a>
+that collides with the caller.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000127" class="method-detail">
+        <a name="M000127"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000127.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000127.html');return false;">
+          <span class="method-name">collide_array_all</span><span class="method-args">(array_rects)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Iterate through all elements in the given Array, and return an Array
+containing the <b>indices</b> of every element that is a <a
+href="Rect.html">Rect</a> that collides with the caller.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000124" class="method-detail">
+        <a name="M000124"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000124.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000124.html');return false;">
+          <span class="method-name">collide_hash</span><span class="method-args">(hash_rects)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Iterate through all key/value pairs in the given hash table, and return the
+first pair whose value is a <a href="Rect.html">Rect</a> that collides with
+the caller.
+</p>
+<p>
+Because a hash table is unordered, you should not expect any particular <a
+href="Rect.html">Rect</a> to be returned first.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000125" class="method-detail">
+        <a name="M000125"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000125.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000125.html');return false;">
+          <span class="method-name">collide_hash_all</span><span class="method-args">(hash_rects)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Iterate through all key/value pairs in the given hash table, and return an
+Array of every pair whose value is a <a href="Rect.html">Rect</a> that
+collides the caller.
+</p>
+<p>
+Because a hash table is unordered, you should not expect the returned pairs
+to be in any particular order.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000128" class="method-detail">
+        <a name="M000128"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000128.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000128.html');return false;">
+          <span class="method-name">collide_point?</span><span class="method-args">(x,y=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+True if the point is inside (including on the border) of the caller. The
+point can be given as either an Array or separate coordinates.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000129" class="method-detail">
+        <a name="M000129"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000129.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000129.html');return false;">
+          <span class="method-name">collide_rect?</span><span class="method-args">(rect)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+True if the caller and the given <a href="Rect.html">Rect</a> overlap (or
+touch) at all.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000130" class="method-detail">
+        <a name="M000130"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000130.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000130.html');return false;">
+          <span class="method-name">contain?</span><span class="method-args">(rect)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+True if the given <a href="Rect.html">Rect</a> is totally within the
+caller. Borders may overlap.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000082" class="method-detail">
+        <a name="M000082"></a>
+
+        <div class="method-heading">
+          <span class="method-name">cx</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000080">centerx</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000083" class="method-detail">
+        <a name="M000083"></a>
+
+        <div class="method-heading">
+          <span class="method-name">cx=</span><span class="method-args">(x)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000081">centerx=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000086" class="method-detail">
+        <a name="M000086"></a>
+
+        <div class="method-heading">
+          <span class="method-name">cy</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000084">centery</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000087" class="method-detail">
+        <a name="M000087"></a>
+
+        <div class="method-heading">
+          <span class="method-name">cy=</span><span class="method-args">(y)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000085">centery=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000062" class="method-detail">
+        <a name="M000062"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000062.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000062.html');return false;">
+          <span class="method-name">h</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns self[3]
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000063" class="method-detail">
+        <a name="M000063"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000063.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000063.html');return false;">
+          <span class="method-name">h=</span><span class="method-args">(val)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets self[3] to <tt>val</tt>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000064" class="method-detail">
+        <a name="M000064"></a>
+
+        <div class="method-heading">
+          <span class="method-name">height</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000062">h</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000065" class="method-detail">
+        <a name="M000065"></a>
+
+        <div class="method-heading">
+          <span class="method-name">height=</span><span class="method-args">(val)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000063">h=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000131" class="method-detail">
+        <a name="M000131"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000131.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000131.html');return false;">
+          <span class="method-name">inflate</span><span class="method-args">(x,y=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+As <a href="Rect.html#M000132">inflate!</a>, but the original caller is not
+changed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000132" class="method-detail">
+        <a name="M000132"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000132.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000132.html');return false;">
+          <span class="method-name">inflate!</span><span class="method-args">(x,y=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Increase the <a href="Rect.html">Rect</a>&#8217;s size is the x and y
+directions, while keeping the same center point. For best results, expand
+by an even number. X and y inflation can be given as an Array or as
+separate values.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000045" class="method-detail">
+        <a name="M000045"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000045.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000045.html');return false;">
+          <span class="method-name">inspect</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Print the <a href="Rect.html">Rect</a> in the form &quot;+#&lt;<a
+href="Rect.html">Rect</a>:id [x,y,w,h]&gt;+&quot;
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000050" class="method-detail">
+        <a name="M000050"></a>
+
+        <div class="method-heading">
+          <span class="method-name">l</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000046">x</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000051" class="method-detail">
+        <a name="M000051"></a>
+
+        <div class="method-heading">
+          <span class="method-name">l=</span><span class="method-args">(val)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000047">x=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000048" class="method-detail">
+        <a name="M000048"></a>
+
+        <div class="method-heading">
+          <span class="method-name">left</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000046">x</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000049" class="method-detail">
+        <a name="M000049"></a>
+
+        <div class="method-heading">
+          <span class="method-name">left=</span><span class="method-args">(val)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000047">x=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000118" class="method-detail">
+        <a name="M000118"></a>
+
+        <div class="method-heading">
+          <span class="method-name">mb</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000116">midbottom</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000119" class="method-detail">
+        <a name="M000119"></a>
+
+        <div class="method-heading">
+          <span class="method-name">mb=</span><span class="method-args">(midbottom)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000117">midbottom=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000116" class="method-detail">
+        <a name="M000116"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000116.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000116.html');return false;">
+          <span class="method-name">midbottom</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x and y coordinates of the midpoint on the left side of the <a
+href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000117" class="method-detail">
+        <a name="M000117"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000117.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000117.html');return false;">
+          <span class="method-name">midbottom=</span><span class="method-args">(midbottom)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x and y coordinates of the midpoint on the bottom side of the <a
+href="Rect.html">Rect</a> by translating the <a href="Rect.html">Rect</a>
+(adjusting the x and y offsets).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000104" class="method-detail">
+        <a name="M000104"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000104.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000104.html');return false;">
+          <span class="method-name">midleft</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x and y coordinates of the midpoint on the left side of the <a
+href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000105" class="method-detail">
+        <a name="M000105"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000105.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000105.html');return false;">
+          <span class="method-name">midleft=</span><span class="method-args">(midleft)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x and y coordinates of the midpoint on the left side of the <a
+href="Rect.html">Rect</a> by translating the <a href="Rect.html">Rect</a>
+(adjusting the x and y offsets).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000112" class="method-detail">
+        <a name="M000112"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000112.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000112.html');return false;">
+          <span class="method-name">midright</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x and y coordinates of the midpoint on the left side of the <a
+href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000113" class="method-detail">
+        <a name="M000113"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000113.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000113.html');return false;">
+          <span class="method-name">midright=</span><span class="method-args">(midright)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x and y coordinates of the midpoint on the right side of the <a
+href="Rect.html">Rect</a> by translating the <a href="Rect.html">Rect</a>
+(adjusting the x and y offsets).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000108" class="method-detail">
+        <a name="M000108"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000108.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000108.html');return false;">
+          <span class="method-name">midtop</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x and y coordinates of the midpoint on the left side of the <a
+href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000109" class="method-detail">
+        <a name="M000109"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000109.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000109.html');return false;">
+          <span class="method-name">midtop=</span><span class="method-args">(midtop)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x and y coordinates of the midpoint on the top side of the <a
+href="Rect.html">Rect</a> by translating the <a href="Rect.html">Rect</a>
+(adjusting the x and y offsets).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000106" class="method-detail">
+        <a name="M000106"></a>
+
+        <div class="method-heading">
+          <span class="method-name">ml</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000104">midleft</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000107" class="method-detail">
+        <a name="M000107"></a>
+
+        <div class="method-heading">
+          <span class="method-name">ml=</span><span class="method-args">(midleft)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000105">midleft=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000133" class="method-detail">
+        <a name="M000133"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000133.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000133.html');return false;">
+          <span class="method-name">move</span><span class="method-args">(x,y=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+As <a href="Rect.html#M000134">move!</a>, but the original caller is not
+changed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000134" class="method-detail">
+        <a name="M000134"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000134.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000134.html');return false;">
+          <span class="method-name">move!</span><span class="method-args">(x,y=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Translate the <a href="Rect.html">Rect</a> by the given amounts in the x
+and y directions. Positive values are rightward for x and downward for y. X
+and y movement can be given as an Array or as separate values.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000114" class="method-detail">
+        <a name="M000114"></a>
+
+        <div class="method-heading">
+          <span class="method-name">mr</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000112">midright</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000115" class="method-detail">
+        <a name="M000115"></a>
+
+        <div class="method-heading">
+          <span class="method-name">mr=</span><span class="method-args">(midright)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000113">midright=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000110" class="method-detail">
+        <a name="M000110"></a>
+
+        <div class="method-heading">
+          <span class="method-name">mt</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000108">midtop</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000111" class="method-detail">
+        <a name="M000111"></a>
+
+        <div class="method-heading">
+          <span class="method-name">mt=</span><span class="method-args">(midtop)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000109">midtop=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000135" class="method-detail">
+        <a name="M000135"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000135.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000135.html');return false;">
+          <span class="method-name">normalize</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+As <a href="Rect.html#M000136">normalize!</a>, but the original caller is
+not changed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000136" class="method-detail">
+        <a name="M000136"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000136.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000136.html');return false;">
+          <span class="method-name">normalize!</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Fix Rects that have negative width or height, without changing the area it
+represents. Has no effect on Rects with non-negative width and height. Some
+<a href="Rect.html">Rect</a> methods will automatically normalize the <a
+href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000070" class="method-detail">
+        <a name="M000070"></a>
+
+        <div class="method-heading">
+          <span class="method-name">r</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000068">right</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000071" class="method-detail">
+        <a name="M000071"></a>
+
+        <div class="method-heading">
+          <span class="method-name">r=</span><span class="method-args">(r)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000069">right=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000068" class="method-detail">
+        <a name="M000068"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000068.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000068.html');return false;">
+          <span class="method-name">right</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x coordinate of the right side of the <a
+href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000069" class="method-detail">
+        <a name="M000069"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000069.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000069.html');return false;">
+          <span class="method-name">right=</span><span class="method-args">(r)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x coordinate of the right side of the <a href="Rect.html">Rect</a>
+by translating the <a href="Rect.html">Rect</a> (adjusting the x offset).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000066" class="method-detail">
+        <a name="M000066"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000066.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000066.html');return false;">
+          <span class="method-name">size</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the width and height of the <a href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000067" class="method-detail">
+        <a name="M000067"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000067.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000067.html');return false;">
+          <span class="method-name">size=</span><span class="method-args">(size)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the width and height of the <a href="Rect.html">Rect</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000056" class="method-detail">
+        <a name="M000056"></a>
+
+        <div class="method-heading">
+          <span class="method-name">t</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000052">y</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000057" class="method-detail">
+        <a name="M000057"></a>
+
+        <div class="method-heading">
+          <span class="method-name">t=</span><span class="method-args">(val)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000053">y=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000090" class="method-detail">
+        <a name="M000090"></a>
+
+        <div class="method-heading">
+          <span class="method-name">tl</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000088">topleft</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000091" class="method-detail">
+        <a name="M000091"></a>
+
+        <div class="method-heading">
+          <span class="method-name">tl=</span><span class="method-args">(topleft)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000089">topleft=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000044" class="method-detail">
+        <a name="M000044"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000044.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000044.html');return false;">
+          <span class="method-name">to_s</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Print the <a href="Rect.html">Rect</a> in the form &quot;+#&lt;<a
+href="Rect.html">Rect</a> [x,y,w,h]&gt;+&quot;
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000054" class="method-detail">
+        <a name="M000054"></a>
+
+        <div class="method-heading">
+          <span class="method-name">top</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000052">y</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000055" class="method-detail">
+        <a name="M000055"></a>
+
+        <div class="method-heading">
+          <span class="method-name">top=</span><span class="method-args">(val)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000053">y=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000088" class="method-detail">
+        <a name="M000088"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000088.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000088.html');return false;">
+          <span class="method-name">topleft</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x and y coordinates of the top-left corner of the <a
+href="Rect.html">Rect</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000089" class="method-detail">
+        <a name="M000089"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000089.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000089.html');return false;">
+          <span class="method-name">topleft=</span><span class="method-args">(topleft)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x and y coordinates of the top-left corner of the <a
+href="Rect.html">Rect</a> by translating the <a href="Rect.html">Rect</a>
+(adjusting the x and y offsets).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000092" class="method-detail">
+        <a name="M000092"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000092.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000092.html');return false;">
+          <span class="method-name">topright</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the x and y coordinates of the top-right corner of the <a
+href="Rect.html">Rect</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000093" class="method-detail">
+        <a name="M000093"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000093.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000093.html');return false;">
+          <span class="method-name">topright=</span><span class="method-args">(topright)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the x and y coordinates of the top-right corner of the <a
+href="Rect.html">Rect</a> by translating the <a href="Rect.html">Rect</a>
+(adjusting the x and y offsets).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000094" class="method-detail">
+        <a name="M000094"></a>
+
+        <div class="method-heading">
+          <span class="method-name">tr</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000092">topright</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000095" class="method-detail">
+        <a name="M000095"></a>
+
+        <div class="method-heading">
+          <span class="method-name">tr=</span><span class="method-args">(topright)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000093">topright=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000137" class="method-detail">
+        <a name="M000137"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000137.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000137.html');return false;">
+          <span class="method-name">union</span><span class="method-args">(rect)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+As <a href="Rect.html#M000138">union!</a>, but the original caller is not
+changed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000138" class="method-detail">
+        <a name="M000138"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000138.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000138.html');return false;">
+          <span class="method-name">union!</span><span class="method-args">(rect)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Expand the caller to also cover the given <a href="Rect.html">Rect</a>. The
+<a href="Rect.html">Rect</a> is still a rectangle, so it may also cover
+areas that neither of the original Rects did, for example areas between the
+two Rects.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000139" class="method-detail">
+        <a name="M000139"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000139.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000139.html');return false;">
+          <span class="method-name">union_all</span><span class="method-args">(array_rects)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+As <a href="Rect.html#M000140">union_all!</a>, but the original caller is
+not changed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000140" class="method-detail">
+        <a name="M000140"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000140.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000140.html');return false;">
+          <span class="method-name">union_all!</span><span class="method-args">(array_rects)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Expand the caller to cover all of the given Rects. See also <a
+href="Rect.html#M000138">union!</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000058" class="method-detail">
+        <a name="M000058"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000058.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000058.html');return false;">
+          <span class="method-name">w</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns self[2]
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000059" class="method-detail">
+        <a name="M000059"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000059.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000059.html');return false;">
+          <span class="method-name">w=</span><span class="method-args">(val)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets self[2] to <tt>val</tt>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000060" class="method-detail">
+        <a name="M000060"></a>
+
+        <div class="method-heading">
+          <span class="method-name">width</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000058">w</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000061" class="method-detail">
+        <a name="M000061"></a>
+
+        <div class="method-heading">
+          <span class="method-name">width=</span><span class="method-args">(val)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Rect.html#M000059">w=</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000046" class="method-detail">
+        <a name="M000046"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000046.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000046.html');return false;">
+          <span class="method-name">x</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns self[0]
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000047" class="method-detail">
+        <a name="M000047"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000047.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000047.html');return false;">
+          <span class="method-name">x=</span><span class="method-args">(val)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets self[0] to <tt>val</tt>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000052" class="method-detail">
+        <a name="M000052"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000052.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000052.html');return false;">
+          <span class="method-name">y</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns self[1]
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000053" class="method-detail">
+        <a name="M000053"></a>
+
+        <div class="method-heading">
+          <a href="Rect.src/M000053.html" target="Code" class="method-signature"
+            onclick="popupCode('Rect.src/M000053.html');return false;">
+          <span class="method-name">y=</span><span class="method-args">(val)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets self[1] to <tt>val</tt>
+</p>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (Rubygame::Time::Clock)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File clock.rb, line 37</span>
+                        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">desired_fps</span>=<span class="ruby-keyword kw">nil</span>)
+                                <span class="ruby-ivar">@start</span> = <span class="ruby-constant">Rubygame</span><span class="ruby-operator">::</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">get_ticks</span>()
+                                <span class="ruby-ivar">@last_tick</span> = <span class="ruby-ivar">@start</span> <span class="ruby-comment cmt"># time that last tick occured</span>
+                                <span class="ruby-ivar">@passed</span> = <span class="ruby-value">0</span>         <span class="ruby-comment cmt"># time (ms) since last tick</span>
+                                <span class="ruby-ivar">@raw_passed</span> = <span class="ruby-value">0</span>     <span class="ruby-comment cmt"># @passed, before applying delay to steady FPS</span>
+                                <span class="ruby-ivar">@ticks</span> = <span class="ruby-value">0</span> <span class="ruby-comment cmt"># incremented every time Clock#tick is called</span>
+                                <span class="ruby-ivar">@desired_fps</span>=<span class="ruby-identifier">desired_fps</span> <span class="ruby-comment cmt"># frames per second to delay for</span>
+                        <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: Rubygame::Key</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">Rubygame::Key</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/constants_rb.html">
+                constants.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">KEY2ASCII</td>
+          <td>=</td>
+          <td class="context-item-value">{                         K_BACKSPACE =&gt; &quot;\b&quot;,                         K_TAB =&gt; &quot;\t&quot;,                         K_RETURN =&gt; &quot;\n&quot;, #SDL docs: &quot;\r&quot;. Win vs *nix? What about Mac?                         K_ESCAPE =&gt; &quot;^[&quot;,                         K_SPACE =&gt; &quot; &quot;,                         K_EXCLAIM =&gt; &quot;!&quot;,                         K_QUOTEDBL =&gt; &quot;\&quot;&quot;,                         K_HASH =&gt; &quot;#&quot;,                         K_DOLLAR =&gt; &quot;$&quot;,                         K_AMPERSAND =&gt; &quot;&amp;&quot;,                         K_QUOTE =&gt; &quot;\'&quot;,                         K_LEFTPAREN =&gt; &quot;(&quot;,                         K_RIGHTPAREN =&gt; &quot;)&quot;,                         K_ASTERISK =&gt; &quot;*&quot;,                         K_PLUS =&gt; &quot;+&quot;,                         K_COMMA =&gt; &quot;,&quot;,                         K_MINUS =&gt; &quot;-&quot;,                         K_PERIOD =&gt; &quot;.&quot;,                         K_SLASH =&gt; &quot;/&quot;,                         K_0 =&gt; &quot;0&quot;,                         K_1 =&gt; &quot;1&quot;,                         K_2 =&gt; &quot;2&quot;,                         K_3 =&gt; &quot;3&quot;,                         K_4 =&gt; &quot;4&quot;,                         K_5 =&gt; &quot;5&quot;,                         K_6 =&gt; &quot;6&quot;,                         K_7 =&gt; &quot;7&quot;,                         K_8 =&gt; &quot;8&quot;,                         K_9 =&gt; &quot;9&quot;,                         K_COLON =&gt; &quot;:&quot;,                         K_SEMICOLON =&gt; &quot;;&quot;,                         K_LESS =&gt; &quot;&lt;&quot;,                         K_EQUALS =&gt; &quot;=&quot;,                         K_GREATER =&gt; &quot;&gt;&quot;,                         K_QUESTION =&gt; &quot;?&quot;,                         K_AT =&gt; &quot;@&quot;,                         K_LEFTBRACKET =&gt; &quot;[&quot;,                         K_BACKSLASH =&gt; &quot;\\&quot;,                         K_RIGHTBRACKET =&gt; &quot;]&quot;,                         K_CARET =&gt; &quot;^&quot;,                         K_UNDERSCORE =&gt; &quot;_&quot;,                         K_BACKQUOTE =&gt; &quot;`&quot;,                         K_A =&gt; &quot;a&quot;,                         K_B =&gt; &quot;b&quot;,                         K_C =&gt; &quot;c&quot;,                         K_D =&gt; &quot;d&quot;,                         K_E =&gt; &quot;e&quot;,                         K_F =&gt; &quot;f&quot;,                         K_G =&gt; &quot;g&quot;,                         K_H =&gt; &quot;h&quot;,                         K_I =&gt; &quot;i&quot;,                         K_J =&gt; &quot;j&quot;,                         K_K =&gt; &quot;k&quot;,                         K_L =&gt; &quot;l&quot;,                         K_M =&gt; &quot;m&quot;,                         K_N =&gt; &quot;n&quot;,                         K_O =&gt; &quot;o&quot;,                         K_P =&gt; &quot;p&quot;,                         K_Q =&gt; &quot;q&quot;,                         K_R =&gt; &quot;r&quot;,                         K_S =&gt; &quot;s&quot;,                         K_T =&gt; &quot;t&quot;,                         K_U =&gt; &quot;u&quot;,                         K_V =&gt; &quot;v&quot;,                         K_W =&gt; &quot;w&quot;,                         K_X =&gt; &quot;x&quot;,                         K_Y =&gt; &quot;y&quot;,                         K_Z =&gt; &quot;z&quot;,                         K_KP0 =&gt; &quot;0&quot;,                         K_KP1 =&gt; &quot;1&quot;,                         K_KP2 =&gt; &quot;2&quot;,                         K_KP3 =&gt; &quot;3&quot;,                         K_KP4 =&gt; &quot;4&quot;,                         K_KP5 =&gt; &quot;5&quot;,                         K_KP6 =&gt; &quot;6&quot;,                         K_KP7 =&gt; &quot;7&quot;,                         K_KP8 =&gt; &quot;8&quot;,                         K_KP9 =&gt; &quot;9&quot;,                         K_KP_PERIOD =&gt; &quot;.&quot;,                         K_KP_DIVIDE =&gt; &quot;/&quot;,                         K_KP_MULTIPLY =&gt; &quot;*&quot;,                         K_KP_MINUS =&gt; &quot;-&quot;,                         K_KP_PLUS =&gt; &quot;+&quot;,                         K_KP_ENTER =&gt; &quot;\n&quot;, #again, SDL docs say &quot;\r&quot;                         K_KP_EQUALS =&gt; &quot;=&quot;,                 }</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+All the keys which have ASCII print values It is 87 lines from here to the
+closing }, if you want to skip it&#8230;
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ASCII2KEY</td>
+          <td>=</td>
+          <td class="context-item-value">KEY2ASCII.invert()</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+And to translate the other way&#8230;
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">KEY2LOWER</td>
+          <td>=</td>
+          <td class="context-item-value">{                         K_QUOTE =&gt; &quot;\'&quot;,                         K_COMMA =&gt; &quot;,&quot;,                         K_MINUS =&gt; &quot;-&quot;,                         K_PERIOD =&gt; &quot;.&quot;,                         K_SLASH =&gt; &quot;/&quot;,                         K_0 =&gt; &quot;0&quot;,                         K_1 =&gt; &quot;1&quot;,                         K_2 =&gt; &quot;2&quot;,                         K_3 =&gt; &quot;3&quot;,                         K_4 =&gt; &quot;4&quot;,                         K_5 =&gt; &quot;5&quot;,                         K_6 =&gt; &quot;6&quot;,                         K_7 =&gt; &quot;7&quot;,                         K_8 =&gt; &quot;8&quot;,                         K_9 =&gt; &quot;9&quot;,                         K_SEMICOLON =&gt; &quot;;&quot;,                         K_EQUALS =&gt; &quot;=&quot;,                         K_LEFTBRACKET =&gt; &quot;[&quot;,                         K_BACKSLASH =&gt; &quot;\\&quot;,                         K_RIGHTBRACKET =&gt; &quot;]&quot;,                         K_BACKQUOTE =&gt; &quot;`&quot;,                         K_A =&gt; &quot;a&quot;,                         K_B =&gt; &quot;b&quot;,                         K_C =&gt; &quot;c&quot;,                         K_D =&gt; &quot;d&quot;,                         K_E =&gt; &quot;e&quot;,                         K_F =&gt; &quot;f&quot;,                         K_G =&gt; &quot;g&quot;,                         K_H =&gt; &quot;h&quot;,                         K_I =&gt; &quot;i&quot;,                         K_J =&gt; &quot;j&quot;,                         K_K =&gt; &quot;k&quot;,                         K_L =&gt; &quot;l&quot;,                         K_M =&gt; &quot;m&quot;,                         K_N =&gt; &quot;n&quot;,                         K_O =&gt; &quot;o&quot;,                         K_P =&gt; &quot;p&quot;,                         K_Q =&gt; &quot;q&quot;,                         K_R =&gt; &quot;r&quot;,                         K_S =&gt; &quot;s&quot;,                         K_T =&gt; &quot;t&quot;,                         K_U =&gt; &quot;u&quot;,                         K_V =&gt; &quot;v&quot;,                         K_W =&gt; &quot;w&quot;,                         K_X =&gt; &quot;x&quot;,                         K_Y =&gt; &quot;y&quot;,                         K_Z =&gt; &quot;z&quot;,                 }</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+All the keys that are affected by the Shift key, in lower case 49 lines
+from here to the end of the hash
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">KEY2UPPER</td>
+          <td>=</td>
+          <td class="context-item-value">{                         K_QUOTE =&gt; &quot;\&quot;&quot;,                         K_COMMA =&gt; &quot;&lt;&quot;,                         K_MINUS =&gt; &quot;_&quot;,                         K_PERIOD =&gt; &quot;&gt;&quot;,                         K_SLASH =&gt; &quot;?&quot;,                         K_0 =&gt; &quot;)&quot;,                         K_1 =&gt; &quot;!&quot;,                         K_2 =&gt; &quot;@&quot;,                         K_3 =&gt; &quot;#&quot;,                         K_4 =&gt; &quot;$&quot;,                         K_5 =&gt; &quot;%&quot;,                         K_6 =&gt; &quot;^&quot;,                         K_7 =&gt; &quot;&amp;&quot;,                         K_8 =&gt; &quot;*&quot;,                         K_9 =&gt; &quot;(&quot;,                         K_SEMICOLON =&gt; &quot;:&quot;,                         K_EQUALS =&gt; &quot;+&quot;,                         K_LEFTBRACKET =&gt; &quot;{&quot;,                         K_BACKSLASH =&gt; &quot;|&quot;,                         K_RIGHTBRACKET =&gt; &quot;}&quot;,                         K_BACKQUOTE =&gt; &quot;~&quot;,                         K_A =&gt; &quot;A&quot;,                         K_B =&gt; &quot;B&quot;,                         K_C =&gt; &quot;C&quot;,                         K_D =&gt; &quot;D&quot;,                         K_E =&gt; &quot;E&quot;,                         K_F =&gt; &quot;F&quot;,                         K_G =&gt; &quot;G&quot;,                         K_H =&gt; &quot;H&quot;,                         K_I =&gt; &quot;I&quot;,                         K_J =&gt; &quot;J&quot;,                         K_K =&gt; &quot;K&quot;,                         K_L =&gt; &quot;L&quot;,                         K_M =&gt; &quot;M&quot;,                         K_N =&gt; &quot;N&quot;,                         K_O =&gt; &quot;O&quot;,                         K_P =&gt; &quot;P&quot;,                         K_Q =&gt; &quot;Q&quot;,                         K_R =&gt; &quot;R&quot;,                         K_S =&gt; &quot;S&quot;,                         K_T =&gt; &quot;T&quot;,                         K_U =&gt; &quot;U&quot;,                         K_V =&gt; &quot;V&quot;,                         K_W =&gt; &quot;W&quot;,                         K_X =&gt; &quot;X&quot;,                         K_Y =&gt; &quot;Y&quot;,                         K_Z =&gt; &quot;Z&quot;,                 }</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+All the keys that are affected by the Shift key, in UPPER case 49 lines
+from here to the end of the hash
+
+</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

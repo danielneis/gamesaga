@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>clip! (Rubygame::Rect)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rect.rb, line 412</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">clip!</span>(<span class="ruby-identifier">rect</span>)
+                <span class="ruby-identifier">nself</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">normalize</span>
+                <span class="ruby-identifier">rect</span> = <span class="ruby-constant">Rect</span>.<span class="ruby-identifier">new_from_object</span>(<span class="ruby-identifier">rect</span>).<span class="ruby-identifier">normalize</span>
+                <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">collide_rect?</span>(<span class="ruby-identifier">rect</span>)
+                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">min</span>(<span class="ruby-identifier">nself</span>.<span class="ruby-identifier">right</span>, <span class="ruby-identifier">rect</span>.<span class="ruby-identifier">right</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">0</span>]
+                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">3</span>] = <span class="ruby-identifier">min</span>(<span class="ruby-identifier">nself</span>.<span class="ruby-identifier">bottom</span>, <span class="ruby-identifier">rect</span>.<span class="ruby-identifier">bottom</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">nself</span>[<span class="ruby-value">1</span>]
+                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">max</span>(<span class="ruby-identifier">nself</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">rect</span>[<span class="ruby-value">1</span>])
+                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">1</span>] = <span class="ruby-identifier">max</span>(<span class="ruby-identifier">nself</span>[<span class="ruby-value">1</span>], <span class="ruby-identifier">rect</span>[<span class="ruby-value">1</span>])
+                        <span class="ruby-comment cmt">#if they do not intersect at all:</span>
+                <span class="ruby-keyword kw">else</span>
+                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">0</span>], <span class="ruby-keyword kw">self</span>[<span class="ruby-value">1</span>] = <span class="ruby-identifier">nself</span>.<span class="ruby-identifier">topleft</span>
+                        <span class="ruby-keyword kw">self</span>[<span class="ruby-value">2</span>], <span class="ruby-keyword kw">self</span>[<span class="ruby-value">3</span>] = <span class="ruby-value">0</span>, <span class="ruby-value">0</span>
+                <span class="ruby-keyword kw">end</span>
+                <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">self</span>
+        <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
