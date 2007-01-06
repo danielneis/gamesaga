@@ -70,6 +70,8 @@ allsprites.push(panda)
 
 # Make the background surface
 background = Rubygame::Surface.new(screen.size)
+background_pic = Rubygame::Image.load('castle.png')
+background_pic.blit(background,[0,0])
 background.blit(screen,[0,0])
 
 catch(:rubygame_quit)    do
