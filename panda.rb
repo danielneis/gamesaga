@@ -1,9 +1,12 @@
 #!/usr/bin/env ruby
 require 'rubygame'
+require 'player.rb'
+
 Rubygame.init()
 
-
-Rubygame.init()
+# Global constants
+SCREEN_WIDTH = 500
+SCREEN_HEIGHT = 350
 
 queue = Rubygame::Queue.instance
 
@@ -12,66 +15,15 @@ size = [640, 480]
 screen = Rubygame::Screen.set_mode(size)
 screen.set_caption("teste do Rubygame")
 
-class Panda
-
-    include Rubygame::Sprites::Sprite
-
-    def initialize(x,y)
-	super()
-	@pandapic = Rubygame::Image.load("samples/panda.png")
-	@pandapic.set_colorkey(@pandapic.get_at([0,0]))
-	@rect = Rubygame::Rect.new(x,y,*@pandapic.size)
-	@image = @pandapic
-	# @area is the area of the screen, which the panda will walk across
-	screen = Rubygame::Screen.get_surface
-	@area = Rubygame::Rect.new(0,0,*screen.size)
-
-	@speed = 10
-
-    end
-
-    def walk(direction)
-	
-	case direction
-	    when 'left'
-		if !(@rect.left < @area.left)
-		     @rect.move!(-@speed, 0)
-		end
-	    when 'right'
-		if !(@rect.right > @area.right)
-		     @rect.move!(@speed, 0)
-		end
-	    when 'up'
-		if !(@rect.top < @area.top)
-		     @rect.move!(0,-@speed)
-		end
-	    when 'down'
-		if !(@rect.bottom > @area.bottom)
-		     @rect.move!(0,@speed)
-		end
-	end
-    end
-
-    def update(direction)
-	walk(direction)
-    end
-
-    private :walk
-
-end
-
-
-# Create the very cute panda objects!
-panda = Panda.new(300,150)
+# Create the player character
+player = Player.new(300,150)
 
 # Create the grou and put the pandas on it
 allsprites = Rubygame::Sprites::Group.new()
-allsprites.push(panda)
+allsprites.push(player)
 
-# Make the background surface
-background = Rubygame::Surface.new(screen.size)
-background_pic = Rubygame::Image.load('castle.png')
-background_pic.blit(background,[0,0])
+# Make the background
+background = Rubygame::Image.load('castle.png')
 background.blit(screen,[0,0])
 
 catch(:rubygame_quit)    do
@@ -85,17 +37,23 @@ catch(:rubygame_quit)    do
 			when Rubygame::K_ESCAPE
 			    throw :rubygame_quit 
 			when Rubygame::K_UP
-			    allsprites.update('up')
+			    player.state = :up
 			when Rubygame::K_DOWN
-			    allsprites.update('down')
+			    player.state = :down
 			when Rubygame::K_LEFT
-			    allsprites.update('left')
+			    player.state = :left
 			when Rubygame::K_RIGHT
-			    allsprites.update('right')
+			    player.state = :right
+		    end
+		when Rubygame::KeyUpEvent
+		    case event.key
+			when Rubygame::K_UP, Rubygame::K_DOWN, Rubygame::K_LEFT, Rubygame::K_RIGHT
+			    player.state = :still
 		    end
 	    end
 	end
 	background.blit(screen, [0, 0])
+	allsprites.update
 	allsprites.draw(screen)
 	screen.update()
     end
