@@ -1,24 +1,26 @@
 #!/usr/bin/env ruby
 require 'rubygame'
 require 'config.rb'
+require 'fps.class.rb'
 require 'player.class.rb'
 
 Rubygame.init()
-
 
 # Create the SDL window, event queue and fps clock
 size = [SCREEN_WIDTH, SCREEN_HEIGHT]
 screen = Rubygame::Screen.set_mode(SCREEN_SIZE)
 screen.set_caption(TITLE)
-
 queue = Rubygame::Queue.instance
 clock = Rubygame::Time::Clock.new()
 
+# Make the background
+background = Rubygame::Image.load('castle.png')
+background.blit(screen,[0,0])
+
 # Create the life bar, FPS display etc.
 life =  nil
-sfont = Rubygame::SFont.new("term16.png")
-fps_display = sfont.render('FPS: '+clock.fps.to_s)
-fps_display.blit(screen, [0,0])
+fps_display = Fps_display.new(clock.fps.to_s)
+fps_display.text.blit(screen, [0,0])
 
 # Create the player character
 player = Player.new()
@@ -27,9 +29,6 @@ player = Player.new()
 allsprites = Rubygame::Sprites::Group.new()
 allsprites.push(player)
 
-# Make the background
-background = Rubygame::Image.load('castle.png')
-background.blit(screen,[0,0])
 
 #Main Loop
 loop do
@@ -73,8 +72,10 @@ loop do
 	end
     end
     background.blit(screen, [0, 0])
-    fps_display = sfont.render('FPS: '+clock.fps.to_s)
-    fps_display.blit(screen, [0,0])
+
+    fps_display.text = clock.fps.to_s
+    fps_display.text.blit(screen, [0,0])
+
     allsprites.update
     allsprites.draw(screen)
     screen.update()
