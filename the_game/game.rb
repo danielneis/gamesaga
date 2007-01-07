@@ -7,7 +7,6 @@ require 'player.class.rb'
 Rubygame.init()
 
 # Create the SDL window, event queue and fps clock
-size = [SCREEN_WIDTH, SCREEN_HEIGHT]
 screen = Rubygame::Screen.set_mode(SCREEN_SIZE)
 screen.set_caption(TITLE)
 queue = Rubygame::Queue.instance
@@ -28,7 +27,6 @@ player = Player.new()
 # Create the group and put the everything needed on it
 allsprites = Rubygame::Sprites::Group.new()
 allsprites.push(player)
-
 
 #Main Loop
 loop do

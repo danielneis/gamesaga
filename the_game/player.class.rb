@@ -26,11 +26,11 @@ class Player
 	case @state
 	    when :up
 		if !(@rect.top < @area.top)
-		     @rect.move!(0,-@speed)
+		     @rect.move!(0, -@speed)
 		end
 	    when :down
 		if !(@rect.bottom > @area.bottom)
-		     @rect.move!(0,@speed)
+		     @rect.move!(0, @speed)
 		end
 	    when :left
 		if !(@rect.left < @area.left)
