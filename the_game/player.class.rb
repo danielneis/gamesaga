@@ -2,6 +2,8 @@ class Player
 
     include Rubygame::Sprites::Sprite
 
+    attr_accessor :state
+
     def initialize
 	super()
 	@image = Rubygame::Image.load("panda.png")

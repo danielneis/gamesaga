@@ -44,8 +44,22 @@ catch(:rubygame_quit)    do
 		    end
 		when Rubygame::KeyUpEvent
 		    case event.key
-			when Rubygame::K_UP, Rubygame::K_DOWN, Rubygame::K_LEFT, Rubygame::K_RIGHT
-			    player.set_state(:still)
+			when Rubygame::K_UP 
+			    if  player.state == :up then
+				player.set_state(:still)
+			    end
+			when Rubygame::K_DOWN
+			    if  player.state == :down then
+				player.set_state(:still)
+			    end
+			when Rubygame::K_LEFT
+			    if  player.state == :left then
+				player.set_state(:still)
+			    end
+			when Rubygame::K_RIGHT
+			    if  player.state == :right then
+				player.set_state(:still)
+			    end
 		    end
 	    end
 	end
