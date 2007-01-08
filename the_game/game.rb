@@ -13,7 +13,7 @@ queue = Rubygame::Queue.instance
 clock = Rubygame::Time::Clock.new()
 
 # Make the background
-background = Rubygame::Image.load('castle.png')
+background = Rubygame::Image.load('background.png')
 background.blit(screen,[0,0])
 
 # Create the life bar, FPS display etc.
@@ -22,7 +22,7 @@ fps_display = Fps_display.new(clock.fps.to_s)
 fps_display.text.blit(screen, [0,0])
 
 # Create the player character
-player = Player.new()
+player = Player.new(0,350)
 
 # Create the group and put the everything needed on it
 allsprites = Rubygame::Sprites::Group.new()
