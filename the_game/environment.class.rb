@@ -25,11 +25,12 @@ class Environment
         if @player.rect.collide_rect? @enemy.rect
             if (@player.state == :left)
                 3.times {@player.move_right}
+                @player.state = :still
             elsif (@player.state == :right)
                 3.times { @player.move_left }
+                @player.state = :still
             end
 
-            @player.state = :still
             if (@player.state == :attack) then
                 @enemy.take_damage(10)
             else @player.take_damage(10)

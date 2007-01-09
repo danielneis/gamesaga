@@ -5,7 +5,10 @@ class Character
 
     def initialize(x, y, image)
 	super()
-	@image = Rubygame::Image.load(PIX_ROOT+image)
+	@still_image = Rubygame::Image.load(PIX_ROOT+image)
+        @attack_image = Rubygame::Image.load(PIX_ROOT+'panda.attack.png')
+
+        @image = @still_image
 	@image.set_colorkey(@image.get_at([0, 0]))
 	@rect = Rubygame::Rect.new(x, y, *@image.size)
 
@@ -19,7 +22,6 @@ class Character
 
     def take_damage(amount)
        @life = @life - amount
-       puts @life
     end
 
     # to move the character on each direction
@@ -33,6 +35,18 @@ class Character
 		if !(@rect.right > @area.right)
                     self.move_right
 		end
+            when :attack
+                if (@image != @attack_image) then
+                    @image = @attack_image
+                    @image.set_colorkey(@image.get_at([0, 0]))
+                    @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
+                end
+            when :still
+                if (@image == @attack_image) then
+                    @image = @still_image
+                    @image.set_colorkey(@image.get_at([0, 0]))
+                    @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
+                end
 	end
     end
 

@@ -14,7 +14,7 @@ screen = Rubygame::Screen.set_mode(SCREEN_SIZE)
 screen.set_caption(TITLE)
 
 player = Player.new(0, 350, 'panda.png')
-enemy = Enemy.new(600, 350, 'panda.invert.png')
+enemy = Enemy.new(100, 350, 'panda.invert.png')
 env = Environment.new(player, enemy, screen.make_rect, screen)
 
 # Make the background
@@ -48,6 +48,8 @@ loop do
 			player.state = :left
 		    when Rubygame::K_RIGHT
 			player.state = :right
+                    when Rubygame::K_X
+                        player.state = :attack
 		end
 	    when Rubygame::KeyUpEvent
 		case event.key
@@ -59,6 +61,10 @@ loop do
 			if  player.state == :right then
 			    player.state = :still
 			end
+                    when Rubygame::K_X
+                        if (player.state == :attack)
+                            player.state = :still
+                        end
 		end
 	end
     end
