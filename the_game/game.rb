@@ -45,30 +45,38 @@ loop do
 		    when Rubygame::K_ESCAPE
 			exit
 		    when Rubygame::K_LEFT
-			player.direction = :left
-                        player.state = :walking
+                        if player.state != :jumping and player.state != :falling then
+                            player.direction = :left
+                            player.state = :walking
+                        end
 		    when Rubygame::K_RIGHT
-			player.direction = :right
-                        player.state = :walking
+                        if player.state != :jumping and player.state != :falling then
+                            player.direction = :right
+                            player.state = :walking
+                        end
                     when Rubygame::K_X
-                        player.state = :attacking
+                        if player.state != :jumping and player.state != :falling then
+                            player.state = :attacking
+                        end
                     when Rubygame::K_UP
-                        player.state = :jumping
+                        if player.state != :jumping and player.state != :falling then
+                            player.state = :jumping
+                        end
 		end
 	    when Rubygame::KeyUpEvent
 		case event.key
 		    when Rubygame::K_LEFT
-			if  player.direction == :left then
+			if  player.direction == :left and player.state != :jumping and player.state != :falling then
                             player.direction = nil 
 			    player.state = :still
 			end
 		    when Rubygame::K_RIGHT
-			if  player.direction == :right then
+			if  player.direction == :right and player.state != :jumping and player.state != :falling then
                             player.direction = nil
 			    player.state = :still
 			end
                     when Rubygame::K_X
-                        if (player.state == :attack)
+                        if player.state == :attacking and player.state != :jumping and player.state != :falling then
                             player.state = :still
                         end
 		end
