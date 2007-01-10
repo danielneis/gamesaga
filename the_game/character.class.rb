@@ -1,7 +1,7 @@
 class Character
     include Rubygame::Sprites::Sprite
 
-    attr_accessor :state, :rect, :life
+    attr_accessor :state, :last_state, :rect, :life
 
     def initialize(x, y, image)
 	super()
@@ -16,6 +16,7 @@ class Character
 	@area = Rubygame::Rect.new(0, 0, *[SCREEN_WIDTH, SCREEN_HEIGHT])
 
 	@speed = 2
+        @last_state = nil
 	@state = :still
         @life = 100
     end
@@ -41,13 +42,22 @@ class Character
                     @image.set_colorkey(@image.get_at([0, 0]))
                     @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
                 end
+            when :up
+                if @last_state == :left or @last_state == :right then
+                    puts 'state = '+@state.to_s+' last = andando'
+                elsif @last_state == :still then
+                    puts 'state = '+@state.to_s+' last = parado'
+                end
+                @state = @last_state
             when :still
                 if (@image == @attack_image) then
                     @image = @still_image
                     @image.set_colorkey(@image.get_at([0, 0]))
                     @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
-                end
+                end 
+            else
 	end
+        @last_state = @state
     end
 
     def move_left

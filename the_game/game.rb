@@ -50,6 +50,8 @@ loop do
 			player.state = :right
                     when Rubygame::K_X
                         player.state = :attack
+                    when Rubygame::K_UP
+                        player.state = :up
 		end
 	    when Rubygame::KeyUpEvent
 		case event.key
@@ -60,6 +62,10 @@ loop do
 		    when Rubygame::K_RIGHT
 			if  player.state == :right then
 			    player.state = :still
+			end
+		    when Rubygame::K_UP
+			if  player.state == :up then
+			    player.last_state = :still
 			end
                     when Rubygame::K_X
                         if (player.state == :attack)
