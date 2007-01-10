@@ -45,27 +45,27 @@ loop do
 		    when Rubygame::K_ESCAPE
 			exit
 		    when Rubygame::K_LEFT
-			player.state = :left
+			player.direction = :left
+                        player.state = :walking
 		    when Rubygame::K_RIGHT
-			player.state = :right
+			player.direction = :right
+                        player.state = :walking
                     when Rubygame::K_X
-                        player.state = :attack
+                        player.state = :attacking
                     when Rubygame::K_UP
-                        player.state = :up
+                        player.state = :jumping
 		end
 	    when Rubygame::KeyUpEvent
 		case event.key
 		    when Rubygame::K_LEFT
-			if  player.state == :left then
+			if  player.direction == :left then
+                            player.direction = nil 
 			    player.state = :still
 			end
 		    when Rubygame::K_RIGHT
-			if  player.state == :right then
+			if  player.direction == :right then
+                            player.direction = nil
 			    player.state = :still
-			end
-		    when Rubygame::K_UP
-			if  player.state == :up then
-			    player.last_state = :still
 			end
                     when Rubygame::K_X
                         if (player.state == :attack)

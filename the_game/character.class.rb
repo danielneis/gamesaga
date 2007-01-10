@@ -1,7 +1,7 @@
 class Character
     include Rubygame::Sprites::Sprite
 
-    attr_accessor :state, :last_state, :rect, :life
+    attr_accessor :state, :direction, :rect, :life
 
     def initialize(x, y, image)
 	super()
@@ -15,8 +15,13 @@ class Character
 	# @area is the area of the screen, which the player will walk across
 	@area = Rubygame::Rect.new(0, 0, *[SCREEN_WIDTH, SCREEN_HEIGHT])
 
-	@speed = 2
-        @last_state = nil
+        # to use in first call of update methods
+        @prevAnim = Rubygame::Time.get_ticks()
+
+	@walk_speed = 2
+        @jump_speed = -@walk_speed * 10
+        @fall_speed = -@jump_speed
+        @direction =  nil 
 	@state = :still
         @life = 100
     end
@@ -27,28 +32,56 @@ class Character
 
     # to move the character on each direction
     def update()
-	case @state
-	    when :left
-		if !(@rect.left < @area.left)
-                    self.move_left
-		end
-	    when :right
-		if !(@rect.right > @area.right)
-                    self.move_right
-		end
+        case @state
+            when :walking
+                case @direction
+                    when :left
+                        if !(@rect.left < @area.left)
+                            self.move_left
+                        end
+                    when :right
+                        if !(@rect.right > @area.right)
+                            self.move_right
+                        end
+                end
             when :attack
                 if (@image != @attack_image) then
                     @image = @attack_image
                     @image.set_colorkey(@image.get_at([0, 0]))
                     @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
                 end
-            when :up
-                if @last_state == :left or @last_state == :right then
-                    puts 'state = '+@state.to_s+' last = andando'
-                elsif @last_state == :still then
-                    puts 'state = '+@state.to_s+' last = parado'
+            when :jumping
+                if @direction == :left then
+                elsif @direction == :right then
+                elsif @direction ==  nil then
+                    move_still_jump()
+                    @state = :jumping2
                 end
-                @state = @last_state
+            when :jumping2
+                if @direction == :left then
+                elsif @direction == :right then
+                elsif @direction ==  nil then
+                    move_still_jump()
+                    @state = :falling
+                end
+            when :falling
+                if @direction == :left then
+                    @state = :walking
+                elsif @direction == :right then
+                    @state = :walking
+                elsif @direction == nil then
+                    move_still_fall()
+                    @state = :falling2
+                end
+            when :falling2
+                if @direction == :left then
+                    @state = :walking
+                elsif @direction == :right then
+                    @state = :walking
+                elsif @direction == nil then
+                    move_still_fall()
+                    @state = :still
+                end
             when :still
                 if (@image == @attack_image) then
                     @image = @still_image
@@ -56,15 +89,22 @@ class Character
                     @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
                 end 
             else
-	end
-        @last_state = @state
+        end
     end
 
     def move_left
-        @rect.move!(-@speed, 0)
+        @rect.move!(-@walk_speed, 0)
     end
 
     def move_right
-        @rect.move!(@speed, 0)
+        @rect.move!(@walk_speed, 0)
+    end
+
+    def move_still_jump
+        @rect.move!(0, @jump_speed)
+    end
+
+    def move_still_fall
+        @rect.move!(0, @fall_speed)
     end
 end
