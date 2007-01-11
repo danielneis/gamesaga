@@ -23,7 +23,7 @@ class Environment
     def handle_collisions
 
         if @player.rect.collide_rect? @enemy.rect
-            if (@player.state == :left)
+            if (@player.direction == :left)
                 3.times {@player.move_right}
                 @player.state = :still
             elsif (@player.state == :right)
@@ -31,7 +31,7 @@ class Environment
                 @player.state = :still
             end
 
-            if (@player.state == :attack) then
+            if (@player.state == :attacking) then
                 @enemy.take_damage(10)
             else @player.take_damage(10)
             end

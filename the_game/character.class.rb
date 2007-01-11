@@ -40,11 +40,11 @@ class Character
        end
        @state = :still
        @direction = nil
+
     end
 
     # to move the character on each direction
     def update()
-
         if !(Rubygame::Time.get_ticks - @prevAnim < 25) then
         case @state
             when :walking
