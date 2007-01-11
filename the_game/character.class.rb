@@ -4,6 +4,7 @@ class Character
     attr_accessor :state, :direction, :rect, :life
 
     def initialize(x, y, image)
+
 	super()
 	@still_image = Rubygame::Image.load(PIX_ROOT+image)
         @attack_image = Rubygame::Image.load(PIX_ROOT+'panda.attack.png')
@@ -11,16 +12,18 @@ class Character
         @image = @still_image
 	@image.set_colorkey(@image.get_at([0, 0]))
 	@rect = Rubygame::Rect.new(x, y, *@image.size)
-
-	# @area is the area of the screen, which the player will walk across
-	@area = Rubygame::Rect.new(0, 0, *[SCREEN_WIDTH, SCREEN_HEIGHT])
+        # @area is the area of the screen, which the player will walk across
+        @area = Rubygame::Rect.new(0, 0, *[SCREEN_WIDTH, SCREEN_HEIGHT])
 
         # to use in first call of update methods
         @prevAnim = Rubygame::Time.get_ticks()
+
+        # to use in jump methods
         @jump_stage = 0
         @jump_stages = 10
+        @ground = @rect.bottom
 
-	@walk_speed = 2
+	@walk_speed = 3
         @jump_speed = -@walk_speed * 5
         @fall_speed = -@jump_speed
         @direction =  nil 
@@ -30,6 +33,13 @@ class Character
 
     def take_damage(amount)
        @life = @life - amount
+       if @direction == :right then
+           4.times { move_left() }
+       elsif @direction == :left then
+           4.times { move_right() }
+       end
+       @state = :still
+       @direction = nil
     end
 
     # to move the character on each direction
@@ -57,7 +67,9 @@ class Character
             when :jumping
                 if @jump_stage < @jump_stages then
                     if @direction == :left then
+                        @state = :walking
                     elsif @direction == :right then
+                        @state = :walking
                     elsif @direction ==  nil then
                         move_still_jump()
                     end
@@ -105,6 +117,8 @@ class Character
     end
 
     def move_still_fall
-        @rect.move!(0, @fall_speed)
+        if @rect.bottom < @ground then
+            @rect.move!(0, @fall_speed)
+        end
     end
 end
