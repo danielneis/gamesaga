@@ -1,1 +1,14 @@
-To run the game, just type 'ruby game.rb' on this directory.
+To run the game you must have ruby1.8 or later installed.
+It's available to download at www.rubylang.org
+After this, install the Rubygame Framwork that's available at http://rubygame.infogami.com
+To install ruby game you'll need the following SDL libraries:
+libsdl1.2debian
+libsdl1.2-dev
+libsdlgfx1.2-4
+libsdlgfx1.2-dev
+libsdlimage-1.2
+libsdlimage-1.2-dev
+libsdlttf-2.0-0
+libsdlttf-2.0-dev
+
+After install al this stuff, just type 'ruby game.rb' on this directory.
