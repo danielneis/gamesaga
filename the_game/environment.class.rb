@@ -26,14 +26,15 @@ class Environment
             if (@player.direction == :left)
                 3.times {@player.move_right}
                 @player.state = :still
-            elsif (@player.state == :right)
+            elsif (@player.direction == :right)
                 3.times { @player.move_left }
                 @player.state = :still
             end
 
             if (@player.state == :attacking) then
                 @enemy.take_damage(10)
-            else @player.take_damage(10)
+            else 
+                @player.take_damage(10)
             end
 
         end
