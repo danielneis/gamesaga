@@ -85,7 +85,11 @@ class Character
                     end
                     @jump_stage = @jump_stage + 1
                 else
-                    @state = :still
+                    if @direction.nil? then
+                        @state = :still
+                    else
+                        @state = :walking
+                    end
                     @jump_stage = 0
                 end
             when :still
