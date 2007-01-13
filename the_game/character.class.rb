@@ -33,16 +33,10 @@ class Character
         @life = 100
     end
 
-    def take_damage(amount)
+    def take_damage(amount, relative_position)
        @life = @life - amount
-       if @direction == :right then
-           4.times { move_left() }
-       elsif @direction == :left then
-           4.times { move_right() }
-       end
-       @state = :still
-       @direction = nil
-
+       @state = :jumping
+       @direction = relative_position
     end
 
     # to move the character on each direction
