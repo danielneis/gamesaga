@@ -20,11 +20,13 @@ class Character
 
         # to use in jump methods
         @jump_stage = 0
-        @jump_stages = 10
+        @jump_stages = 5
         @ground = @rect.bottom
+        @left_wall = @area.left
+        @right_wall = @area.right
 
 	@walk_speed = 3
-        @jump_speed = -@walk_speed * 5
+        @jump_speed = -@walk_speed * 6
         @fall_speed = -@jump_speed
         @direction =  nil 
 	@state = :still
@@ -67,9 +69,9 @@ class Character
             when :jumping
                 if @jump_stage < @jump_stages then
                     if @direction == :left then
-                        @state = :walking
+                        move_left_jump()
                     elsif @direction == :right then
-                        @state = :walking
+                        move_right_jump()
                     elsif @direction ==  nil then
                         move_still_jump()
                     end
@@ -81,9 +83,9 @@ class Character
             when :falling
                 if @jump_stage < @jump_stages then
                     if @direction == :left then
-                        @state = :walking
+                        move_left_fall()
                     elsif @direction == :right then
-                        @state = :walking
+                        move_right_fall()
                     elsif @direction == nil then
                         move_still_fall()
                     end
@@ -119,6 +121,42 @@ class Character
     def move_still_fall
         if @rect.bottom < @ground then
             @rect.move!(0, @fall_speed)
+        end
+    end
+
+    def move_left_jump
+        if @rect.left > @left_wall  then
+            @rect.move!(@jump_speed, @jump_speed)
+        else 
+            @rect.move!(0, @jump_speed)
+        end
+    end
+
+    def move_left_fall
+        if @rect.bottom < @ground then
+            if @rect.left > @left_wall  then
+                @rect.move!(-@fall_speed, @fall_speed)
+            else
+                @rect.move!(0, @fall_speed)
+            end
+        end
+    end
+
+    def move_right_jump
+        if @rect.right < @right_wall  then
+            @rect.move!(-@jump_speed, @jump_speed)
+        else
+            @rect.move!(0, @jump_speed)
+        end
+    end
+
+    def move_right_fall
+        if @rect.bottom < @ground then
+            if @rect.right < @right_wall  then
+                @rect.move!(@fall_speed, @fall_speed)
+            else
+                @rect.move!(0, @fall_speed)
+            end
         end
     end
 end

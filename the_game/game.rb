@@ -13,8 +13,8 @@ Rubygame.init()
 screen = Rubygame::Screen.set_mode(SCREEN_SIZE)
 screen.set_caption(TITLE)
 
-player = Player.new(0, 350, 'panda.png')
-enemy = Enemy.new(100, 350, 'panda.invert.png')
+player = Player.new(400, 350, 'panda.png')
+enemy = Enemy.new(200, 350, 'panda.invert.png')
 env = Environment.new(player, enemy, screen.make_rect, screen)
 
 # Make the background
