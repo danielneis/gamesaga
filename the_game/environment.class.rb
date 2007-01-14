@@ -22,11 +22,11 @@ class Environment
 
     def handle_collisions
 
-        if @player.rect.collide_rect? @enemy.rect
+        if @player.rect.collide_rect? @enemy.rect then
             if @player.rect.r <= @enemy.rect.l then
-             @player_relative_position = :left
+                @player_relative_position = :left
             elsif @player.rect.l <= @enemy.rect.r then
-             @player_relative_position = :right
+                @player_relative_position = :right
             end
 
             if (@player.state == :attacking) then

@@ -45,38 +45,26 @@ loop do
 		    when Rubygame::K_ESCAPE
 			exit
 		    when Rubygame::K_LEFT
-                        if player.state != :jumping and player.state != :falling then
-                            player.direction = :left
-                            player.state = :walking
-                        end
+                            player.horizontal_direction = :left
 		    when Rubygame::K_RIGHT
-                        if player.state != :jumping and player.state != :falling then
-                            player.direction = :right
-                            player.state = :walking
-                        end
+                            player.horizontal_direction = :right
                     when Rubygame::K_X
-                        if player.state != :jumping and player.state != :falling then
+                        if player.vertical_direction.nil? then
                             player.state = :attacking
                         end
                     when Rubygame::K_UP
-                        if player.state != :jumping and player.state != :falling then
-                            player.state = :jumping
+                        if player.vertical_direction.nil? then
+                            player.vertical_direction = :up
                         end
 		end
 	    when Rubygame::KeyUpEvent
 		case event.key
 		    when Rubygame::K_LEFT
-			if  player.direction == :left and player.state != :jumping and player.state != :falling then
-                            player.direction = nil 
-			    player.state = :still
-			end
+                            player.horizontal_direction = nil 
 		    when Rubygame::K_RIGHT
-			if  player.direction == :right and player.state != :jumping and player.state != :falling then
-                            player.direction = nil
-			    player.state = :still
-			end
+                            player.horizontal_direction = nil
                     when Rubygame::K_X
-                        if player.state == :attacking and player.state != :jumping and player.state != :falling then
+                        if player.state == :attacking and player.vertical_direction.nil? then
                             player.state = :still
                         end
 		end
