@@ -1,7 +1,9 @@
 class Character
+
     include Rubygame::Sprites::Sprite
 
-    attr_accessor :state, :horizontal_direction, :vertical_direction, :rect, :life
+    attr_accessor :state, :horizontal_direction, :vertical_direction, :rect
+    attr_reader :life
 
     def initialize(x, y, image)
 
@@ -12,6 +14,7 @@ class Character
         @image = @still_image
 	@image.set_colorkey(@image.get_at([0, 0]))
 	@rect = Rubygame::Rect.new(x, y, *@image.size)
+
         # @area is the area of the screen, which the player will walk across
         @area = Rubygame::Rect.new(0, 0, *[SCREEN_WIDTH, SCREEN_HEIGHT])
 
@@ -23,33 +26,35 @@ class Character
         @jump_stages = 5
         @ground = @rect.bottom
 
+        # some speeds
 	@walk_speed = 3
         @jump_speed = -@walk_speed * 6
         @direction =  nil 
-	@state = :still
+        @state = nil
         @life = 100
+
     end
 
     def take_damage(amount, relative_position)
-       @life = @life - amount
-       @horizontal_direction = relative_position
-       @vertical_direction = :up
+
+        @life = @life - amount
+        @horizontal_direction = relative_position
+        @vertical_direction = :up
+
     end
 
     # to move the character on each direction
     def update()
-        if !(Rubygame::Time.get_ticks - @prevAnim < 25) then
 
+        if !(Rubygame::Time.get_ticks - @prevAnim < 25) then
+            
             # to walk left and right
-            if @horizontal_direction == :left then
-                if @rect.left > @area.left
-                    @horizontal_speed = -@walk_speed
-                end
-            elsif @horizontal_direction == :right then
-                if @rect.right < @area.right
-                    @horizontal_speed = @walk_speed
-                end
+            if @horizontal_direction == :left and @rect.left > @area.left then
+                @horizontal_speed = -@walk_speed
+            elsif @horizontal_direction == :right and @rect.right < @area.right then
+                @horizontal_speed = @walk_speed
             else
+                @horizontal_direction = nil
                 @horizontal_speed = 0
             end
 
@@ -75,7 +80,7 @@ class Character
                 @vertical_speed = 0 
             end
 
-            # para fazer um pulo mais longo...
+            # to jump far
             if @vertical_speed != 0 then
                 @horizontal_speed = @horizontal_speed * 5
             end
