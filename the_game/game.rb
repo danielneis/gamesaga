@@ -45,9 +45,9 @@ loop do
 		    when Rubygame::K_ESCAPE
 			exit
 		    when Rubygame::K_LEFT
-                            player.horizontal_direction = :left
+                        player.horizontal_direction = :left
 		    when Rubygame::K_RIGHT
-                            player.horizontal_direction = :right
+                        player.horizontal_direction = :right
                     when Rubygame::K_X
                         if player.vertical_direction.nil? then
                             player.state = :attacking
@@ -60,9 +60,13 @@ loop do
 	    when Rubygame::KeyUpEvent
 		case event.key
 		    when Rubygame::K_LEFT
+                        if player.horizontal_direction == :left then
                             player.horizontal_direction = nil 
+                        end
 		    when Rubygame::K_RIGHT
+                        if player.horizontal_direction == :right then
                             player.horizontal_direction = nil
+                        end
                     when Rubygame::K_X
                         if player.state == :attacking and player.vertical_direction.nil? then
                             player.state = :still

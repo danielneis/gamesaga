@@ -93,13 +93,15 @@ class Character
                     @image.set_colorkey(@image.get_at([0, 0]))
                     @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
                 end
-            elsif @direction[0] != 0 or @direction[1] != 0 then
-                if (@image == @attack_image) then
+            else 
+                if @image == @attack_image then
                     @image = @still_image
                     @image.set_colorkey(@image.get_at([0, 0]))
                     @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
+                end
+                if @direction[0] != 0 or @direction[1] != 0 then
+                    @rect.move!(@direction)
                 end 
-                @rect.move!(@direction)
             end
             @prevAnim = Rubygame::Time.get_ticks
         end
