@@ -11,4 +11,6 @@ libsdlimage-1.2-dev
 libsdlttf-2.0-0
 libsdlttf-2.0-dev
 
-After install al this stuff, just type 'ruby game.rb' on this directory.
+And an extension to ruby, called libopengl-ruby
+
+After install all this stuff, just type 'ruby game.rb' on this directory.
