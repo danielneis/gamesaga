@@ -1,12 +1,11 @@
 #!/usr/bin/env ruby
 require 'rubygame'
 require 'config.rb'
-require 'life.class.rb'
-require 'fps.class.rb'
-require 'environment.class.rb'
-require 'character.class.rb'
-require 'player.class.rb'
-require 'enemy.class.rb'
+require 'display.rb'
+require 'environment.rb'
+require 'character.rb'
+require 'player.rb'
+require 'enemy.rb'
 
 # Initialize rubygame and set up screen
 Rubygame.init()
@@ -22,9 +21,9 @@ background = Rubygame::Image.load(PIX_ROOT+'background.png')
 background.blit(screen,[0,0])
 
 # Create the life bar, FPS display etc.
-life_display =  Life_display.new(player.life.to_s)
+life_display =  Display.new('Life',player.life.to_s)
 clock = Rubygame::Time::Clock.new()
-fps_display = Fps_display.new(clock.fps.to_s)
+fps_display = Display.new('FPS', clock.fps.to_s)
 fps_display.text.blit(screen, [0,0])
         
 # Create the group and put the everything needed on it
