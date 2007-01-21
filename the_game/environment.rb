@@ -37,4 +37,11 @@ class Environment
             end
         end
     end
+
+    def update
+        handle_collisions
+        catch :player_death do
+            player = nil
+        end
+    end
 end

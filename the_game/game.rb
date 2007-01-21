@@ -33,7 +33,7 @@ allsprites.push(player, enemy)
 queue = Rubygame::Queue.instance
 
 #Main Loop
-loop do
+while env.state == :started do
     clock.tick()
     queue.get().each do |event|
 	case event
@@ -71,8 +71,8 @@ loop do
     fps_display.text = clock.fps.to_s
     fps_display.text.blit(screen, [0,0])
 
-    allsprites.update
+    allsprites.update()
     allsprites.draw(screen)
-    env.handle_collisions
+    env.update
     screen.update()
 end
