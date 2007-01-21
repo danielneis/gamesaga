@@ -1,16 +1,34 @@
+1. INSTALLATION
+2. HOW TO PLAY
+
+
+1. INSTALLATION:
+----------------
 To run the game you must have ruby1.8 or later installed.
 It's available to download at www.rubylang.org
 After this, install the Rubygame Framwork that's available at http://rubygame.infogami.com
 To install ruby game you'll need the following SDL libraries:
-libsdl1.2debian
-libsdl1.2-dev
-libsdlgfx1.2-4
-libsdlgfx1.2-dev
-libsdlimage-1.2
-libsdlimage-1.2-dev
-libsdlttf-2.0-0
-libsdlttf-2.0-dev
+    libsdl1.2debian
+    libsdl1.2-dev
+    libsdlgfx1.2-4
+    libsdlgfx1.2-dev
+    libsdlimage-1.2
+    libsdlimage-1.2-dev
+    libsdlttf-2.0-0
+    libsdlttf-2.0-dev
 
 And an extension to ruby, called libopengl-ruby
 
-After install all this stuff, just type 'ruby game.rb' on this directory.
+
+2. HOW TO PLAY:
+---------------
+To run the game type ruby game.rb in this directory
+
+Controls: 
+    enter       - (un)pause the game
+    x           - attack
+    left arrow  - walk left
+    right arrow - walk right
+    up          - jump
+
+Enjoy!
