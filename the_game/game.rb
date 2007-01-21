@@ -49,28 +49,18 @@ loop do
 		    when Rubygame::K_RIGHT
                         player.horizontal_direction = :right
                     when Rubygame::K_X
-                        if player.vertical_direction.nil? then
-                            player.state = :attacking
-                        end
+                        player.state = :attacking if player.vertical_direction.nil?
                     when Rubygame::K_UP
-                        if player.vertical_direction.nil? then
-                            player.vertical_direction = :up
-                        end
+                        player.vertical_direction = :up if player.vertical_direction.nil?
 		end
 	    when Rubygame::KeyUpEvent
 		case event.key
 		    when Rubygame::K_LEFT
-                        if player.horizontal_direction == :left then
-                            player.horizontal_direction = nil 
-                        end
+                        player.horizontal_direction = nil if player.horizontal_direction == :left
 		    when Rubygame::K_RIGHT
-                        if player.horizontal_direction == :right then
-                            player.horizontal_direction = nil
-                        end
+                        player.horizontal_direction = nil if player.horizontal_direction == :right
                     when Rubygame::K_X
-                        if player.state == :attacking and player.vertical_direction.nil? then
-                            player.state = :still
-                        end
+                        player.state = :still if player.state == :attacking and player.vertical_direction.nil?
 		end
 	end
     end

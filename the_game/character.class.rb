@@ -46,12 +46,12 @@ class Character
     # to move the character on each direction
     def update()
 
-        if !(Rubygame::Time.get_ticks - @prevAnim < 25) then
+        if !(Rubygame::Time.get_ticks - @prevAnim < 25)
             
             # to walk left and right
-            if @horizontal_direction == :left and @rect.left > @area.left then
+            if @horizontal_direction == :left and @rect.left > @area.left
                 @horizontal_speed = -@walk_speed
-            elsif @horizontal_direction == :right and @rect.right < @area.right then
+            elsif @horizontal_direction == :right and @rect.right < @area.right
                 @horizontal_speed = @walk_speed
             else
                 @horizontal_direction = nil
@@ -59,16 +59,16 @@ class Character
             end
 
             # to jump and to fall
-            if @vertical_direction == :up then
-                if @jump_stage < @jump_stages then
+            if @vertical_direction == :up
+                if @jump_stage < @jump_stages
                     @vertical_speed = @jump_speed
                     @jump_stage = @jump_stage + 1
                 else
                    @vertical_direction = :down
                    @jump_stage = 0
                 end
-            elsif  @vertical_direction == :down then
-                if @rect.bottom < @ground then
+            elsif  @vertical_direction == :down
+                if @rect.bottom < @ground
                     @vertical_speed = -@jump_speed
                 else
                     @vertical_direction = nil
@@ -79,27 +79,23 @@ class Character
             end
 
             # to jump far
-            if @vertical_speed != 0 then
-                @horizontal_speed = @horizontal_speed * 5
-            end
+            @horizontal_speed = @horizontal_speed * 5 if @vertical_speed != 0
 
-            if @state == :attacking then
-                if (@image != @attack_image) then
+            if @state == :attacking
+                if (@image != @attack_image)
                     @image = @attack_image
                     @image.set_colorkey(@image.get_at([0, 0]))
                     @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
                 end
             else 
-                if @image == @attack_image then
+                if @image == @attack_image
                     @image = @still_image
                     @image.set_colorkey(@image.get_at([0, 0]))
                     @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
                 end
                 # move the character
                 @rect.bottom = @rect.bottom + @vertical_speed
-                if @rect.bottom > @ground then
-                    @rect.bottom = @ground
-                end
+                @rect.bottom = @ground if @rect.bottom > @ground
                 @rect.x = @rect.x + @horizontal_speed
             end
             @prevAnim = Rubygame::Time.get_ticks
