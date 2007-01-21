@@ -25,6 +25,7 @@ life_display =  Display.new('Life',player.life.to_s)
 clock = Rubygame::Time::Clock.new()
 fps_display = Display.new('FPS', clock.fps.to_s)
 fps_display.text.blit(screen, [0,0])
+pause = false
         
 # Create the group and put the everything needed on it
 allsprites = Rubygame::Sprites::Group.new()
@@ -43,6 +44,11 @@ while env.state == :started do
 		case event.key
 		    when Rubygame::K_ESCAPE
 			exit
+                    when Rubygame::K_RETURN
+                      pause = !pause
+                      player.horizontal_direction = nil
+                      player.vertical_direction = nil
+                      player.state = nil
 		    when Rubygame::K_LEFT
                         player.horizontal_direction = :left
 		    when Rubygame::K_RIGHT
@@ -63,16 +69,25 @@ while env.state == :started do
 		end
 	end
     end
-    background.blit(screen, [0, 0])
+    if !pause
+      background.blit(screen, [0, 0])
 
-    life_display.text = player.life.to_s
-    life_display.text.blit(screen, [50, 0])
+      life_display.text = player.life.to_s
+      life_display.text.blit(screen, [50, 0])
 
-    fps_display.text = clock.fps.to_s
-    fps_display.text.blit(screen, [0,0])
+      fps_display.text = clock.fps.to_s
+      fps_display.text.blit(screen, [0,0])
 
-    allsprites.update()
-    allsprites.draw(screen)
-    env.update
-    screen.update()
+      allsprites.update()
+      allsprites.draw(screen)
+      env.update
+      screen.update()
+    else 
+      Rubygame::TTF.setup()
+      font = Rubygame::TTF.new('font.ttf', 25)
+      pause_text = '[PAUSED]'
+      prender = font.render(pause_text, true, [0,0,0])
+      prender.blit(screen, [240,200])
+      screen.update()
+    end
 end
