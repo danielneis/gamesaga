@@ -2,6 +2,7 @@
 require 'rubygame'
 require 'config.rb'
 require 'display.rb'
+require 'menu.rb'
 require 'environment.rb'
 require 'character.rb'
 require 'player.rb'
@@ -15,6 +16,7 @@ screen.set_caption(TITLE)
 player = Player.new(400, 350, 'panda.png')
 enemy = Enemy.new(200, 350, 'panda.invert.png')
 env = Environment.new(player, enemy, screen.make_rect, screen)
+menu = Menu.new([Rubygame::Rect.new(10,10,10,10)])
 
 # Make the background
 background = Rubygame::Image.load(PIX_ROOT+'background.png')
@@ -67,6 +69,8 @@ while env.state == :started do
                     when Rubygame::K_X
                         player.state = :still if player.state == :attacking and player.vertical_direction.nil?
 		end
+            when Rubygame::MouseDownEvent
+              menu.select_item(event.pos) if event.string == 'left'
 	end
     end
     if !pause

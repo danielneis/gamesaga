@@ -62,7 +62,7 @@ class Character
             if @vertical_direction == :up
                 if @jump_stage < @jump_stages
                     @vertical_speed = @jump_speed
-                    @jump_stage = @jump_stage + 1
+                    @jump_stage += 1
                 else
                    @vertical_direction = :down
                    @jump_stage = 0
