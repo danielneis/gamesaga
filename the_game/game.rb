@@ -2,7 +2,9 @@
 require 'rubygame'
 require 'config.rb'
 require 'display.rb'
+require 'buttons.rb'
 require 'menu.rb'
+require 'hud.rb'
 require 'environment.rb'
 require 'character.rb'
 require 'player.rb'
@@ -16,7 +18,11 @@ screen.set_caption(TITLE)
 player = Player.new(400, 350, 'panda.png')
 enemy = Enemy.new(200, 350, 'panda.invert.png')
 env = Environment.new(player, enemy, screen.make_rect, screen)
-menu = Menu.new([Rubygame::Rect.new(10,10,10,10)])
+
+#pause menu
+menu = Menu.new([50,50])
+menu.push(Buttons::Quit.new)
+hud = Hud.new(menu, [400,400])
 
 # Make the background
 background = Rubygame::Image.load(PIX_ROOT+'background.png')
@@ -27,6 +33,8 @@ life_display =  Display.new('Life',player.life.to_s)
 clock = Rubygame::Time::Clock.new()
 fps_display = Display.new('FPS', clock.fps.to_s)
 fps_display.text.blit(screen, [0,0])
+
+# Create the pause menu
 pause = false
         
 # Create the group and put the everything needed on it
@@ -70,7 +78,7 @@ while env.state == :started do
                         player.state = :still if player.state == :attacking and player.vertical_direction.nil?
 		end
             when Rubygame::MouseDownEvent
-              menu.select_item(event.pos) if event.string == 'left'
+              puts event.pos if event.string == 'left'
 	end
     end
     if !pause
@@ -92,6 +100,8 @@ while env.state == :started do
       pause_text = '[PAUSED]'
       prender = font.render(pause_text, true, [0,0,0])
       prender.blit(screen, [240,200])
+
+      hud.draw(screen)
       screen.update()
     end
 end
