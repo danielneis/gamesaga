@@ -9,4 +9,5 @@ class Hud
   def draw(destination)
     @hud_surface.blit(destination, [0,0])
   end
+
 end

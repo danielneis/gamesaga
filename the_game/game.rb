@@ -36,7 +36,7 @@ fps_display.text.blit(screen, [0,0])
 
 # Create the pause menu
 pause = false
-        
+
 # Create the group and put the everything needed on it
 allsprites = Rubygame::Sprites::Group.new()
 allsprites.push(player, enemy)
@@ -45,63 +45,63 @@ queue = Rubygame::Queue.instance
 
 #Main Loop
 while env.state == :started do
-    clock.tick()
-    queue.get().each do |event|
-	case event
-	    when Rubygame::QuitEvent
-		exit
-	    when Rubygame::KeyDownEvent
-		case event.key
-		    when Rubygame::K_ESCAPE
-			exit
-                    when Rubygame::K_RETURN
-                      pause = !pause
-                      player.horizontal_direction = nil
-                      player.vertical_direction = nil
-                      player.state = nil
-		    when Rubygame::K_LEFT
-                        player.horizontal_direction = :left
-		    when Rubygame::K_RIGHT
-                        player.horizontal_direction = :right
-                    when Rubygame::K_X
-                        player.state = :attacking if player.vertical_direction.nil?
-                    when Rubygame::K_UP
-                        player.vertical_direction = :up if player.vertical_direction.nil?
-		end
-	    when Rubygame::KeyUpEvent
-		case event.key
-		    when Rubygame::K_LEFT
-                        player.horizontal_direction = nil if player.horizontal_direction == :left
-		    when Rubygame::K_RIGHT
-                        player.horizontal_direction = nil if player.horizontal_direction == :right
-                    when Rubygame::K_X
-                        player.state = :still if player.state == :attacking and player.vertical_direction.nil?
-		end
-            when Rubygame::MouseDownEvent
-              puts event.pos if event.string == 'left'
-	end
+  clock.tick()
+  queue.get().each do |event|
+    case event
+    when Rubygame::QuitEvent
+      exit
+    when Rubygame::KeyDownEvent
+      case event.key
+      when Rubygame::K_ESCAPE
+        exit
+      when Rubygame::K_RETURN
+        pause = !pause
+        player.horizontal_direction = nil
+        player.vertical_direction = nil
+        player.state = nil
+      when Rubygame::K_LEFT
+        player.horizontal_direction = :left
+      when Rubygame::K_RIGHT
+        player.horizontal_direction = :right
+      when Rubygame::K_X
+        player.state = :attacking if player.vertical_direction.nil?
+      when Rubygame::K_UP
+        player.vertical_direction = :up if player.vertical_direction.nil?
+      end
+    when Rubygame::KeyUpEvent
+      case event.key
+      when Rubygame::K_LEFT
+        player.horizontal_direction = nil if player.horizontal_direction == :left
+      when Rubygame::K_RIGHT
+        player.horizontal_direction = nil if player.horizontal_direction == :right
+      when Rubygame::K_X
+        player.state = :still if player.state == :attacking and player.vertical_direction.nil?
+      end
+    when Rubygame::MouseDownEvent
+      puts event.pos if event.string == 'left'
     end
-    if !pause
-      background.blit(screen, [0, 0])
+  end
+  if !pause
+    background.blit(screen, [0, 0])
 
-      life_display.text = player.life.to_s
-      life_display.text.blit(screen, [50, 0])
+    life_display.text = player.life.to_s
+    life_display.text.blit(screen, [50, 0])
 
-      fps_display.text = clock.fps.to_s
-      fps_display.text.blit(screen, [0,0])
+    fps_display.text = clock.fps.to_s
+    fps_display.text.blit(screen, [0,0])
 
-      allsprites.update()
-      allsprites.draw(screen)
-      env.update
-      screen.update()
-    else 
-      Rubygame::TTF.setup()
-      font = Rubygame::TTF.new('font.ttf', 25)
-      pause_text = '[PAUSED]'
-      prender = font.render(pause_text, true, [0,0,0])
-      prender.blit(screen, [240,200])
+    allsprites.update()
+    allsprites.draw(screen)
+    env.update
+    screen.update()
+  else 
+    Rubygame::TTF.setup()
+    font = Rubygame::TTF.new('font.ttf', 25)
+    pause_text = '[PAUSED]'
+    prender = font.render(pause_text, true, [0,0,0])
+    prender.blit(screen, [240,200])
 
-      hud.draw(screen)
-      screen.update()
-    end
+    hud.draw(screen)
+    screen.update()
+  end
 end

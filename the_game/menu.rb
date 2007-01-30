@@ -11,6 +11,7 @@ class Menu < Rubygame::Sprites::Group
   #destination is the location on the HUD to draw to... I think there is a redundancy
   #here, good thing I am doing documentation.
   def draw( destination )
+
     loc = @position.clone
     c = 1
     self.each do |sprite|
@@ -25,6 +26,7 @@ class Menu < Rubygame::Sprites::Group
       end
       ++c
     end
+
   end
 
   def click ( selection, pointer, position)
