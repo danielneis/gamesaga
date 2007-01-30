@@ -29,10 +29,9 @@ background = Rubygame::Image.load(PIX_ROOT+'background.png')
 background.blit(screen,[0,0])
 
 # Create the life bar, FPS display etc.
-life_display =  Display.new('Life',player.life.to_s)
+life_display =  Display.new('Life',player.life.to_s, [50,0])
 clock = Rubygame::Time::Clock.new()
-fps_display = Display.new('FPS', clock.fps.to_s)
-fps_display.text.blit(screen, [0,0])
+fps_display = Display.new('FPS', clock.fps.to_s, [0,0])
 
 # Create the pause menu
 pause = false
@@ -84,11 +83,8 @@ while env.state == :started do
   if !pause
     background.blit(screen, [0, 0])
 
-    life_display.text = player.life.to_s
-    life_display.text.blit(screen, [50, 0])
-
-    fps_display.text = clock.fps.to_s
-    fps_display.text.blit(screen, [0,0])
+    life_display.update(player.life.to_s, screen)
+    fps_display.update(clock.fps.to_s, screen)
 
     allsprites.update()
     allsprites.draw(screen)
