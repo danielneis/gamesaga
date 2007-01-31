@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 require 'rubygame'
 require 'config.rb'
+require 'ui/hud.rb'
+require 'ui/menu.rb'
+require 'ui/buttons.rb'
 require 'display.rb'
-require 'buttons.rb'
-require 'menu.rb'
-require 'hud.rb'
 require 'environment.rb'
 require 'character.rb'
 require 'player.rb'
@@ -19,10 +19,11 @@ player = Player.new(400, 350, 'panda.png')
 enemy = Enemy.new(200, 350, 'panda.invert.png')
 env = Environment.new(player, enemy, screen.make_rect, screen)
 
-#pause menu
-menu = Menu.new([50,50])
-menu.push(Buttons::Quit.new)
-hud = Hud.new(menu, [400,400])
+# Make the pause menu
+menu = UI::Menu.new()
+menu.push(UI::Buttons::Quit.new())
+hud = UI::Hud.new(menu, [50,50])
+pause = false
 
 # Make the background
 background = Rubygame::Image.load(PIX_ROOT+'background.png')
@@ -33,8 +34,6 @@ life_display =  Display.new('Life',player.life.to_s, [50,0])
 clock = Rubygame::Time::Clock.new()
 fps_display = Display.new('FPS', clock.fps.to_s, [0,0])
 
-# Create the pause menu
-pause = false
 
 # Create the group and put the everything needed on it
 allsprites = Rubygame::Sprites::Group.new()
@@ -77,7 +76,7 @@ while env.state == :started do
         player.state = :still if player.state == :attacking and player.vertical_direction.nil?
       end
     when Rubygame::MouseDownEvent
-      puts event.pos if event.string == 'left'
+      hud.click(event.pos) if event.string == 'left'
     end
   end
   if !pause

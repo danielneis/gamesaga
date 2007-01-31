@@ -1,38 +1,53 @@
+module UI
 class Menu < Rubygame::Sprites::Group
 
-  def initialize( position )
-    @position = position
-    @button_width = 30
-    @button_height = 30
+  attr_reader :size
+  def initialize
+    @margin = 10
+    @button_height = 0
+    @button_width  = 0
   end
 
-  #draw in a layout form
-  #buttons will be sprites from the buttonloader...
-  #destination is the location on the HUD to draw to... I think there is a redundancy
-  #here, good thing I am doing documentation.
-  def draw( destination )
+  def push(*args)
+    super(*args)
+    self.each do |button|
+      @button_height = button.rect.h if button.rect.h > @button_height
+      @button_width = button.rect.w if button.rect.w > @button_width
 
-    loc = @position.clone
-    c = 1
-    self.each do |sprite|
-      puts sprite
-      sprite.rect.x = loc[0]
-      sprite.rect.y = loc[1]
-      sprite.draw( destination )
-      loc[0] += (@button_width + 10)
-      if ( c % 5 == 0 )
-        loc[0] = @pos[0]
-        loc[1] += (@button_height + 10)
-      end
-      ++c
+      @height = (@button_height * self.length) + (self.length +  @margin * 2)
+      @width  = (@button_width + @margin * 2)
+    end
+  end
+
+  def size
+    return [@width, @height]
+  end
+
+  # vamos documentar algo estranho aqui...
+  # primeiro eu preciso mover o retângulo da imagem e sua posição está relacionada com a 'surface'  na qual vai ser desenhada
+  # depois disso eu a desenho e parece que seu retângulo volta para a posição [0,0]
+  # por ultimo eu preciso mover o retângulo novamente para cima da imagem, mas agora a sua posição está relacionada a tela
+  # muito bizarro. ainda não sei por que isso acontece...
+  def draw(destination, position)
+
+    pos = position.clone
+    image_detour = 0
+    self.collect do |button|
+      button.rect.move!(@margin, @margin + image_detour)
+      button.draw( destination )
+      button.rect.move!(pos[0], pos[1])
+      image_detour += @button_height + @margin
     end
 
   end
 
-  def click ( selection, pointer, position)
-    self.each_value do |button|
-      return button.click(selection, pointer) if button.rect.collide_point? position
+  #def click ( selection, pointer, position)
+  def click(position)
+    self.each do |button|
+      #button.click(selection, pointer) if button.rect.collide_point? position
+      button.click() if button.rect.collide_point?(position[0], position[1])
     end
   end
 
+end
 end

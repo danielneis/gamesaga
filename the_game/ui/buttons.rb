@@ -1,8 +1,9 @@
+module UI
 module Buttons
   class Quit
 
     include Rubygame::Sprites::Sprite
-    attr_reader :rect
+    attr_accessor :rect
 
     def initialize(image = PIX_ROOT+'menu/quit.png')
       super()
@@ -10,8 +11,10 @@ module Buttons
       @rect = Rubygame::Rect.new(0,0,*@image.size)
     end
 
-    def click(selection, pointer)
-      puts 'oi'
+    #def click(selection, pointer)
+    def click()
+     puts self
     end
   end
+end
 end
