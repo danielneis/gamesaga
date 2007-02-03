@@ -5,7 +5,6 @@ require 'ui/hud.rb'
 require 'ui/menu.rb'
 require 'ui/buttons.rb'
 require 'display.rb'
-require 'environment.rb'
 require 'character.rb'
 require 'player.rb'
 require 'enemy.rb'
@@ -18,7 +17,6 @@ screen.set_caption(TITLE)
 player = Player.new(300, 350, 'panda.png')
 enemy = Enemy.new(200, 350, 'panda.invert.png')
 enemy2 = Enemy.new(400, 350, 'panda.invert.png')
-env = Environment.new(player, enemy, screen.make_rect, screen)
 
 # Make the pause menu
 menu = UI::Menu.new()
@@ -43,7 +41,7 @@ enemies.push(enemy, enemy2)
 queue = Rubygame::Queue.instance
 
 #Main Loop
-while env.state == :started do
+loop do
   clock.tick()
   queue.get().each do |event|
     case event
