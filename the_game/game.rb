@@ -15,8 +15,9 @@ Rubygame.init()
 screen = Rubygame::Screen.set_mode(SCREEN_SIZE)
 screen.set_caption(TITLE)
 
-player = Player.new(400, 350, 'panda.png')
+player = Player.new(300, 350, 'panda.png')
 enemy = Enemy.new(200, 350, 'panda.invert.png')
+enemy2 = Enemy.new(400, 350, 'panda.invert.png')
 env = Environment.new(player, enemy, screen.make_rect, screen)
 
 # Make the pause menu
@@ -36,8 +37,8 @@ fps_display = Display.new('FPS', clock.fps.to_s, [0,0])
 
 
 # Create the group and put the everything needed on it
-allsprites = Rubygame::Sprites::Group.new()
-allsprites.push(player, enemy)
+enemies = Rubygame::Sprites::Group.new()
+enemies.push(enemy, enemy2)
 
 queue = Rubygame::Queue.instance
 
@@ -85,9 +86,12 @@ while env.state == :started do
     life_display.update(player.life.to_s, screen)
     fps_display.update(clock.fps.to_s, screen)
 
-    allsprites.update()
-    allsprites.draw(screen)
-    env.update
+    player.update(player.collide_group(enemies))
+    player.draw(screen)
+
+    enemies.update()
+    enemies.draw(screen)
+
     screen.update()
   else 
     Rubygame::TTF.setup()
