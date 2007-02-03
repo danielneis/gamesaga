@@ -2,7 +2,6 @@ class Character
 
   include Rubygame::Sprites::Sprite
 
-  attr_accessor :state, :horizontal_direction, :vertical_direction
   attr_reader :life, :rect
 
   def initialize(x, y, image)
@@ -42,6 +41,27 @@ class Character
     @vertical_direction = :up
 
   end
+
+  def walk(direction)
+    @horizontal_direction = direction if @vertical_direction.nil?
+  end
+
+  def stop_walk(direction)
+    @horizontal_direction = nil if @horizontal_direction == direction
+  end
+
+  def jump()
+    @vertical_direction = :up if @vertical_direction.nil?
+  end
+
+  def attack(direction = :right)
+    @state = :attacking if @vertical_direction.nil?
+  end
+
+  def stop_attack(direction = :right)
+    @state = :still if @state == :attacking
+  end
+
 
   # to move the character on each direction
   def update()
@@ -102,5 +122,4 @@ class Character
     end
 
   end
-
 end

@@ -51,26 +51,23 @@ loop do
         exit
       when Rubygame::K_RETURN
         pause = !pause
-        player.horizontal_direction = nil
-        player.vertical_direction = nil
-        player.state = nil
       when Rubygame::K_LEFT
-        player.horizontal_direction = :left
+        player.walk :left
       when Rubygame::K_RIGHT
-        player.horizontal_direction = :right
+        player.walk :right
       when Rubygame::K_X
-        player.state = :attacking if player.vertical_direction.nil?
+        player.attack()
       when Rubygame::K_UP
-        player.vertical_direction = :up if player.vertical_direction.nil?
+        player.jump()
       end
     when Rubygame::KeyUpEvent
       case event.key
       when Rubygame::K_LEFT
-        player.horizontal_direction = nil if player.horizontal_direction == :left
+        player.stop_walk :left
       when Rubygame::K_RIGHT
-        player.horizontal_direction = nil if player.horizontal_direction == :right
+        player.stop_walk :right
       when Rubygame::K_X
-        player.state = :still if player.state == :attacking and player.vertical_direction.nil?
+        player.stop_attack()
       end
     when Rubygame::MouseDownEvent
       if event.string == 'left'
