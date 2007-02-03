@@ -22,11 +22,6 @@ enemies = Rubygame::Sprites::Group.new()
 enemies.push(Enemy.new(500, 350, 'panda.invert.png'),
              Enemy.new(210, 350, 'panda.invert.png') )
 
-# Make the pause menu
-menu = UI::Menu.new()
-menu.push(UI::Buttons::Quit.new())
-hud = UI::Hud.new(menu, [50,50])
-pause = false
 
 # Make the background
 background = Rubygame::Image.load(PIX_ROOT+'background.png')
@@ -36,6 +31,10 @@ background.blit(screen,[0,0])
 life_display =  Display.new('Life',player.life.to_s, [50,0])
 clock = Rubygame::Time::Clock.new()
 fps_display = Display.new('FPS', clock.fps.to_s, [0,0])
+
+pause = false
+pause_hud = nil
+pause_menu = nil
 
 queue = Rubygame::Queue.instance
 
@@ -74,10 +73,17 @@ loop do
         player.state = :still if player.state == :attacking and player.vertical_direction.nil?
       end
     when Rubygame::MouseDownEvent
-      hud.click(event.pos) if event.string == 'left'
+      if event.string == 'left'
+        if pause_hud.respond_to?('click')
+          pause_hud.click(event.pos)
+        end
+      end
     end
   end
   if !pause
+    pause_menu = nil
+    pause_hud = nil
+    pause_tick = nil
     background.blit(screen, [0, 0])
 
     life_display.update(player.life.to_s, screen)
@@ -92,13 +98,19 @@ loop do
 
     screen.update()
   else 
+    # Make the pause menu
+    pause_menu = UI::Menu.new()
+    pause_menu.push(UI::Buttons::Quit.new())
+    pause_hud = UI::Hud.new(pause_menu, [50,50])
+
     Rubygame::TTF.setup()
     font = Rubygame::TTF.new('font.ttf', 25)
     pause_text = '[PAUSED]'
     prender = font.render(pause_text, true, [0,0,0])
     prender.blit(screen, [240,200])
 
-    hud.draw(screen)
+    pause_hud.draw(screen)
+    fps_display.update(clock.fps.to_s, screen)
     screen.update()
   end
 end

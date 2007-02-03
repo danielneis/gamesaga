@@ -13,7 +13,7 @@ module Buttons
 
     #def click(selection, pointer)
     def click()
-     puts self
+      exit
     end
   end
 end
