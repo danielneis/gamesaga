@@ -2,8 +2,8 @@ class Character
 
   include Rubygame::Sprites::Sprite
 
-  attr_accessor :state, :horizontal_direction, :vertical_direction, :rect
-  attr_reader :life
+  attr_accessor :state, :horizontal_direction, :vertical_direction
+  attr_reader :life, :rect
 
   def initialize(x, y, image)
 
@@ -35,10 +35,10 @@ class Character
 
   end
 
-  def take_damage(amount, relative_position)
+  def take_damage(amount, to_side)
 
     @life = @life - amount
-    @horizontal_direction = relative_position
+    @horizontal_direction = to_side
     @vertical_direction = :up
 
   end
