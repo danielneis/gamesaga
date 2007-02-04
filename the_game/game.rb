@@ -32,6 +32,7 @@ life_display =  Display.new('Life',player.life.to_s, [50,0])
 clock = Rubygame::Time::Clock.new()
 fps_display = Display.new('FPS', clock.fps.to_s, [0,0])
 
+# To manipulate the pause menu/hud
 pause = false
 pause_hud = nil
 pause_menu = nil
@@ -47,27 +48,18 @@ loop do
       exit
     when Rubygame::KeyDownEvent
       case event.key
-      when Rubygame::K_ESCAPE
-        exit
-      when Rubygame::K_RETURN
-        pause = !pause
-      when Rubygame::K_LEFT
-        player.walk :left
-      when Rubygame::K_RIGHT
-        player.walk :right
-      when Rubygame::K_X
-        player.attack()
-      when Rubygame::K_UP
-        player.jump()
+      when Rubygame::K_ESCAPE then exit
+      when Rubygame::K_RETURN then pause = !pause
+      when Rubygame::K_LEFT   then player.walk :left
+      when Rubygame::K_RIGHT  then player.walk :right
+      when Rubygame::K_X      then player.attack()
+      when Rubygame::K_UP     then player.jump()
       end
     when Rubygame::KeyUpEvent
       case event.key
-      when Rubygame::K_LEFT
-        player.stop_walk :left
-      when Rubygame::K_RIGHT
-        player.stop_walk :right
-      when Rubygame::K_X
-        player.stop_attack()
+      when Rubygame::K_LEFT  then player.stop_walk :left
+      when Rubygame::K_RIGHT then player.stop_walk :right
+      when Rubygame::K_X     then player.stop_attack()
       end
     when Rubygame::MouseDownEvent
       if event.string == 'left'
@@ -78,9 +70,7 @@ loop do
     end
   end
   if !pause
-    pause_menu = nil
-    pause_hud = nil
-    pause_tick = nil
+    pause_menu = nil ; pause_hud = nil ; pause_tick = nil
     background.blit(screen, [0, 0])
 
     life_display.update(player.life.to_s, screen)
