@@ -2,8 +2,7 @@ class Player < Character
 
   life 2000
   strength 100
-  charisma 500
-  weapon 500
+  speed 3
 
   def update(collide_group)
 

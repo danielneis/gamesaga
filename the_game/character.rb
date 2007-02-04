@@ -28,36 +28,35 @@ class Character
       define_method( :initialize ) do |x,y,image|
         self.class.traits.each do |k,v|
           instance_variable_set("@#{k}", v)
-          super()
-          @still_image = Rubygame::Image.load(PIX_ROOT+image)
-          @attack_image = Rubygame::Image.load(PIX_ROOT+'panda.attack.png')
-
-          @image = @still_image
-          @image.set_colorkey(@image.get_at([0, 0]))
-          @rect = Rubygame::Rect.new(x, y, *@image.size)
-
-          # @area is the area of the screen, which the player will walk across
-          @area = Rubygame::Rect.new(0, 0, *[SCREEN_WIDTH, SCREEN_HEIGHT])
-
-          # to use in first call of update methods
-          @prevAnim = Rubygame::Time.get_ticks()
-
-          # to use in jump methods
-          @jump_stage = 0
-          @jump_stages = 5
-          @ground = @rect.bottom
-
-          # some speeds
-          @walk_speed = 3
-          @jump_speed = -@walk_speed * 6
-          @direction =  nil 
-          @state = nil
         end
+        super()
+        @still_image = Rubygame::Image.load(PIX_ROOT+image)
+        @attack_image = Rubygame::Image.load(PIX_ROOT+'panda.attack.png')
+
+        @image = @still_image
+        @image.set_colorkey(@image.get_at([0, 0]))
+        @rect = Rubygame::Rect.new(x, y, *@image.size)
+
+        # @area is the area of the screen, which the player will walk across
+        @area = Rubygame::Rect.new(0, 0, *[SCREEN_WIDTH, SCREEN_HEIGHT])
+
+        # to use in first call of update methods
+        @prevAnim = Rubygame::Time.get_ticks()
+
+        # to use in jump methods
+        @jump_stage = 0
+        @jump_stages = 5
+        @ground = @rect.bottom
+
+        # some speeds
+        @jump_speed = -(@speed * 6)
+        @direction =  nil 
+        @state = nil
       end
     end
   end
   # Creature attributes are read-only
-  traits :life, :strength, :charisma, :weapon
+  traits :life, :strength, :speed
 
   attr_reader :life, :rect
 
@@ -95,9 +94,9 @@ class Character
 
       # to walk left and right
       if @horizontal_direction == :left and @rect.left > @area.left
-        @horizontal_speed = -@walk_speed
+        @horizontal_speed = -@speed
       elsif @horizontal_direction == :right and @rect.right < @area.right
-        @horizontal_speed = @walk_speed
+        @horizontal_speed = @speed
       else
         @horizontal_direction = nil
         @horizontal_speed = 0

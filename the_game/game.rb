@@ -22,7 +22,6 @@ enemies = Rubygame::Sprites::Group.new()
 enemies.push(Enemy.new(500, 350, 'panda.invert.png'),
              Enemy.new(210, 350, 'panda.invert.png') )
 
-
 # Make the background
 background = Rubygame::Image.load(PIX_ROOT+'background.png')
 background.blit(screen,[0,0])
