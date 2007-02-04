@@ -8,6 +8,7 @@ require 'display.rb'
 require 'character.rb'
 require 'player.rb'
 require 'enemy.rb'
+require 'items'
 
 # Initialize rubygame and set up screen
 Rubygame.init()
@@ -21,6 +22,9 @@ player = Player.new(300, 350, 'panda.png')
 enemies = Rubygame::Sprites::Group.new()
 enemies.push(Enemy.new(500, 350, 'panda.invert.png'),
              Enemy.new(210, 350, 'panda.invert.png') )
+
+# create a chicken, to recover live
+chicken = Item.new(100, 350, 'chicken.png', {:health => 50} )
 
 # Make the background
 background = Rubygame::Image.load(PIX_ROOT+'background.png')
@@ -99,4 +103,5 @@ loop do
     fps_display.update(clock.fps.to_s, screen)
     screen.update()
   end
+  enemies.push(chicken) if Rubygame::Time.get_ticks > 500 and Rubygame::Time.get_ticks < 510
 end
