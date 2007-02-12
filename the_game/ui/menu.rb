@@ -2,7 +2,8 @@ module UI
 class Menu < Rubygame::Sprites::Group
 
   attr_reader :size
-  def initialize
+  def initialize(orientation)
+    @orientation = orientation
     @margin = 10
     @button_height = 0
     @button_width  = 0
@@ -14,8 +15,13 @@ class Menu < Rubygame::Sprites::Group
       @button_height = button.rect.h if button.rect.h > @button_height
       @button_width = button.rect.w if button.rect.w > @button_width
 
-      @height = (@button_height * self.length) + (self.length +  @margin * 2)
-      @width  = (@button_width + @margin * 2)
+      if @orientation == :vertical
+        @height = (@button_height * self.length) + ((self.length + 1) * @margin)
+        @width  = @button_width + @margin * 2
+      elsif @orientation == :horizontal
+        @width = (@button_width * self.length) + ((self.length + 1) * @margin)
+        @height  = @button_height + @margin * 2
+      end
     end
   end
 
@@ -30,22 +36,27 @@ class Menu < Rubygame::Sprites::Group
   # muito bizarro. ainda não sei por que isso acontece...
   def draw(destination, position)
 
-    pos = position.clone
     image_detour = 0
     self.collect do |button|
-      button.rect.move!(@margin, @margin + image_detour)
+      if @orientation == :vertical
+        button.rect.move!(@margin, @margin + image_detour)
+      elsif @orientation == :horizontal
+        button.rect.move!(@margin + image_detour, @margin)
+      end
       button.draw( destination )
-      button.rect.move!(pos[0], pos[1])
-      image_detour += @button_height + @margin
+      button.rect.move!(position[0], position[1])
+      if @orientation == :vertical
+        image_detour += @button_height + @margin
+      elsif @orientation == :horizontal
+        image_detour += @button_width + @margin
+      end
     end
 
   end
 
-  #def click ( selection, pointer, position)
   def click(position)
     self.each do |button|
-      #button.click(selection, pointer) if button.rect.collide_point? position
-      button.click() if button.rect.collide_point?(position[0], position[1])
+      button.click() if button.rect.collide_point?(position)
     end
   end
 

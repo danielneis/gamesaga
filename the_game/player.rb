@@ -4,6 +4,14 @@ class Player < Character
   strength 100
   speed 3
 
+  def take_damage(amount, to_side)
+    super(amount, to_side)
+    if @life < 0
+      $player_death = true
+      throw :run_game
+    end
+  end
+
   def update(collide_group)
 
     super()
@@ -19,9 +27,9 @@ class Player < Character
           enemy_relative_position = :left
         end
         if (@state == :attacking)
-          collide_sprite.take_damage(10, enemy_relative_position)
+          collide_sprite.take_damage(@strength, enemy_relative_position)
         else 
-          take_damage(10, player_relative_position)
+          take_damage(collide_sprite.strength, player_relative_position)
         end
 
       elsif collide_sprite.is_a? Item
