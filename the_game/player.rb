@@ -4,14 +4,6 @@ class Player < Character
   strength 100
   speed 3
 
-  def take_damage(amount, to_side)
-    super(amount, to_side)
-    if @life < 0
-      $player_death = true
-      throw :run_game
-    end
-  end
-
   def update(collide_group)
 
     super()

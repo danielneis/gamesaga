@@ -29,10 +29,11 @@ module Game
   end
 
   def Game.run(screen, queue)
-    $play_death = false;
     #Main Loop - repeat until player death
     catch(:run_game) do
       loop do
+        Game.player_death(screen, queue) if @player.life < 0
+
         @clock.tick()
         queue.get().each do |event|
           case event
@@ -68,6 +69,7 @@ module Game
         @enemies.draw(screen)
 
         screen.update()
+
       end
       #enemies.push(chicken) if Rubygame::Time.get_ticks > 500 and Rubygame::Time.get_ticks < 510
     end
