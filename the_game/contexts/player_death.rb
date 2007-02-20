@@ -2,13 +2,10 @@ module Game
   def Game.player_death(screen, queue)
     
     # after player death, print a message on the screen and wait for the player to exit
-    Rubygame::TTF.setup()
-    font = Rubygame::TTF.new('font.ttf', 25)
-    text = "DIED! press [ESC] to to return to main menu"
-    prender = font.render(text, true, [0,0,0])
+    title = Display.new('DIED! press [ESC] to to return to main menu', [50, 200], '', 25)
+    title.update(screen)
 
     loop do
-      prender.blit(screen, [50, 200])
       screen.update()
       queue.get().each do |event|
         case event

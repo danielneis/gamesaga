@@ -9,8 +9,8 @@ class Character
   def self.traits( *arr )
     return @traits if arr.empty?
 
-    # 1. Set up accessors for each variable
-    attr_accessor *arr
+    # 1. Set up readers for each variable
+    attr_reader *arr
 
     # 2. Add a new class method to for each trait.
     arr.each do |a|
@@ -26,10 +26,12 @@ class Character
     #    should use the default number for each trait.
     class_eval do
       define_method( :initialize ) do |x,y,image|
+        super()
+
         self.class.traits.each do |k,v|
           instance_variable_set("@#{k}", v)
         end
-        super()
+
         @still_image = Rubygame::Image.load(PIX_ROOT+image)
         @attack_image = Rubygame::Image.load(PIX_ROOT+'panda.attack.png')
 
@@ -38,7 +40,7 @@ class Character
         @rect = Rubygame::Rect.new(x, y, *@image.size)
 
         # @area is the area of the screen, which the player will walk across
-        @area = Rubygame::Rect.new(0, 0, *[SCREEN_WIDTH, SCREEN_HEIGHT])
+        @area = Rubygame::Rect.new(0, 403, *[SCREEN_WIDTH, SCREEN_HEIGHT - 403])
 
         # to use in first call of update methods
         @prevAnim = Rubygame::Time.get_ticks()
@@ -46,19 +48,20 @@ class Character
         # to use in jump methods
         @jump_stage = 0
         @jump_stages = 5
-        @ground = @rect.bottom
 
         # some speeds
         @jump_speed = -(@speed * 6)
         @direction =  nil 
         @state = nil
+
       end
     end
   end
+  
   # Creature attributes are read-only
   traits :life, :strength, :speed
 
-  attr_reader :life, :rect
+  attr_reader :rect
 
   def take_damage(amount, to_side)
     @life = @life - amount
@@ -112,9 +115,9 @@ class Character
 
       # to walk up and down
       if @vertical_direction == :up and @rect.bottom > @area.top
-        @vertical_speed = -@speed * 2
+        @vertical_speed = -@speed
       elsif @vertical_direction == :down and @rect.bottom < @area.bottom
-        @vertical_speed = @speed * 2
+        @vertical_speed = @speed
       else
         @vertical_direction = nil
         @vertical_speed = 0
@@ -157,12 +160,10 @@ class Character
         end
         # move the character
         @rect.bottom = @rect.bottom + @vertical_speed
-        @rect.bottom = @ground if @rect.bottom > @ground
         @rect.x = @rect.x + @horizontal_speed
       end
       @prevAnim = Rubygame::Time.get_ticks
     end
 
   end
-  
 end

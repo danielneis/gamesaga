@@ -9,7 +9,6 @@ class Player < Character
     super()
 
     collide_group.collect do |collide_sprite|
-
       if collide_sprite.is_a? Enemy
         if @rect.centerx < collide_sprite.rect.centerx
           player_relative_position = :left
@@ -27,5 +26,7 @@ class Player < Character
       elsif collide_sprite.is_a? Item
       end
     end
+
   end
+
 end

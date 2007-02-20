@@ -1,17 +1,19 @@
 class Display < Rubygame::SFont
 
-  def initialize(label, initial_text, position)
+  Rubygame::TTF.setup()
 
+  def initialize(label, position, text = '', size = 12)
     @position = position
     @label = label
-    @sfont = Rubygame::SFont.new(PIX_ROOT+'term16.png')
-    @text = @sfont.render(@label + ': ' + initial_text)
+    @size = size
 
+    @font = Rubygame::TTF.new('font.ttf', @size)
+    @render = @font.render(@label + text, true, [0,0,0])
   end
 
-  def update(text, destination)
-    @text = @sfont.render(@label + ': ' + text)
-    @text.blit(destination, @position)
+  def update(destination, text = '')
+    @render = @font.render(@label + text, true, [0,0,0])
+    @render.blit(destination, @position)
   end
 
 end

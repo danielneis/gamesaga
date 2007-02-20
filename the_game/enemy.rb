@@ -1,7 +1,7 @@
 class Enemy < Character
 
-  life 1340
-  strength 451
-  speed 2
+  life 1000
+  strength 400
+  speed 3
 
 end
