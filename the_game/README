@@ -1,7 +1,6 @@
 1. INSTALLATION
 2. HOW TO PLAY
 
-
 1. INSTALLATION:
 ----------------
 To run the game you must have ruby1.8 or later installed.
@@ -26,9 +25,11 @@ To run the game type ruby game.rb in this directory
 
 Controls: 
     enter       - (un)pause the game
-    x           - attack
+    a           - attack
+    s           - jump
     left arrow  - walk left
     right arrow - walk right
-    up          - jump
+    up          - walk up
+    down        - walk down
 
 Enjoy!

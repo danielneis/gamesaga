@@ -1,7 +1,7 @@
 module Game
   def Game.start
     # create the player character
-    @player = Player.new(300, 350, 'panda.png')
+    @player = Player.new(300, 450, 'panda.png')
 
     #create some NPCs enemies
     @enemies = Rubygame::Sprites::Group.new()
@@ -44,14 +44,17 @@ module Game
                 when Rubygame::K_ESCAPE, Rubygame::K_RETURN then Game::pause(screen, queue, @clock)
                 when Rubygame::K_LEFT   then @player.walk :left
                 when Rubygame::K_RIGHT  then @player.walk :right
-                when Rubygame::K_X      then @player.attack()
-                when Rubygame::K_UP     then @player.jump()
+                when Rubygame::K_UP     then @player.walk :up
+                when Rubygame::K_DOWN   then @player.walk :down
+                when Rubygame::K_A      then @player.attack()
               end
             when Rubygame::KeyUpEvent
               case event.key
                 when Rubygame::K_LEFT  then @player.stop_walk :left
                 when Rubygame::K_RIGHT then @player.stop_walk :right
-                when Rubygame::K_X     then @player.stop_attack()
+                when Rubygame::K_UP    then @player.stop_walk :up
+                when Rubygame::K_DOWN  then @player.stop_walk :down
+                when Rubygame::K_A     then @player.stop_attack()
               end
           end
         end

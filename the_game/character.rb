@@ -67,11 +67,19 @@ class Character
   end
 
   def walk(direction)
-    @horizontal_direction = direction if @vertical_direction.nil?
+    if direction == :left or direction == :right
+      @horizontal_direction = direction
+    elsif direction == :up or direction == :down
+      @vertical_direction = direction
+    end
   end
 
   def stop_walk(direction)
-    @horizontal_direction = nil if @horizontal_direction == direction
+    if @horizontal_direction == direction
+      @horizontal_direction = nil
+    elsif @vertical_direction == direction
+      @vertical_direction = nil
+    end
   end
 
   def jump()
@@ -102,28 +110,38 @@ class Character
         @horizontal_speed = 0
       end
 
-      # to jump and to fall
-      if @vertical_direction == :up
-        if @jump_stage < @jump_stages
-          @vertical_speed = @jump_speed
-          @jump_stage += 1
-        else
-          @vertical_direction = :down
-          @jump_stage = 0
-        end
-      elsif  @vertical_direction == :down
-        if @rect.bottom < @ground
-          @vertical_speed = -@jump_speed
-        else
-          @vertical_direction = nil
-        end
+      # to walk up and down
+      if @vertical_direction == :up and @rect.bottom > @area.top
+        @vertical_speed = -@speed * 2
+      elsif @vertical_direction == :down and @rect.bottom < @area.bottom
+        @vertical_speed = @speed * 2
       else
         @vertical_direction = nil
-        @vertical_speed = 0 
+        @vertical_speed = 0
       end
 
+      # to jump and to fall
+      #if @vertical_direction == :up
+      #  if @jump_stage < @jump_stages
+      #    @vertical_speed = @jump_speed
+      #    @jump_stage += 1
+      #  else
+      #    @vertical_direction = :down
+      #    @jump_stage = 0
+      #  end
+      #elsif  @vertical_direction == :down
+      #  if @rect.bottom < @ground
+      #    @vertical_speed = -@jump_speed
+      #  else
+      #    @vertical_direction = nil
+      #  end
+      #else
+      #  @vertical_direction = nil
+      #  @vertical_speed = 0 
+      #end
+
       # to jump far
-      @horizontal_speed = @horizontal_speed * 5 if @vertical_speed != 0
+      #@horizontal_speed = @horizontal_speed * 5 if @vertical_speed != 0
 
       if @state == :attacking
         if (@image != @attack_image)
