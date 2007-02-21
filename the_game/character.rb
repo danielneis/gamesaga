@@ -52,6 +52,7 @@ class Character
         # some speeds
         @jump_speed = -(@speed * 6)
         @state = nil
+        @last_state = nil
 
       end
     end
@@ -72,9 +73,11 @@ class Character
     if @state != :jump
       if direction == :left or direction == :right
         @horizontal_direction = direction
+        @last_state = @state
         @state = :walk
       elsif direction == :up or direction == :down
         @vertical_direction = direction
+        @last_state = @state
         @state = :walk
       end
     end
@@ -92,6 +95,7 @@ class Character
 
   def jump()
     if @state != :jump
+      @last_state = @state
       @state = :jump
       @vertical_direction = :up
       @ground = @rect.bottom
@@ -99,10 +103,12 @@ class Character
   end
 
   def attack(direction = :right)
+    @last_state = @state
     @state = :attack if @vertical_direction.nil?
   end
 
   def stop_attack(direction = :right)
+    @last_state = @state
     @state = nil if @state == :attack
   end
 
@@ -150,12 +156,10 @@ class Character
             @vertical_speed = -@jump_speed
           else
             @vertical_direction = nil
-            @state = nil
+            @state = @last_state
+            @vertical_speed = 0 
           end
 
-        else
-          @vertical_direction = nil
-          @vertical_speed = 0 
         end
 
         # to jump farther
@@ -163,7 +167,7 @@ class Character
 
       end
 
-      if @state == :attacking
+      if @state == :attack
         if (@image != @attack_image)
           @image = @attack_image
           @image.set_colorkey(@image.get_at([0, 0]))

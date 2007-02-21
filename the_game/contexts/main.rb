@@ -6,10 +6,10 @@ module Game
 
     #create some NPCs enemies
     @enemies = Rubygame::Sprites::Group.new()
-    #@enemies.push(Enemy.new(400, 350, 'panda.invert.png'),
-     #             Enemy.new(210, 350, 'panda.invert.png'),
-      #            Item.new(100, 350, 'chicken.png', {:health => 50}),
-       #           Item.new(500, 350, 'meat.png', {:health => 150}))
+    @enemies.push(Enemy.new(400, 350, 'panda.invert.png'),
+                  Enemy.new(210, 350, 'panda.invert.png'),
+                  Item.new(100, 350, 'chicken.png', {:health => 50}),
+                  Item.new(500, 350, 'meat.png', {:health => 150}))
 
     # Make the background
     @background = Rubygame::Image.load(PIX_ROOT+'background.png')
@@ -47,7 +47,7 @@ module Game
                 when Rubygame::K_RIGHT then @player.stop_walk :right
                 when Rubygame::K_UP    then @player.stop_walk :up
                 when Rubygame::K_DOWN  then @player.stop_walk :down
-                when Rubygame::K_A     then @player.stop_attack
+                when Rubygame::K_S     then @player.stop_attack
               end
           end
         end
