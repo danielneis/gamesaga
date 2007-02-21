@@ -51,7 +51,6 @@ class Character
 
         # some speeds
         @jump_speed = -(@speed * 6)
-        @direction =  nil 
         @state = nil
 
       end
@@ -70,31 +69,41 @@ class Character
   end
 
   def walk(direction)
-    if direction == :left or direction == :right
-      @horizontal_direction = direction
-    elsif direction == :up or direction == :down
-      @vertical_direction = direction
+    if @state != :jump
+      if direction == :left or direction == :right
+        @horizontal_direction = direction
+        @state = :walk
+      elsif direction == :up or direction == :down
+        @vertical_direction = direction
+        @state = :walk
+      end
     end
   end
 
   def stop_walk(direction)
-    if @horizontal_direction == direction
-      @horizontal_direction = nil
-    elsif @vertical_direction == direction
-      @vertical_direction = nil
+    if @state == :walk
+      if @horizontal_direction == direction
+        @horizontal_direction = nil
+      elsif @vertical_direction == direction
+        @vertical_direction = nil
+      end
     end
   end
 
   def jump()
-    @vertical_direction = :up if @vertical_direction.nil?
+    if @state != :jump
+      @state = :jump
+      @vertical_direction = :up
+      @ground = @rect.bottom
+    end
   end
 
   def attack(direction = :right)
-    @state = :attacking if @vertical_direction.nil?
+    @state = :attack if @vertical_direction.nil?
   end
 
   def stop_attack(direction = :right)
-    @state = :still if @state == :attacking
+    @state = nil if @state == :attack
   end
 
 
@@ -103,7 +112,6 @@ class Character
 
     if !(Rubygame::Time.get_ticks - @prevAnim < 25)
 
-      # to walk left and right
       if @horizontal_direction == :left and @rect.left > @area.left
         @horizontal_speed = -@speed
       elsif @horizontal_direction == :right and @rect.right < @area.right
@@ -113,38 +121,47 @@ class Character
         @horizontal_speed = 0
       end
 
-      # to walk up and down
-      if @vertical_direction == :up and @rect.bottom > @area.top
-        @vertical_speed = -@speed
-      elsif @vertical_direction == :down and @rect.bottom < @area.bottom
-        @vertical_speed = @speed
-      else
-        @vertical_direction = nil
-        @vertical_speed = 0
+      if @state == :walk
+
+        if @vertical_direction == :up and @rect.bottom > @area.top
+          @vertical_speed = -@speed
+        elsif @vertical_direction == :down and @rect.bottom < @area.bottom
+          @vertical_speed = @speed
+        else
+          @vertical_direction = nil
+          @vertical_speed = 0
+        end
+
+      elsif @state == :jump
+
+        if @vertical_direction == :up
+
+          if @jump_stage < @jump_stages
+            @vertical_speed = @jump_speed
+            @jump_stage += 1
+          else
+            @vertical_direction = :down
+            @jump_stage = 0
+          end
+
+        elsif  @vertical_direction == :down
+
+          if @rect.bottom < @ground
+            @vertical_speed = -@jump_speed
+          else
+            @vertical_direction = nil
+            @state = nil
+          end
+
+        else
+          @vertical_direction = nil
+          @vertical_speed = 0 
+        end
+
+        # to jump farther
+        @horizontal_speed = @horizontal_speed * 5 if not @horizontal_speed.nil?
+
       end
-
-      # to jump and to fall
-      #if @vertical_direction == :up
-      #  if @jump_stage < @jump_stages
-      #    @vertical_speed = @jump_speed
-      #    @jump_stage += 1
-      #  else
-      #    @vertical_direction = :down
-      #    @jump_stage = 0
-      #  end
-      #elsif  @vertical_direction == :down
-      #  if @rect.bottom < @ground
-      #    @vertical_speed = -@jump_speed
-      #  else
-      #    @vertical_direction = nil
-      #  end
-      #else
-      #  @vertical_direction = nil
-      #  @vertical_speed = 0 
-      #end
-
-      # to jump far
-      #@horizontal_speed = @horizontal_speed * 5 if @vertical_speed != 0
 
       if @state == :attacking
         if (@image != @attack_image)
@@ -158,11 +175,16 @@ class Character
           @image.set_colorkey(@image.get_at([0, 0]))
           @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
         end
-        # move the character
-        @rect.bottom = @rect.bottom + @vertical_speed
-        @rect.x = @rect.x + @horizontal_speed
       end
+
+      if @state == :jump or @state == :walk
+        # move the character
+        @rect.bottom = @rect.bottom + @vertical_speed if not @vertical_speed.nil?
+        @rect.x = @rect.x + @horizontal_speed if not @horizontal_speed.nil?
+      end
+
       @prevAnim = Rubygame::Time.get_ticks
+
     end
 
   end

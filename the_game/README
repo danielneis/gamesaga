@@ -25,8 +25,8 @@ To run the game type ruby game.rb in this directory
 
 Controls: 
     enter       - (un)pause the game
-    a           - attack
-    s           - jump
+    s           - attack
+    d           - jump
     left arrow  - walk left
     right arrow - walk right
     up          - walk up
