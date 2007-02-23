@@ -51,7 +51,7 @@ class Game
     @enemies = Rubygame::Sprites::Group.new()
     @enemies.push(Enemy.new(400, 350, 'panda.invert.png'),
                   Enemy.new(210, 350, 'panda.invert.png'),
-                  Item.new(100, 350, 'chicken.png', {:life => -50}),
+                  Item.new(100, 350, 'chicken.png', {:life => 50}),
                   Item.new(500, 350, 'meat.png', {:life => 150}))
 
     # Make the background

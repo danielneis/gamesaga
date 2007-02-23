@@ -24,13 +24,11 @@ class Player < Character
         end
 
       elsif collide_sprite.is_a? Item
-        method = collide_sprite.effect.keys.first
-        new_value = collide_sprite.effect.values.first
-        old_value = self.send(method)
-        self.send(method.to_s+'=', old_value + new_value)
+        collide_sprite.effect.collect do |method, new_value|
+          old_value = self.send(method)
+          self.send(method.to_s+'=', old_value + new_value)
+        end
       end
     end
-
   end
-
 end
