@@ -10,7 +10,7 @@ class Character
     return @traits if arr.empty?
 
     # 1. Set up readers for each variable
-    attr_reader *arr
+    attr_accessor *arr
 
     # 2. Add a new class method to for each trait.
     arr.each do |a|
