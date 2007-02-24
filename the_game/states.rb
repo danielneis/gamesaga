@@ -127,5 +127,27 @@ module AI
         end
       end
     end
+    
+    class Hitted < State
+
+      include Rubygame::Sprites::Sprite
+
+      def enter(performer)
+        @image = Rubygame::Image.load(PIX_ROOT+'pow.png')
+        @screen = Rubygame::Screen.get_surface()
+
+        @hit_stage = 0
+        @hit_stages = 5
+      end
+
+      def execute(performer)
+        if @hit_stage < @hit_stages
+          @image.blit(@screen, [performer.rect.x, performer.rect.y] )
+          @hit_stage += 1
+        else 
+          performer.change_state(performer.last_state)
+        end
+      end
+    end
   end
 end

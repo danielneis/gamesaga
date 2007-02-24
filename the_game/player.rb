@@ -17,11 +17,8 @@ class Player < Character
           player_relative_position = :right
           enemy_relative_position = :left
         end
-        if (@state == :attack)
-          collide_sprite.take_damage(@strength, enemy_relative_position)
-        else 
-          take_damage(collide_sprite.strength, player_relative_position)
-        end
+        
+        collide_sprite.take_damage(@strength, enemy_relative_position) if @current_state.is_a? AI::States::Attack
 
       elsif collide_sprite.is_a? Item
         collide_sprite.effect.collect do |method, new_value|

@@ -22,8 +22,8 @@ Game.new()
 catch(:end_game) do
 
   loop do
-    Game.main_menu(screen)
+    Game.main_menu()
 
-    Game.run(screen)
+    Game.run()
   end
 end

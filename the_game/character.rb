@@ -32,6 +32,8 @@ class Character
           instance_variable_set("@#{k}", v)
         end
 
+        @screen = Rubygame::Screen.get_surface
+
         @still_image = Rubygame::Image.load(PIX_ROOT+image)
         @attack_image = Rubygame::Image.load(PIX_ROOT+'panda.attack.png')
 
@@ -47,7 +49,6 @@ class Character
 
         @current_state = AI::States::State.new()
         @last_state = @current_state
-
       end
     end
   end
@@ -59,9 +60,10 @@ class Character
   attr_accessor :rect, :vertical_direction, :horizontal_direction
 
   def take_damage(amount, to_side)
-    @life = @life - amount
-    @horizontal_direction = to_side
-    @vertical_direction = :up
+    if not @current_state.is_a? AI::States::Hitted
+      @life = @life - amount
+      change_state(AI::States::Hitted.new())
+    end
   end
 
   def walk(direction)
@@ -77,7 +79,7 @@ class Character
   end
 
   def stop_walk(direction)
-    if @current_state.is_a? AI::States::Walk
+    if not @current_state.is_a? AI::States::Jump
       if @horizontal_direction == direction
         @horizontal_direction = nil
       elsif @vertical_direction == direction

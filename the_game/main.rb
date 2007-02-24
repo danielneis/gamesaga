@@ -2,9 +2,10 @@ class Game
 
   def initialize
     @@queue = Rubygame::Queue.instance
+    @@screen = Rubygame::Screen.get_surface()
   end
 
-  def self.main_menu(screen)
+  def self.main_menu
 
     catch(:game_start) do
 
@@ -13,9 +14,9 @@ class Game
       hud = UI::Hud.new(menu, :bottom)
 
       background = Rubygame::Image.load(PIX_ROOT+'menu_background.jpg')
-      background.blit(screen, [0,0])
+      background.blit(@@screen, [0,0])
 
-      screen.show_cursor = true
+      @@screen.show_cursor = true
 
       loop do
         @@queue.get().each do |event|
@@ -25,7 +26,7 @@ class Game
             when Rubygame::KeyDownEvent
               case event.key
                 when Rubygame::K_ESCAPE then exit
-                when Rubygame::K_RETURN then Game.start ; throw :game_start
+                when Rubygame::K_RETURN then Game.start() ; throw :game_start
               end
             when Rubygame::MouseDownEvent
               if event.string == 'left'
@@ -36,8 +37,8 @@ class Game
           end
         end
 
-        hud.draw(screen)
-        screen.update()
+        hud.draw(@@screen)
+        @@screen.update()
       end
     end
   end
@@ -50,7 +51,7 @@ class Game
     #create some NPCs enemies
     @enemies = Rubygame::Sprites::Group.new()
     @enemies.push(#Enemy.new(400, 350, 'panda.invert.png'),
-                  #Enemy.new(210, 350, 'panda.invert.png'),
+                  Enemy.new(210, 350, 'panda.invert.png'),
                   Item.new(100, 350, 'chicken.png', {:life => 50}),
                   Item.new(500, 350, 'meat.png', {:life => 150}))
 
@@ -63,12 +64,12 @@ class Game
     @life_display =  Display.new('Life:', [50,0], @player.life.to_s)
   end
 
-  def self.run(screen)
+  def self.run
     
     #Main Loop - repeat until player death
     catch(:run_game) do
       loop do
-        Game.player_death(screen) if @player.life <= 0
+        Game.player_death() if @player.life <= 0
 
         @clock.tick()
         @@queue.get.each do |event|
@@ -77,7 +78,7 @@ class Game
               throw :end_game
             when Rubygame::KeyDownEvent
               case event.key
-                when Rubygame::K_ESCAPE, Rubygame::K_RETURN then Game.pause(screen, @clock)
+                when Rubygame::K_ESCAPE, Rubygame::K_RETURN then Game.pause(@clock)
                 when Rubygame::K_LEFT   then @player.walk :left
                 when Rubygame::K_RIGHT  then @player.walk :right
                 when Rubygame::K_UP     then @player.walk :up
@@ -95,40 +96,40 @@ class Game
           end
         end
 
-        @background.blit(screen, [0, 0])
+        @background.blit(@@screen, [0, 0])
 
-        @life_display.update(screen, @player.life.to_s)
-        @fps_display.update(screen, @clock.fps.to_s)
+        @life_display.update(@player.life.to_s)
+        @fps_display.update(@clock.fps.to_s)
 
         @player.update(@player.collide_group(@enemies))
         @enemies.update()
 
-        @player.draw(screen)
-        @enemies.draw(screen)
+        @player.draw(@@screen)
+        @enemies.draw(@@screen)
 
-        screen.update()
+        @@screen.update()
       end
     end
   end
 
-  def self.pause(screen, clock)
+  def self.pause(clock)
 
-    screen.show_cursor = true
+    @@screen.show_cursor = true
 
     pause_menu = UI::Menu.new(:vertical)
     pause_menu.push( UI::Buttons::MainMenu.new, UI::Buttons::Quit.new )
     pause_hud = UI::Hud.new(pause_menu, :center)
 
     title = Display.new('[PAUSED]', [240,10], '', 25)
-    title.update(screen)
+    title.update()
 
-    pause_hud.draw(screen)
+    pause_hud.draw(@@screen)
     catch(:pause_game) do
       loop do
 
         @clock.tick()
-        @fps_display.update(screen, @clock.fps.to_s)
-        screen.update()
+        @fps_display.update(@clock.fps.to_s)
+        @@screen.update()
 
         @@queue.get.each do |event|
           case event
@@ -150,17 +151,17 @@ class Game
       end
     end
 
-    screen.show_cursor = false
+    @@screen.show_cursor = false
   end
 
-  def self.player_death(screen)
+  def self.player_death
     
     # after player death, print a message on the screen and wait for the player to exit
     title = Display.new('DIED! press [ESC] to to return to main menu', [50, 200], '', 25)
-    title.update(screen)
+    title.update()
 
     loop do
-      screen.update()
+      @@screen.update()
       @@queue.get.each do |event|
         case event
           when Rubygame::QuitEvent
