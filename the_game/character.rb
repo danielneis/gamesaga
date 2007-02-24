@@ -90,23 +90,12 @@ class Character
     if not @current_state.is_a? AI::States::Jump
       @vertical_direction = :up
       @ground = @rect.bottom
-      change_state(AI::States::Jump.new(@speed))
+      change_state(AI::States::Jump.new(@speed, @current_state))
     end
   end
 
   def attack(direction = :right)
-    change_state(AI::States::Attack.new()) if not @current_state.is_a? AI::States::Jump
-  end
-
-  def stop_attack(direction = :right)
-
-    if @image == @attack_image
-      @image = @still_image
-      @image.set_colorkey(@image.get_at([0, 0]))
-      @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
-    end
-
-    change_state(@last_state) if @current_state.is_a? AI::States::Attack
+    change_state(AI::States::Attack.new(self))
   end
 
   def change_state(new_state)

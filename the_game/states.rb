@@ -13,6 +13,11 @@ module AI
       end
 
       def exit(performer)
+        if performer.image == performer.attack_image
+          performer.image = performer.still_image
+          performer.image.set_colorkey(performer.image.get_at([0, 0]))
+          performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
+        end
       end
     end
 
@@ -60,11 +65,12 @@ module AI
 
     class Jump < State
 
-      def initialize(speed)
+      def initialize(speed, state_before_jump)
+        @state_before_jump = state_before_jump
         @jump_stage = 0
         @jump_stages = 5
         @speed = speed
-        @jump_speed = -(speed * 6)
+        @jump_speed = -(speed * 3)
       end
 
       def execute(performer)
@@ -87,7 +93,7 @@ module AI
             vertical_speed = -@jump_speed
           else
             performer.vertical_direction = nil
-            performer.change_state(performer.last_state)
+            performer.change_state(@state_before_jump)
             vertical_speed = 0 
           end
         end
@@ -99,11 +105,25 @@ module AI
 
     class Attack < State
 
+      def initialize(performer)
+        @state_before_attack = performer.current_state
+        @attack_stage = 0
+        @attack_stages = 3
+      end
+
       def execute(performer)
-        if performer.image != performer.attack_image
-          performer.image = performer.attack_image
-          performer.image.set_colorkey(performer.image.get_at([0, 0]))
-          performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
+
+        @state_before_attack.execute(performer)
+
+        if @attack_stage < @attack_stages
+          if performer.image != performer.attack_image
+            performer.image = performer.attack_image
+            performer.image.set_colorkey(performer.image.get_at([0, 0]))
+            performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
+          end
+          @attack_stage += 1
+        else
+          performer.change_state(@state_before_attack)
         end
       end
     end
