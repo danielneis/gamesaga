@@ -45,14 +45,8 @@ class Character
         # to use in first call of update methods
         @prevAnim = Rubygame::Time.get_ticks()
 
-        # to use in jump methods
-        @jump_stage = 0
-        @jump_stages = 5
-
-        # some speeds
-        @jump_speed = -(@speed * 6)
-        @state = nil
-        @last_state = nil
+        @current_state = AI::States::State.new()
+        @last_state = @current_state
 
       end
     end
@@ -61,7 +55,8 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed
 
-  attr_reader :rect
+  attr_reader :current_state, :last_state, :ground, :area, :image, :still_image, :attack_image
+  attr_accessor :rect, :vertical_direction, :horizontal_direction
 
   def take_damage(amount, to_side)
     @life = @life - amount
@@ -70,21 +65,19 @@ class Character
   end
 
   def walk(direction)
-    if @state != :jump
+    if not @current_state.is_a? AI::States::Jump
       if direction == :left or direction == :right
         @horizontal_direction = direction
-        @last_state = @state
-        @state = :walk
+        change_state(AI::States::Walk.new(@speed))
       elsif direction == :up or direction == :down
         @vertical_direction = direction
-        @last_state = @state
-        @state = :walk
+        change_state(AI::States::Walk.new(@speed))
       end
     end
   end
 
   def stop_walk(direction)
-    if @state == :walk
+    if @current_state.is_a? AI::States::Walk
       if @horizontal_direction == direction
         @horizontal_direction = nil
       elsif @vertical_direction == direction
@@ -94,22 +87,29 @@ class Character
   end
 
   def jump()
-    if @state != :jump
-      @last_state = @state
-      @state = :jump
+    if not @current_state.is_a? AI::States::Jump
       @vertical_direction = :up
       @ground = @rect.bottom
+      change_state(AI::States::Jump.new(@speed))
     end
   end
 
   def attack(direction = :right)
-    @last_state = @state
-    @state = :attack if @vertical_direction.nil?
+    change_state(AI::States::Attack.new()) if @vertical_direction.nil?
   end
 
   def stop_attack(direction = :right)
-    @last_state = @state
-    @state = nil if @state == :attack
+    change_state(AI::States::Still.new()) if @current_state.is_a? AI::States::Attack
+  end
+
+  def change_state(new_state)
+
+    @current_state.exit(self)
+
+    @last_state = @current_state
+    @current_state = new_state
+
+    @current_state.enter(self)
   end
 
 
@@ -118,74 +118,7 @@ class Character
 
     if !(Rubygame::Time.get_ticks - @prevAnim < 25)
 
-      if @horizontal_direction == :left and @rect.left > @area.left
-        @horizontal_speed = -@speed
-      elsif @horizontal_direction == :right and @rect.right < @area.right
-        @horizontal_speed = @speed
-      else
-        @horizontal_direction = nil
-        @horizontal_speed = 0
-      end
-
-      if @state == :walk
-
-        if @vertical_direction == :up and @rect.bottom > @area.top
-          @vertical_speed = -@speed
-        elsif @vertical_direction == :down and @rect.bottom < @area.bottom
-          @vertical_speed = @speed
-        else
-          @vertical_direction = nil
-          @vertical_speed = 0
-        end
-
-      elsif @state == :jump
-
-        if @vertical_direction == :up
-
-          if @jump_stage < @jump_stages
-            @vertical_speed = @jump_speed
-            @jump_stage += 1
-          else
-            @vertical_direction = :down
-            @jump_stage = 0
-          end
-
-        elsif  @vertical_direction == :down
-
-          if @rect.bottom < @ground
-            @vertical_speed = -@jump_speed
-          else
-            @vertical_direction = nil
-            @state = @last_state
-            @vertical_speed = 0 
-          end
-
-        end
-
-        # to jump farther
-        @horizontal_speed = @horizontal_speed * 5 if not @horizontal_speed.nil?
-
-      end
-
-      if @state == :attack
-        if (@image != @attack_image)
-          @image = @attack_image
-          @image.set_colorkey(@image.get_at([0, 0]))
-          @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
-        end
-      else 
-        if @image == @attack_image
-          @image = @still_image
-          @image.set_colorkey(@image.get_at([0, 0]))
-          @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
-        end
-      end
-
-      if @state == :jump or @state == :walk
-        # move the character
-        @rect.bottom = @rect.bottom + @vertical_speed if not @vertical_speed.nil?
-        @rect.x = @rect.x + @horizontal_speed if not @horizontal_speed.nil?
-      end
+      @current_state.execute(self)
 
       @prevAnim = Rubygame::Time.get_ticks
 
