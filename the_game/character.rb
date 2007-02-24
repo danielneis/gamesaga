@@ -95,11 +95,18 @@ class Character
   end
 
   def attack(direction = :right)
-    change_state(AI::States::Attack.new()) if @vertical_direction.nil?
+    change_state(AI::States::Attack.new()) if not @current_state.is_a? AI::States::Jump
   end
 
   def stop_attack(direction = :right)
-    change_state(AI::States::Still.new()) if @current_state.is_a? AI::States::Attack
+
+    if @image == @attack_image
+      @image = @still_image
+      @image.set_colorkey(@image.get_at([0, 0]))
+      @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
+    end
+
+    change_state(@last_state) if @current_state.is_a? AI::States::Attack
   end
 
   def change_state(new_state)

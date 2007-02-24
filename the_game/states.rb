@@ -107,16 +107,5 @@ module AI
         end
       end
     end
-
-    class Still < State
-
-      def execute(performer)
-        if performer.image == performer.attack_image
-          performer.image = performer.still_image
-          performer.image.set_colorkey(performer.image.get_at([0, 0]))
-          performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
-        end
-      end
-    end
   end
 end
