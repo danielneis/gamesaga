@@ -102,9 +102,7 @@ module States
       @attack_stage = 0
       @attack_stages = 3
 
-      performer.image = performer.attack_image
-      performer.image.set_colorkey(performer.image.get_at([0, 0]))
-      performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
+      performer.swap_image :attack
     end
 
     def execute(performer)
@@ -119,10 +117,7 @@ module States
     end
 
     def exit(performer)
-
-      performer.image = performer.still_image
-      performer.image.set_colorkey(performer.image.get_at([0, 0]))
-      performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
+      performer.swap_image :still
     end
   end
   

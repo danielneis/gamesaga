@@ -56,14 +56,13 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed
 
-  attr_reader :ground, :area, :horizontal_direction,
-              :image, :still_image, :attack_image
+  attr_reader :ground, :area, :horizontal_direction
   attr_accessor :rect, :vertical_direction
 
   def take_damage(amount, to_side)
     if not @state_machine.in_state? States::Hitted
       @life = @life - amount
-      #@state_machine.change_state(States::Hitted)
+      @state_machine.change_state(States::Hitted)
     end
   end
 
@@ -100,6 +99,22 @@ class Character
   def attack(direction = :right)
     @state_machine.change_state(States::Attack) if not @state_machine.in_state? States::Attack
   end
+
+  def swap_image(image)
+    if image == :attack
+
+      @image = @attack_image
+      @image.set_colorkey(@image.get_at([0, 0]))
+      @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
+
+    elsif image == :still
+
+      @image = @still_image
+      @image.set_colorkey(@image.get_at([0, 0]))
+      @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
+    end
+  end
+
 
   # to move the character on each direction
   def update()
