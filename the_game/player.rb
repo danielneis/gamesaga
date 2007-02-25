@@ -23,7 +23,7 @@ class Player < Character
           enemy_relative_position = :left
         end
 
-        collide_sprite.take_damage(@strength, enemy_relative_position) if in_state? States::Attack
+        collide_sprite.take_damage(@strength, enemy_relative_position) if @state_machine.in_state? States::Attack
 
       elsif collide_sprite.is_a? Item
 

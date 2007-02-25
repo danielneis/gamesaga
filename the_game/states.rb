@@ -2,7 +2,8 @@ module States
 
   class State
 
-    def initialize
+    def initialize(state_machine)
+      @@state_machine = state_machine
     end
 
     def enter(performer)
@@ -12,28 +13,21 @@ module States
     end
 
     def exit(performer)
-      if performer.image == performer.attack_image
-        performer.image = performer.still_image
-        performer.image.set_colorkey(performer.image.get_at([0, 0]))
-        performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
-      end
     end
   end
 
   class Walk < State
 
-    def initialize(speed)
-      @speed = speed
-    end
-
     def execute(performer)
+
+      speed = performer.speed
 
       HorizontalMove.execute(performer)
 
       if performer.vertical_direction == :up and performer.rect.bottom > performer.area.top
-        vertical_speed = -@speed
+        vertical_speed = -speed
       elsif performer.vertical_direction == :down and performer.rect.bottom < performer.area.bottom
-        vertical_speed = @speed
+        vertical_speed = speed
       else
         vertical_speed = nil
       end
@@ -56,7 +50,7 @@ module States
         horizontal_speed = nil
       end
 
-      horizontal_speed = horizontal_speed * 5 if ( not horizontal_speed.nil?) and performer.in_state? Jump
+      horizontal_speed = horizontal_speed * 5 if ( not horizontal_speed.nil?) and @@state_machine.in_state? Jump
 
       performer.rect.x += horizontal_speed if not horizontal_speed.nil?
     end
@@ -64,11 +58,11 @@ module States
 
   class Jump < State
 
-    def initialize(speed, state_before_jump)
-      @state_before_jump = state_before_jump
+    def enter(performer)
+      @state_before_jump = @@state_machine.last_state
       @jump_stage = 0
       @jump_stages = 5
-      @jump_speed = -(speed * 3)
+      @jump_speed = -(performer.speed * 3)
     end
 
     def execute(performer)
@@ -81,7 +75,7 @@ module States
           vertical_speed = @jump_speed
           @jump_stage += 1
         else
-          performer.walk :down
+          performer.vertical_direction = :down
           @jump_stage = 0
         end
 
@@ -91,7 +85,7 @@ module States
           vertical_speed = -@jump_speed
         else
           performer.stop_walk :down
-          performer.change_state(@state_before_jump)
+          @@state_machine.change_state(@state_before_jump.class)
           vertical_speed = 0 
         end
       end
@@ -103,48 +97,54 @@ module States
 
   class Attack < State
 
-    def initialize(performer)
-      @state_before_attack = performer.current_state
+    def enter(performer)
+      @state_before_attack = @@state_machine.last_state
       @attack_stage = 0
       @attack_stages = 3
+
+      performer.image = performer.attack_image
+      performer.image.set_colorkey(performer.image.get_at([0, 0]))
+      performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
     end
 
     def execute(performer)
 
-
       if @attack_stage < @attack_stages
-        if performer.image != performer.attack_image
-          performer.image = performer.attack_image
-          performer.image.set_colorkey(performer.image.get_at([0, 0]))
-          performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
-        end
         @attack_stage += 1
       else
-        performer.change_state(@state_before_attack)
+        @@state_machine.change_state(@state_before_attack.class)
       end
 
-      @state_before_attack.execute(performer)
+      #@state_before_attack.execute(performer)
+    end
+
+    def exit(performer)
+
+      performer.image = performer.still_image
+      performer.image.set_colorkey(performer.image.get_at([0, 0]))
+      performer.rect = Rubygame::Rect.new(performer.rect.x, performer.rect.y, *performer.image.size)
     end
   end
   
   class Hitted < State
 
-    include Rubygame::Sprites::Sprite
-
     def enter(performer)
-      @image = Rubygame::Image.load(PIX_ROOT+'pow.png')
+      @pow_image = Rubygame::Image.load(PIX_ROOT+'pow.png')
       @screen = Rubygame::Screen.get_surface()
+
+      @state_before_hitted = @@state_machine.last_state
 
       @hit_stage = 0
       @hit_stages = 5
+
+      @pow_image.blit(@screen, [performer.rect.x, performer.rect.y] )
     end
 
     def execute(performer)
       if @hit_stage < @hit_stages
-        @image.blit(@screen, [performer.rect.x, performer.rect.y] )
         @hit_stage += 1
       else 
-        performer.change_to_last_state()
+        @@state_machine.change_state(@state_before_hitted.class)
       end
     end
   end

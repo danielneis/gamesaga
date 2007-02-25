@@ -47,8 +47,8 @@ class Character
         # to use in first call of update methods
         @prevAnim = Rubygame::Time.get_ticks()
 
-        @current_state = States::State.new()
-        @last_state = @current_state
+        @state_machine = FiniteStateMachine.new(self)
+
       end
     end
   end
@@ -56,32 +56,33 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed
 
-  attr_reader :current_state, :ground, :area, :vertical_direction,
-              :horizontal_direction, :image, :still_image, :attack_image
-  attr_accessor :rect
+  attr_reader :ground, :area, :horizontal_direction,
+              :image, :still_image, :attack_image
+  attr_accessor :rect, :vertical_direction
 
   def take_damage(amount, to_side)
-    if not in_state? States::Hitted
+    if not @state_machine.in_state? States::Hitted
       @life = @life - amount
-      change_state(States::Hitted.new())
+      #@state_machine.change_state(States::Hitted)
     end
   end
 
   def walk(direction)
 
-    if not in_state? States::Jump and (direction == :left or direction == :right)
+    if (not @state_machine.in_state? States::Jump) and (direction == :left or direction == :right)
       @horizontal_direction = direction
-      change_state(States::Walk.new(@speed))
+      @state_machine.change_state(States::Walk)
     end
 
     if direction == :up or direction == :down
       @vertical_direction = direction
+      @state_machine.change_state(States::Walk)
     end
   end
 
   def stop_walk(direction)
 
-    @horizontal_direction = nil if not in_state? States::Jump and @horizontal_direction == direction
+    @horizontal_direction = nil if (not @state_machine.in_state? States::Jump) and @horizontal_direction == direction
 
     if @vertical_direction == direction
       @vertical_direction = nil
@@ -89,43 +90,23 @@ class Character
   end
 
   def jump()
-    if not in_state? States::Jump
+    if not @state_machine.in_state? States::Jump
       @vertical_direction = :up
       @ground = @rect.bottom
-      change_state(States::Jump.new(@speed, @current_state))
+      @state_machine.change_state(States::Jump)
     end
   end
 
   def attack(direction = :right)
-    change_state(States::Attack.new(self))
+    @state_machine.change_state(States::Attack) if not @state_machine.in_state? States::Attack
   end
-
-  def in_state?(state)
-    @current_state.is_a? state
-  end
-
-  def change_to_last_state()
-    change_state(@last_state)
-  end
-
-  def change_state(new_state)
-
-    @last_state = @current_state
-
-    @current_state.exit(self)
-
-    @current_state = new_state
-
-    @current_state.enter(self)
-  end
-
 
   # to move the character on each direction
   def update()
 
     if !(Rubygame::Time.get_ticks - @prevAnim < 25)
 
-      @current_state.execute(self)
+      @state_machine.update()
 
       @prevAnim = Rubygame::Time.get_ticks
 
