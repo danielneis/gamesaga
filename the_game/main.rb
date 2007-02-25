@@ -101,7 +101,7 @@ class Game
         @life_display.update(@player.life.to_s)
         @fps_display.update(@clock.fps.to_s)
 
-        @player.update(@player.collide_group(@enemies))
+        @player.update(@enemies)
         @enemies.update()
 
         @player.draw(@@screen)

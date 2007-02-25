@@ -47,7 +47,7 @@ class Character
         # to use in first call of update methods
         @prevAnim = Rubygame::Time.get_ticks()
 
-        @current_state = AI::States::State.new()
+        @current_state = States::State.new()
         @last_state = @current_state
       end
     end
@@ -56,55 +56,64 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed
 
-  attr_reader :current_state, :last_state, :ground, :area, :image, :still_image, :attack_image
-  attr_accessor :rect, :vertical_direction, :horizontal_direction
+  attr_reader :current_state, :ground, :area, :vertical_direction,
+              :horizontal_direction, :image, :still_image, :attack_image
+  attr_accessor :rect
 
   def take_damage(amount, to_side)
-    if not @current_state.is_a? AI::States::Hitted
+    if not in_state? States::Hitted
       @life = @life - amount
-      change_state(AI::States::Hitted.new())
+      change_state(States::Hitted.new())
     end
   end
 
   def walk(direction)
-    if not @current_state.is_a? AI::States::Jump
-      if direction == :left or direction == :right
-        @horizontal_direction = direction
-        change_state(AI::States::Walk.new(@speed))
-      elsif direction == :up or direction == :down
-        @vertical_direction = direction
-        change_state(AI::States::Walk.new(@speed))
-      end
+
+    if not in_state? States::Jump and (direction == :left or direction == :right)
+      @horizontal_direction = direction
+      change_state(States::Walk.new(@speed))
+    end
+
+    if direction == :up or direction == :down
+      @vertical_direction = direction
     end
   end
 
   def stop_walk(direction)
-    if not @current_state.is_a? AI::States::Jump
-      if @horizontal_direction == direction
-        @horizontal_direction = nil
-      elsif @vertical_direction == direction
-        @vertical_direction = nil
-      end
+
+    @horizontal_direction = nil if not in_state? States::Jump and @horizontal_direction == direction
+
+    if @vertical_direction == direction
+      @vertical_direction = nil
     end
   end
 
   def jump()
-    if not @current_state.is_a? AI::States::Jump
+    if not in_state? States::Jump
       @vertical_direction = :up
       @ground = @rect.bottom
-      change_state(AI::States::Jump.new(@speed, @current_state))
+      change_state(States::Jump.new(@speed, @current_state))
     end
   end
 
   def attack(direction = :right)
-    change_state(AI::States::Attack.new(self))
+    change_state(States::Attack.new(self))
+  end
+
+  def in_state?(state)
+    @current_state.is_a? state
+  end
+
+  def change_to_last_state()
+    change_state(@last_state)
   end
 
   def change_state(new_state)
 
+    @last_state = @current_state
+
     @current_state.exit(self)
 
-    @last_state = @current_state
     @current_state = new_state
 
     @current_state.enter(self)
@@ -121,6 +130,5 @@ class Character
       @prevAnim = Rubygame::Time.get_ticks
 
     end
-
   end
 end
