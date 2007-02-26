@@ -122,7 +122,6 @@ module States
 
     def enter(performer)
 
-      puts performer
       @hit_stage = 0
       @hit_stages = 5
 
@@ -136,12 +135,10 @@ module States
 
       if @hit_stage < @hit_stages
         @hit_stage += 1
-      else 
-        @@state_machine.back_to_last_state
       end
     end
 
-    def exit
+    def exit(performer)
       @pow_image = nil
     end
   end

@@ -48,7 +48,6 @@ class Character
         @prevAnim = Rubygame::Time.get_ticks()
 
         @state_machine = FiniteStateMachine.new(self)
-
       end
     end
   end
@@ -60,10 +59,8 @@ class Character
   attr_accessor :rect, :vertical_direction
 
   def take_damage(amount, to_side)
-    if not @state_machine.in_state? States::Hitted
-      @life = @life - amount
-      @state_machine.change_state(States::Hitted)
-    end
+    @life = @life - amount
+    @state_machine.change_state(States::Hitted)
   end
 
   def walk(direction)
@@ -95,7 +92,7 @@ class Character
   end
 
   def attack(direction = :right)
-    @state_machine.change_state(States::Attack) if not @state_machine.in_state? States::Attack
+    @state_machine.change_state(States::Attack)
   end
 
   def swap_image(image)
