@@ -1,14 +1,11 @@
 class FiniteStateMachine
 
-  attr_reader :current_state, :last_state
   def initialize(owner, current_state = States::State)
 
     @owner = owner
 
     @current_state = current_state.new(self)
     @last_state = @current_state
-
-    @count = 1
   end
 
   def in_state?(state)
@@ -24,6 +21,10 @@ class FiniteStateMachine
     @current_state = new_state.new(self)
 
     @current_state.enter(@owner)
+  end
+
+  def back_to_last_state
+    change_state(@last_state.class)
   end
 
   def update

@@ -7,6 +7,7 @@ class Player < Character
   def update(group)
 
     super()
+
     handle_collisions(collide_group(group))
   end
 

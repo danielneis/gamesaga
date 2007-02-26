@@ -59,7 +59,6 @@ module States
   class Jump < State
 
     def enter(performer)
-      @state_before_jump = @@state_machine.last_state
       @jump_stage = 0
       @jump_stages = 5
       @jump_speed = -(performer.speed * 3)
@@ -85,8 +84,8 @@ module States
           vertical_speed = -@jump_speed
         else
           performer.stop_walk :down
-          @@state_machine.change_state(@state_before_jump.class)
-          vertical_speed = 0 
+          vertical_speed = nil
+          @@state_machine.back_to_last_state
         end
       end
       
@@ -98,7 +97,7 @@ module States
   class Attack < State
 
     def enter(performer)
-      @state_before_attack = @@state_machine.last_state
+
       @attack_stage = 0
       @attack_stages = 3
 
@@ -110,10 +109,8 @@ module States
       if @attack_stage < @attack_stages
         @attack_stage += 1
       else
-        @@state_machine.change_state(@state_before_attack.class)
+        @@state_machine.back_to_last_state
       end
-
-      #@state_before_attack.execute(performer)
     end
 
     def exit(performer)
@@ -124,23 +121,28 @@ module States
   class Hitted < State
 
     def enter(performer)
-      @pow_image = Rubygame::Image.load(PIX_ROOT+'pow.png')
-      @screen = Rubygame::Screen.get_surface()
 
-      @state_before_hitted = @@state_machine.last_state
-
+      puts performer
       @hit_stage = 0
       @hit_stages = 5
 
+      @screen = Rubygame::Screen.get_surface
+
+      @pow_image = Rubygame::Image.load(PIX_ROOT+'pow.png')
       @pow_image.blit(@screen, [performer.rect.x, performer.rect.y] )
     end
 
     def execute(performer)
+
       if @hit_stage < @hit_stages
         @hit_stage += 1
       else 
-        @@state_machine.change_state(@state_before_hitted.class)
+        @@state_machine.back_to_last_state
       end
+    end
+
+    def exit
+      @pow_image = nil
     end
   end
 end
