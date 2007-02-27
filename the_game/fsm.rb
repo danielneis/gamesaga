@@ -6,6 +6,8 @@ class FiniteStateMachine
 
     @current_state = current_state.new(self)
     @last_state = @current_state
+
+    @current_state.enter(self)
   end
 
   def in_state?(state)

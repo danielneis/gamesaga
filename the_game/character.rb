@@ -70,7 +70,7 @@ class Character
       @state_machine.change_state(States::Walk)
     end
 
-    if direction == :up or direction == :down
+    if (not @state_machine.in_state? States::Jump) and (direction == :up or direction == :down)
       @vertical_direction = direction
       @state_machine.change_state(States::Walk)
     end
