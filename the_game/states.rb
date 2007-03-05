@@ -235,14 +235,10 @@ module States
         @state_machine.change_state(PlayerDeath) if @player.life <= 0
 
         # destroy all enemies without life
-        @enemies.reject! do |enemy|
-          enemy.life < 0
-        end
+        @enemies.reject! { |enemy| enemy.life < 0 }
 
         # destroy all catched items
-        @items.reject! do |item|
-          item.catched
-        end
+        @items.reject! { |item| item.catched }
 
         @clock.tick()
         @queue.get.each do |event|
