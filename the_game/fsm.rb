@@ -1,12 +1,15 @@
 class FiniteStateMachine
 
-  def initialize(owner, current_state = States::State)
+  def initialize(owner, current_state = States::State, global_state = States::State)
 
     @owner = owner
+
+    @global_state = global_state.new(self)
 
     @current_state = current_state.new(self)
     @last_state = @current_state
 
+    @global_state.enter(self)
     @current_state.enter(self)
   end
 
@@ -30,6 +33,8 @@ class FiniteStateMachine
   end
 
   def update
+    @global_state.execute(@owner)
+
     @current_state.execute(@owner)
   end
 end

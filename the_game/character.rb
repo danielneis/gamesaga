@@ -56,11 +56,11 @@ class Character
   traits :life, :strength, :speed
 
   attr_reader :ground, :area, :horizontal_direction
-  attr_accessor :rect, :vertical_direction
+  attr_accessor :rect, :vertical_direction, :damage
 
   def take_damage(amount, to_side)
-    @life = @life - amount
-    @state_machine.change_state(States::Hitted)
+    @damage = amount
+    @state_machine.change_state(States::Hitted) unless @state_machine.in_state? States::Hitted
   end
 
   def walk(direction)

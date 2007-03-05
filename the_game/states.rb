@@ -111,6 +111,7 @@ module States
       if @attack_stage < @attack_stages
         @attack_stage += 1
       else
+        @attack_stage = 0
         @state_machine.back_to_last_state
       end
     end
@@ -137,6 +138,9 @@ module States
 
       if @hit_stage < @hit_stages
         @hit_stage += 1
+      else 
+        performer.life = performer.life - performer.damage
+        @state_machine.back_to_last_state
       end
     end
 
@@ -203,14 +207,18 @@ module States
     class Run < GameState
 
       def enter(performer)
+
         @player = Player.new(300, 400, 'panda.png')
 
         #create some NPCs enemies
         @enemies = Rubygame::Sprites::Group.new()
-        @enemies.push(#Enemy.new(400, 350, 'panda.invert.png'),
-                      Enemy.new(210, 350, 'panda.invert.png'),
-                      Item.new(100, 350, 'chicken.png', {:life => 50}),
-                      Item.new(500, 350, 'meat.png', {:life => 150}))
+        @enemies.push(Enemy.new(400, 350, 'panda.invert.png'),
+                      Enemy.new(210, 350, 'panda.invert.png'))
+
+        #create some Items
+        @items = Rubygame::Sprites::Group.new()
+        @items.push(Item.new(100, 350, 'chicken.png', {:life => 50}),
+                    Item.new(500, 350, 'meat.png', {:life => 150}))
 
         # Make the background
         @background = Rubygame::Image.load(PIX_ROOT+'background.png')
@@ -261,6 +269,7 @@ module States
 
         @player.draw(@screen)
         @enemies.draw(@screen)
+        @items.draw(@screen)
 
         @screen.update()
       end
