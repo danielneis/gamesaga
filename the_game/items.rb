@@ -3,6 +3,7 @@ class Item
   include Rubygame::Sprites::Sprite
 
   attr_reader :effect, :rect
+  attr_accessor :catched
 
   def initialize(x, y, image, effect)
     super()
@@ -10,6 +11,7 @@ class Item
     @image = Rubygame::Image.load(PIX_ROOT+'items/'+image)
     @image.set_colorkey(@image.get_at([0, 0]))
     @rect = Rubygame::Rect.new(x, y, *@image.size)
+    @catched = false
   end
 
   def update

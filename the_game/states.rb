@@ -218,7 +218,7 @@ module States
         #create some Items
         @items = Rubygame::Sprites::Group.new()
         @items.push(Item.new(100, 350, 'chicken.png', {:life => 50}),
-                    Item.new(500, 350, 'meat.png', {:life => 150}))
+                    Item.new(500, 350, 'meat.png', {:life => 137}))
 
         # Make the background
         @background = Rubygame::Image.load(PIX_ROOT+'background.png')
@@ -233,6 +233,16 @@ module States
       def execute(performer)
 
         @state_machine.change_state(PlayerDeath) if @player.life <= 0
+
+        # destroy all enemies without life
+        @enemies.reject! do |enemy|
+          enemy.life < 0
+        end
+
+        # destroy all catched items
+        @items.reject! do |item|
+          item.catched
+        end
 
         @clock.tick()
         @queue.get.each do |event|
@@ -264,7 +274,7 @@ module States
         @life_display.update(@player.life.to_s)
         @fps_display.update(@clock.fps.to_s)
 
-        @player.update(@enemies)
+        @player.update(@enemies, @items)
         @enemies.update()
 
         @player.draw(@screen)
