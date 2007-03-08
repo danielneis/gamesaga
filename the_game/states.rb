@@ -233,6 +233,7 @@ module States
         @life_display =  Display.new('Life:', [50,0], @player.life.to_s)
 
         @kills = 0
+        @kills_display =  Display.new('Kills:', [100,0], @kills.to_s)
 
         @screen.update()
       end
@@ -268,6 +269,7 @@ module States
 
         @life_display.update(@player.life.to_s)
         @fps_display.update(@clock.fps.to_s)
+        @kills_display.update(@kills.to_s)
 
         @player.update(@enemies, @items)
         @enemies.update()
