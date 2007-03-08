@@ -1,5 +1,6 @@
 class Character
 
+  include Observable
   include Rubygame::Sprites::Sprite
   
   # Get a metaclass for this class
@@ -48,6 +49,9 @@ class Character
         @prevAnim = Rubygame::Time.get_ticks()
 
         @state_machine = FiniteStateMachine.new(self)
+
+        # from observable class...
+        @listeners = []
       end
     end
   end
@@ -112,7 +116,7 @@ class Character
 
 
   # to move the character on each direction
-  def update()
+  def update
 
     if !(Rubygame::Time.get_ticks - @prevAnim < 25)
 

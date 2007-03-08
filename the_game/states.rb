@@ -209,16 +209,21 @@ module States
       def enter(performer)
 
         @player = Player.new(300, 400, 'panda.png')
+        @player.register_listener(self)
 
         #create some NPCs enemies
         @enemies = Rubygame::Sprites::Group.new()
         @enemies.push(Enemy.new(400, 350, 'panda.invert.png'),
                       Enemy.new(210, 350, 'panda.invert.png'))
 
+        @enemies.each { |enemy| enemy.register_listener(self) }
+
         #create some Items
         @items = Rubygame::Sprites::Group.new()
         @items.push(Item.new(100, 350, 'chicken.png', {:life => 50}),
                     Item.new(500, 350, 'meat.png', {:life => 137}))
+
+        @items.each { |item| item.register_listener(self) }
 
         # Make the background
         @background = Rubygame::Image.load(PIX_ROOT+'background.png')
@@ -227,18 +232,12 @@ module States
         @fps_display = Display.new('FPS:', [0,0], @clock.fps.to_s)
         @life_display =  Display.new('Life:', [50,0], @player.life.to_s)
 
+        @kills = 0
+
         @screen.update()
       end
 
       def execute(performer)
-
-        @state_machine.change_state(PlayerDeath) if @player.life <= 0
-
-        # destroy all enemies without life
-        @enemies.reject! { |enemy| enemy.life < 0 }
-
-        # destroy all catched items
-        @items.reject! { |item| item.catched }
 
         @clock.tick()
         @queue.get.each do |event|
@@ -272,12 +271,27 @@ module States
 
         @player.update(@enemies, @items)
         @enemies.update()
+        @items.update()
 
         @player.draw(@screen)
         @enemies.draw(@screen)
         @items.draw(@screen)
 
         @screen.update()
+      end
+
+      # some events from observable objects
+      def player_death(player)
+        @state_machine.change_state(PlayerDeath)
+      end
+
+      def enemy_death(enemy)
+        @enemies.delete(enemy)
+        @kills += 1
+      end
+
+      def item_catched(item)
+        @items.delete(item)
       end
     end
 
@@ -347,7 +361,7 @@ module States
               throw :end_game
             when Rubygame::KeyDownEvent
               case event.key
-              when Rubygame::K_ESCAPE then @state_machine.back_to_last_state
+              when Rubygame::K_ESCAPE then @state_machine.change_state(MainMenu)
               end
           end
         end

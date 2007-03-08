@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'rubygame'
 require 'config'
+require 'observable'
 require 'ui/hud'
 require 'ui/menu'
 require 'ui/buttons'

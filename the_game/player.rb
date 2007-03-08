@@ -1,6 +1,6 @@
 class Player < Character
 
-  life 2000
+  life 20
   strength 100
   speed 3
 
@@ -11,6 +11,8 @@ class Player < Character
     group.flatten!
 
     handle_collisions(collide_group(group))
+
+    notify_listeners('player_death') if @life <= 0
   end
 
   def handle_collisions(collide_group)
