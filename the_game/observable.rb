@@ -13,6 +13,6 @@ module Observable
 
   protected
   def notify_listeners(event)
-    @listeners.each {|l| l.send(event, self) }
+    @listeners.each { |l| l.send(event, self) if l.respond_to? event }
   end
 end
