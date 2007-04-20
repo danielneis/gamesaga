@@ -2,10 +2,6 @@ module States
 
   class State
 
-    def initialize(state_machine)
-      @state_machine = state_machine
-    end
-
     def enter(performer)
     end
 
@@ -22,7 +18,7 @@ module States
 
       speed = performer.speed
 
-      help_state = HorizontalMove.new(@state_machine)
+      help_state = HorizontalMove.new
       help_state.execute(performer)
 
       if performer.vertical_direction == :up and performer.rect.bottom > performer.area.top
@@ -51,7 +47,7 @@ module States
         horizontal_speed = nil
       end
 
-      horizontal_speed = horizontal_speed * 5 if ( not horizontal_speed.nil?) and @state_machine.in_state? Jump
+      horizontal_speed = horizontal_speed * 5 if ( not horizontal_speed.nil?) and performer.in_state? Jump
 
       performer.rect.x += horizontal_speed if not horizontal_speed.nil?
     end
@@ -67,7 +63,7 @@ module States
 
     def execute(performer)
 
-      help_state = HorizontalMove.new(@state_machine)
+      help_state = HorizontalMove.new
       help_state.execute(performer)
 
       if performer.vertical_direction == :up
@@ -87,7 +83,7 @@ module States
         else
           performer.stop_walk :down
           vertical_speed = nil
-          @state_machine.back_to_last_state
+          performer.back_to_last_state
         end
       end
       
@@ -112,7 +108,7 @@ module States
         @attack_stage += 1
       else
         @attack_stage = 0
-        @state_machine.back_to_last_state
+        performer.back_to_last_state
       end
     end
 
@@ -140,7 +136,7 @@ module States
         @hit_stage += 1
       else 
         performer.life = performer.life - performer.damage
-        @state_machine.back_to_last_state
+        performer.back_to_last_state
       end
     end
 
@@ -156,90 +152,19 @@ module States
 
     class GameState < State
 
-      def initialize(state_machine)
-        super(state_machine)
-
-        @queue = Rubygame::Queue.instance
-        @screen = Rubygame::Screen.get_surface()
-
+      def initialize()
+        @screen = Rubygame::Screen.get_surface
         @clock = Rubygame::Time::Clock.new(35)
+        @queue = Rubygame::Queue.instance
       end
-    end
-
-    class MainMenu < GameState
-
-      def enter(performer)
-        menu = UI::Menu.new(:horizontal)
-        menu.push(UI::Buttons::NewGame.new(@state_machine), UI::Buttons::Quit.new(@state_machine))
-        @hud = UI::Hud.new(menu, :bottom)
-
-        @background = Rubygame::Image.load(PIX_ROOT+'menu_background.jpg')
-        @background.blit(@screen, [0,0])
-
-        @screen.show_cursor = true
-      end
-
-      def execute(performer)
-
-        @queue.get().each do |event|
-          case event
-            when Rubygame::QuitEvent then throw :end_game
-            when Rubygame::KeyDownEvent
-              case event.key
-                when Rubygame::K_ESCAPE then throw :end_game
-                when Rubygame::K_RETURN then @state_machine.change_state(Run)
-              end
-            when Rubygame::MouseDownEvent
-              if event.string == 'left'
-                if @hud.respond_to?('click')
-                  @hud.click(event.pos)
-                end
-              end
-          end
-        end
-
-        @hud.draw(@screen)
-        @screen.update()
-      end
-
     end
 
     class Run < GameState
 
       def enter(performer)
-
-        @player = Player.new(300, 400, 'panda.png')
-        @player.register_listener(self)
-
-        #create some NPCs enemies
-        @enemies = Rubygame::Sprites::Group.new()
-        @enemies.push(Enemy.new(400, 350, 'panda.invert.png'),
-                      Enemy.new(210, 350, 'panda.invert.png'))
-
-        @enemies.each { |enemy| enemy.register_listener(self) }
-
-        #create some Items
-        @items = Rubygame::Sprites::Group.new()
-        @items.push(Item.new(100, 350, 'chicken.png', {:life => 50}),
-                    Item.new(500, 350, 'meat.png', {:life => 137}))
-
-        @items.each { |item| item.register_listener(self) }
-
-        # Make the background
-        @background = Rubygame::Image.load(PIX_ROOT+'background.png')
-
-        # Create the life bar, FPS display etc.
-        @fps_display = Display.new('FPS:', [0,0], @clock.fps.to_s)
-        @life_display =  Display.new('Life:', [50,0], @player.life.to_s)
-
-        @kills = 0
-        @kills_display =  Display.new('Kills:', [100,0], @kills.to_s)
-
-        @screen.update()
       end
 
       def execute(performer)
-
         @clock.tick()
         @queue.get.each do |event|
           case event
@@ -247,7 +172,7 @@ module States
               throw :end_game
             when Rubygame::KeyDownEvent
               case event.key
-                when Rubygame::K_ESCAPE, Rubygame::K_RETURN then @state_machine.change_state(Pause)
+                when Rubygame::K_ESCAPE, Rubygame::K_RETURN then performer.change_state(Pause)
                 when Rubygame::K_LEFT   then @player.walk :left
                 when Rubygame::K_RIGHT  then @player.walk :right
                 when Rubygame::K_UP     then @player.walk :up
@@ -264,37 +189,8 @@ module States
               end
           end
         end
-
-        @background.blit(@screen, [0, 0])
-
-        @life_display.update(@player.life.to_s)
-        @fps_display.update(@clock.fps.to_s)
-        @kills_display.update(@kills.to_s)
-
-        @player.update(@enemies, @items)
-        @enemies.update()
-        @items.update()
-
-        @player.draw(@screen)
-        @enemies.draw(@screen)
-        @items.draw(@screen)
-
-        @screen.update()
       end
 
-      # some events from observable objects
-      def player_death(player)
-        @state_machine.change_state(PlayerDeath)
-      end
-
-      def enemy_death(enemy)
-        @enemies.delete(enemy)
-        @kills += 1
-      end
-
-      def item_catched(item)
-        @items.delete(item)
-      end
     end
 
     class Pause < GameState
@@ -328,7 +224,7 @@ module States
             when Rubygame::KeyDownEvent
               case event.key
                 when Rubygame::K_ESCAPE then throw :end_game
-                when Rubygame::K_RETURN then @state_machine.back_to_last_state()
+                when Rubygame::K_RETURN then performer.back_to_last_state()
               end
             when Rubygame::MouseDownEvent
               if event.string == 'left'
@@ -363,7 +259,7 @@ module States
               throw :end_game
             when Rubygame::KeyDownEvent
               case event.key
-              when Rubygame::K_ESCAPE then @state_machine.change_state(MainMenu)
+              when Rubygame::K_ESCAPE then performer.change_state(MainMenu)
               end
           end
         end

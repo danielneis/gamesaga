@@ -1,6 +1,7 @@
 class Character
 
-  include Observable
+  include EventDispatcher
+  include Automata
   include Rubygame::Sprites::Sprite
   
   # Get a metaclass for this class
@@ -51,7 +52,8 @@ class Character
         @state_machine = FiniteStateMachine.new(self)
 
         # from observable class...
-        @listeners = []
+        # @listeners = []
+        setup_listeners()
       end
     end
   end
@@ -64,39 +66,39 @@ class Character
 
   def take_damage(amount, to_side)
     @damage = amount
-    @state_machine.change_state(States::Hitted) unless @state_machine.in_state? States::Hitted
+    change_state(States::Hitted) unless in_state? States::Hitted
   end
 
   def walk(direction)
 
-    if (not @state_machine.in_state? States::Jump) and (direction == :left or direction == :right)
+    if (not in_state? States::Jump) and (direction == :left or direction == :right)
       @horizontal_direction = direction
-      @state_machine.change_state(States::Walk)
+      change_state(States::Walk)
     end
 
-    if (not @state_machine.in_state? States::Jump) and (direction == :up or direction == :down)
+    if (not in_state? States::Jump) and (direction == :up or direction == :down)
       @vertical_direction = direction
-      @state_machine.change_state(States::Walk)
+      change_state(States::Walk)
     end
   end
 
   def stop_walk(direction)
 
-    @horizontal_direction = nil if (not @state_machine.in_state? States::Jump) and @horizontal_direction == direction
+    @horizontal_direction = nil if (not in_state? States::Jump) and @horizontal_direction == direction
     
     @vertical_direction = nil if @vertical_direction == direction
   end
 
   def jump()
-    if not @state_machine.in_state? States::Jump
+    if not in_state? States::Jump
       @vertical_direction = :up
       @ground = @rect.bottom
-      @state_machine.change_state(States::Jump)
+      change_state(States::Jump)
     end
   end
 
   def attack(direction = :right)
-    @state_machine.change_state(States::Attack)
+    change_state(States::Attack)
   end
 
   def swap_image(image)
@@ -114,6 +116,17 @@ class Character
     end
   end
 
+  def in_state?(state)
+    @state_machine.current_state.is_a? state
+  end
+
+  def change_state(new_state)
+    @state_machine.change_state(new_state)
+  end
+
+  def back_to_last_state()
+    @state_machine.back_to_last_state
+  end
 
   # to move the character on each direction
   def update

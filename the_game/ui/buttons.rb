@@ -38,7 +38,7 @@ module Buttons
     end
 
     def click
-      @state_machine.change_state(States::Game::Run)
+      throw :start_game
     end
   end
 

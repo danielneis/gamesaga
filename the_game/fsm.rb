@@ -4,13 +4,13 @@ class FiniteStateMachine
 
     @owner = owner
 
-    @global_state = global_state.new(self)
+    @global_state = global_state.new
 
-    @current_state = current_state.new(self)
+    @current_state = current_state.new
     @last_state = @current_state
 
-    @global_state.enter(self)
-    @current_state.enter(self)
+    @global_state.enter(@owner)
+    @current_state.enter(@owner)
   end
 
   def in_state?(state)
@@ -23,7 +23,7 @@ class FiniteStateMachine
 
     @current_state.exit(@owner)
 
-    @current_state = new_state.new(self)
+    @current_state = new_state.new
 
     @current_state.enter(@owner)
   end

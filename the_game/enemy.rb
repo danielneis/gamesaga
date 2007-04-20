@@ -1,6 +1,6 @@
 class Enemy < Character
 
-  life 10
+  life 20
   strength 400
   speed 3
 
@@ -8,7 +8,7 @@ class Enemy < Character
 
     super()
 
-    notify_listeners('enemy_death') if @life <= 0
+    notify(:enemy_death, self) if @life <= 0
   end
 
 end

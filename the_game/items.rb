@@ -1,6 +1,6 @@
 class Item
 
-  include Observable
+  include EventDispatcher
   include Rubygame::Sprites::Sprite
 
   attr_reader :effect, :rect
@@ -19,11 +19,12 @@ class Item
     @catched = false
     
     # from observable class...
-    @listeners = []
+    #@listeners = []
+    setup_listeners()
   end
 
   def update
-    notify_listeners('item_catched') if @catched
+    notify(:item_catched, self) if @catched
   end
 
 end
