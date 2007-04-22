@@ -175,44 +175,10 @@ module States
     class Pause < GameState
 
       def enter(performer)
-        @screen.show_cursor = true
-
-        menu = UI::Menu.new(:vertical)
-        menu.push(UI::Buttons::MainMenu.new(@state_machine), UI::Buttons::Quit.new(@state_machine))
-        @hud = UI::Hud.new(menu, :center)
-
-        @title = Display.new('[PAUSED]', [240,10], '', 25)
-        @title.update()
-
-        @hud.draw(@screen)
-
-        @screen.update()
       end
 
       def execute(performer)
 
-        @clock.tick()
-        #@fps_display.update(@clock.fps.to_s)
-
-        @title.update()
-        @hud.draw(@screen)
-        @screen.update()
-
-        @queue.get.each do |event|
-          case event
-            when Rubygame::KeyDownEvent
-              case event.key
-                when Rubygame::K_ESCAPE then throw :end_game
-                when Rubygame::K_RETURN then performer.back_to_last_state()
-              end
-            when Rubygame::MouseDownEvent
-              if event.string == 'left'
-                if @hud.respond_to?('click')
-                  @hud.click(event.pos)
-                end
-              end
-          end
-        end
       end
 
       def exit(performer)

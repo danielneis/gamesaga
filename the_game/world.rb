@@ -1,5 +1,6 @@
 class World
 
+  include EventDispatcher
   include Automata
 
   def initialize
@@ -19,6 +20,8 @@ class World
 
 
     @state_machine = FiniteStateMachine.new(self, States::Game::Run)
+
+    setup_listeners()
 
     @screen.update()
   end
@@ -101,7 +104,7 @@ class World
         throw :end_game
       when Rubygame::KeyDownEvent
         case event.key
-        when Rubygame::K_ESCAPE, Rubygame::K_RETURN then performer.change_state(Pause)
+        when Rubygame::K_ESCAPE, Rubygame::K_RETURN then notify :pause
         when Rubygame::K_LEFT   then @player.walk :left
         when Rubygame::K_RIGHT  then @player.walk :right
         when Rubygame::K_UP     then @player.walk :up

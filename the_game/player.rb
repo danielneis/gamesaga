@@ -12,7 +12,6 @@ class Player < Character
 
     handle_collisions(collide_group(group))
 
-    #notify_listeners('player_death') if @life <= 0
     notify :player_death if @life <= 0
   end
 

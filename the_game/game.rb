@@ -4,7 +4,7 @@ require 'config'
 require 'ui/hud'
 require 'ui/menu'
 require 'ui/buttons'
-require 'ui/mainmenu'
+require 'ui/menus/mainmenu'
 require 'lib/eventdispatcher'
 require 'lib/automata'
 require 'lib/fsm'
@@ -21,7 +21,7 @@ Rubygame.init()
 screen = Rubygame::Screen.set_mode(SCREEN_SIZE)
 screen.set_caption(TITLE)
 
-MainMenu.new do |mm|
+Menus::Main.new do |mm|
 
   mm.on :start_game do
 
@@ -40,6 +40,18 @@ MainMenu.new do |mm|
 
       # Make the background
       world.background = (PIX_ROOT+'background.png')
+    end
+
+    game.subscribe :pause do
+      Menus::Pause.new do |pm|
+        pm.on :continue_game do
+          catch(:end_game) do
+            loop do
+              game.update()
+            end
+          end
+        end
+      end
     end
 
     catch(:end_game) do

@@ -51,8 +51,6 @@ class Character
 
         @state_machine = FiniteStateMachine.new(self)
 
-        # from observable class...
-        # @listeners = []
         setup_listeners()
       end
     end
