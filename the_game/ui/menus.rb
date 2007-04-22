@@ -3,11 +3,13 @@ module Menus
 
     def initialize
 
-      yield self if block_given?
-
       @screen = Rubygame::Screen.get_surface
       @clock = Rubygame::Time::Clock.new(35)
       @queue = Rubygame::Queue.instance
+
+      @screen.show_cursor = true
+
+      yield self if block_given?
 
       menu = UI::Menu.new(:horizontal)
       menu.push(UI::Buttons::NewGame.new(@state_machine), UI::Buttons::Quit.new(@state_machine))
@@ -15,8 +17,6 @@ module Menus
 
       @background = Rubygame::Image.load(PIX_ROOT+'menu_background.jpg')
       @background.blit(@screen, [0,0])
-
-      @screen.show_cursor = true
 
       @screen.update()
 
@@ -63,7 +63,14 @@ module Menus
   class Pause
 
     def initialize
+
+      @screen = Rubygame::Screen.get_surface
+      @clock = Rubygame::Time::Clock.new(35)
+      @queue = Rubygame::Queue.instance
+
       @screen.show_cursor = true
+
+      yield self if block_given?
 
       menu = UI::Menu.new(:vertical)
       menu.push(UI::Buttons::MainMenu.new(@state_machine), UI::Buttons::Quit.new(@state_machine))
@@ -74,8 +81,6 @@ module Menus
 
       @hud.draw(@screen)
 
-      @screen.show_cursor = true
-
       @screen.update()
 
       loop do
@@ -85,7 +90,6 @@ module Menus
 
     def update
       @clock.tick()
-      #@fps_display.update(@clock.fps.to_s)
 
       @title.update()
       @hud.draw(@screen)
@@ -95,8 +99,8 @@ module Menus
         case event
         when Rubygame::KeyDownEvent
           case event.key
-          when Rubygame::K_ESCAPE then throw :end_game
-          when Rubygame::K_RETURN then performer.back_to_last_state()
+          when Rubygame::K_ESCAPE then exit
+          when Rubygame::K_RETURN then notify :continue
           end
         when Rubygame::MouseDownEvent
           if event.string == 'left'

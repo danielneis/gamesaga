@@ -4,7 +4,7 @@ require 'config'
 require 'ui/hud'
 require 'ui/menu'
 require 'ui/buttons'
-require 'ui/menus/mainmenu'
+require 'ui/menus'
 require 'lib/eventdispatcher'
 require 'lib/automata'
 require 'lib/fsm'
@@ -44,7 +44,8 @@ Menus::Main.new do |mm|
 
     game.subscribe :pause do
       Menus::Pause.new do |pm|
-        pm.on :continue_game do
+
+        pm.on :continue do
           catch(:end_game) do
             loop do
               game.update()
@@ -59,6 +60,7 @@ Menus::Main.new do |mm|
         game.update()
       end
     end
+
   end
 
   mm.on :end_game do
