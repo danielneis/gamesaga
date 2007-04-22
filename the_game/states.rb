@@ -165,30 +165,9 @@ module States
       end
 
       def execute(performer)
-        @clock.tick()
-        @queue.get.each do |event|
-          case event
-            when Rubygame::QuitEvent
-              throw :end_game
-            when Rubygame::KeyDownEvent
-              case event.key
-                when Rubygame::K_ESCAPE, Rubygame::K_RETURN then performer.change_state(Pause)
-                when Rubygame::K_LEFT   then @player.walk :left
-                when Rubygame::K_RIGHT  then @player.walk :right
-                when Rubygame::K_UP     then @player.walk :up
-                when Rubygame::K_DOWN   then @player.walk :down
-                when Rubygame::K_S      then @player.attack
-                when Rubygame::K_D      then @player.jump
-              end
-            when Rubygame::KeyUpEvent
-              case event.key
-                when Rubygame::K_LEFT  then @player.stop_walk :left
-                when Rubygame::K_RIGHT then @player.stop_walk :right
-                when Rubygame::K_UP    then @player.stop_walk :up
-                when Rubygame::K_DOWN  then @player.stop_walk :down
-              end
-          end
-        end
+      end
+      
+      def exit(performer)
       end
 
     end
@@ -244,25 +223,12 @@ module States
     class PlayerDeath < GameState
 
       def enter(performer)
-        # after player death, print a message on the screen and wait for the player to exit
-        title = Display.new('DIED! press [ESC] to to return to main menu', [50, 200], '', 25)
-        title.update()
       end
 
       def execute(performer)
+      end
 
-        @screen.update()
-
-        @queue.get.each do |event|
-          case event
-            when Rubygame::QuitEvent
-              throw :end_game
-            when Rubygame::KeyDownEvent
-              case event.key
-              when Rubygame::K_ESCAPE then performer.change_state(MainMenu)
-              end
-          end
-        end
+      def exit(performer)
       end
     end
   end

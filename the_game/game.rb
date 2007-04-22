@@ -26,7 +26,7 @@ MainMenu.new do |mm|
   mm.on :start_game do
 
     game = World.new do |world|
-      
+
       # first, we need a player
       world.add_player('panda.png')
 
@@ -35,8 +35,8 @@ MainMenu.new do |mm|
                       Enemy.new(210, 350, 'panda.invert.png'))
 
       #create some Items
-      world.add_items(Item.new(150, 350, 'chicken.png', {:life => 50}),
-                Item.new(500, 350, 'meat.png', {:life => 137}))
+      world.add_items(Item.new(150, 350, 'chicken.png', {:life => -50}),
+                      Item.new(500, 350, 'meat.png', {:life => -137}))
 
       # Make the background
       world.background = (PIX_ROOT+'background.png')

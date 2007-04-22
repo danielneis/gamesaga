@@ -1,6 +1,6 @@
 module Automata
   def in_state?(state)
-    @state_machine.current_state.is_a? state
+    @state_machine.in_state? state
   end
 
   def change_state(new_state)

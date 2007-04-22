@@ -27,10 +27,10 @@ class MainMenu
     @clock.tick()
     @queue.get().each do |event|
       case event
-      when Rubygame::QuitEvent then throw :end_game
+      when Rubygame::QuitEvent then exit
       when Rubygame::KeyDownEvent
         case event.key
-        when Rubygame::K_ESCAPE then notify :end_game
+        when Rubygame::K_ESCAPE then exit
         when Rubygame::K_RETURN then notify :start_game
         end
       when Rubygame::MouseDownEvent

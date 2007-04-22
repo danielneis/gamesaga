@@ -27,7 +27,22 @@ class World
     @player = Player.new(300, 400, image)
 
     @player.subscribe :player_death do
-      change_state(PlayerDeath)
+      title = Display.new('DIED! press [ESC] to end game', [50, 200], '', 25)
+      title.update()
+
+      @screen.update()
+
+      loop do
+        @queue.get.each do |event|
+          case event
+          when Rubygame::QuitEvent then exit
+          when Rubygame::KeyDownEvent
+            case event.key
+            when Rubygame::K_ESCAPE then exit
+            end
+          end
+        end
+      end
     end
   end
 
@@ -55,6 +70,8 @@ class World
   end
 
   def update
+    @clock.tick()
+
     @state_machine.update()
 
     @background.blit(@screen, [0, 0])
@@ -72,8 +89,35 @@ class World
     @items.draw(@screen)
 
     @screen.update()
+
+    handle_inputs
   end
- 
-  def item_catched(item)
+
+  private
+  def handle_inputs
+    @queue.get.each do |event|
+      case event
+      when Rubygame::QuitEvent
+        throw :end_game
+      when Rubygame::KeyDownEvent
+        case event.key
+        when Rubygame::K_ESCAPE, Rubygame::K_RETURN then performer.change_state(Pause)
+        when Rubygame::K_LEFT   then @player.walk :left
+        when Rubygame::K_RIGHT  then @player.walk :right
+        when Rubygame::K_UP     then @player.walk :up
+        when Rubygame::K_DOWN   then @player.walk :down
+        when Rubygame::K_S      then @player.attack
+        when Rubygame::K_D      then @player.jump
+        end
+      when Rubygame::KeyUpEvent
+        case event.key
+        when Rubygame::K_LEFT  then @player.stop_walk :left
+        when Rubygame::K_RIGHT then @player.stop_walk :right
+        when Rubygame::K_UP    then @player.stop_walk :up
+        when Rubygame::K_DOWN  then @player.stop_walk :down
+        end
+      end
+    end
   end
+
 end
