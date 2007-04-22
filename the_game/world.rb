@@ -1,7 +1,6 @@
 class World
 
   include EventDispatcher
-  include Automata
 
   def initialize
 
@@ -18,8 +17,6 @@ class World
     @kills = 0
     @kills_display =  Display.new('Kills:', [100,0], @kills.to_s)
 
-
-    @state_machine = FiniteStateMachine.new(self, States::Game::Run)
 
     setup_listeners()
 
@@ -74,8 +71,6 @@ class World
 
   def update
     @clock.tick()
-
-    @state_machine.update()
 
     @background.blit(@screen, [0, 0])
 

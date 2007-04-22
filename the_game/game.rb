@@ -21,6 +21,17 @@ Rubygame.init()
 screen = Rubygame::Screen.set_mode(SCREEN_SIZE)
 screen.set_caption(TITLE)
 
+#pessima ideia deixar isso aqui, mas por enquanto ta valendo
+def game_loop(game)
+  screen = Rubygame::Screen.get_surface
+  catch(:end_game) do
+    screen.show_cursor = false
+    loop do
+      game.update()
+    end
+  end
+end
+
 Menus::Main.new do |mm|
 
   mm.on :start_game do
@@ -46,21 +57,12 @@ Menus::Main.new do |mm|
       Menus::Pause.new do |pm|
 
         pm.on :continue do
-          catch(:end_game) do
-            loop do
-              game.update()
-            end
-          end
+          game_loop(game)
         end
       end
     end
 
-    catch(:end_game) do
-      loop do
-        game.update()
-      end
-    end
-
+    game_loop(game)
   end
 
   mm.on :end_game do

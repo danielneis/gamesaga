@@ -18,8 +18,6 @@ class Item
 
     @catched = false
     
-    # from observable class...
-    #@listeners = []
     setup_listeners()
   end
 

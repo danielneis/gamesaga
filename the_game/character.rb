@@ -114,15 +114,7 @@ class Character
     end
   end
 
-  # to move the character on each direction
   def update
-
-    if !(Rubygame::Time.get_ticks - @prevAnim < 25)
-
-      @state_machine.update()
-
-      @prevAnim = Rubygame::Time.get_ticks
-
-    end
+    @state_machine.update()
   end
 end
