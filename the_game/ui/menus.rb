@@ -1,13 +1,19 @@
 module Menus
-  class Main
 
-    def initialize
-
+  class Menu
+    def setup
       @screen = Rubygame::Screen.get_surface
       @clock = Rubygame::Time::Clock.new(35)
       @queue = Rubygame::Queue.instance
 
       @screen.show_cursor = true
+    end
+  end
+
+  class Main < Menu
+
+    def initialize
+      setup()
 
       yield self if block_given?
 
@@ -60,15 +66,11 @@ module Menus
 
   end
 
-  class Pause
+  class Pause < Menu
 
     def initialize
 
-      @screen = Rubygame::Screen.get_surface
-      @clock = Rubygame::Time::Clock.new(35)
-      @queue = Rubygame::Queue.instance
-
-      @screen.show_cursor = true
+      setup()
 
       yield self if block_given?
 

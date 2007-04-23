@@ -95,8 +95,7 @@ class World
   def handle_inputs
     @queue.get.each do |event|
       case event
-      when Rubygame::QuitEvent
-        throw :end_game
+      when Rubygame::QuitEvent then exit
       when Rubygame::KeyDownEvent
         case event.key
         when Rubygame::K_ESCAPE, Rubygame::K_RETURN then notify :pause
