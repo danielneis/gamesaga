@@ -83,12 +83,22 @@ module States
         else
           performer.stop_walk :down
           vertical_speed = nil
-          performer.back_to_last_state
+          if (performer.has_next_state?)
+            performer.go_to_next_state
+          else
+            performer.back_to_last_state
+          end
         end
       end
       
       # move the character
       performer.rect.bottom += vertical_speed if not vertical_speed.nil?
+    end
+
+    def exit(performer)
+      if performer.has_next_state? and performer.next_state == States::State
+        performer.stop_walk(performer.horizontal_direction)
+      end
     end
   end
 

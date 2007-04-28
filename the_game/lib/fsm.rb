@@ -1,5 +1,7 @@
 class FiniteStateMachine
 
+  attr_reader :next_state
+
   def initialize(owner, current_state = States::State, global_state = States::State)
 
     @owner = owner
@@ -11,10 +13,25 @@ class FiniteStateMachine
 
     @global_state.enter(@owner)
     @current_state.enter(@owner)
+
+    @next_state = nil
+  end
+
+  def next_state=(state)
+    @next_state = state
   end
 
   def in_state?(state)
     @current_state.is_a? state
+  end
+
+  def has_next_state?()
+    !@next_state.nil?
+  end
+
+  def go_to_next_state()
+    change_state(@next_state)
+    @next_state = nil
   end
 
   def change_state(new_state)
