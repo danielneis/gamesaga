@@ -42,11 +42,11 @@ Menus::Main.new do |mm|
       world.add_player('panda.png')
 
       #add some NPCs enemies
-      world.add_enemy(Enemy.new(400, 350, 'panda.invert.png'),
-                      Enemy.new(210, 350, 'panda.invert.png'))
+      world.add_enemy(Enemy.new(400, 400, 'panda.invert.png'),
+                      Enemy.new(210, 410, 'panda.invert.png'))
 
       #create some Items
-      world.add_items(Item.new(150, 350, 'chicken.png', {:life => -50}),
+      world.add_items(Item.new(150, 400, 'chicken.png', {:life => -50}),
                       Item.new(500, 350, 'meat.png', {:life => -137}))
 
       # Make the background

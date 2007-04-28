@@ -20,6 +20,8 @@ class World
 
     setup_listeners()
 
+    @all_sprites = [@items, @enemies, @player].flatten!
+
     @screen.update()
   end
 
@@ -82,9 +84,8 @@ class World
     @enemies.update()
     @items.update()
 
-    @player.draw(@screen)
-    @enemies.draw(@screen)
-    @items.draw(@screen)
+    @all_sprites.sort! { |a,b| a.rect.bottom <=> b.rect.bottom }
+    @all_sprites.each  { |sprite| sprite.draw(@screen) }
 
     @screen.update()
 
