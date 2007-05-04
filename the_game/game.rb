@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 require 'rubygame'
 require 'config'
-require 'ui/hud'
-require 'ui/menu'
-require 'ui/buttons'
-require 'ui/menus'
 require 'lib/eventdispatcher'
 require 'lib/automata'
 require 'lib/fsm'
 require 'lib/display'
+require 'ui/hud'
+require 'ui/menu'
+require 'ui/buttons'
+require 'ui/menus'
 require 'states'
 require 'character'
 require 'player'
@@ -53,7 +53,7 @@ Menus::Main.new do |mm|
       world.background = (PIX_ROOT+'background.png')
     end
 
-    game.subscribe :pause do
+    game.on :pause do
       Menus::Pause.new do |pm|
 
         pm.on :continue do

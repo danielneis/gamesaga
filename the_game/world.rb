@@ -28,7 +28,7 @@ class World
   def add_player(image)
     @player = Player.new(300, 400, image)
 
-    @player.subscribe :player_death do
+    @player.on :player_death do
       title = Display.new('DIED! press [ESC] to end game', [50, 200], '', 25)
       title.update()
 
@@ -56,7 +56,7 @@ class World
       @kills += 1
     end
 
-    @enemies.each { |enemy| enemy.subscribe(:enemy_death, &callback) }
+    @enemies.each { |enemy| enemy.on(:enemy_death, &callback) }
   end
 
   def add_items(*items)
@@ -64,7 +64,7 @@ class World
 
     callback = lambda { |item| @items.delete(item) }
 
-    @items.each { |item| item.subscribe(:item_catched, &callback)}
+    @items.each { |item| item.on(:item_catched, &callback)}
   end
 
   def background=(image)

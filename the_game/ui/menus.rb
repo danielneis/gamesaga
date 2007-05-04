@@ -1,12 +1,17 @@
 module Menus
 
   class Menu
+
+    include EventDispatcher
+
     def setup
       @screen = Rubygame::Screen.get_surface
+      @screen.show_cursor = true
+
       @clock = Rubygame::Time::Clock.new(35)
       @queue = Rubygame::Queue.instance
-
-      @screen.show_cursor = true
+      
+      setup_listeners()
     end
   end
 
@@ -53,15 +58,6 @@ module Menus
 
       @hud.draw(@screen)
       @screen.update()
-    end
-
-    def on(event, &callback)
-      (@listeners ||= {})[event] = callback
-    end
-
-    private
-    def notify(event, *args)
-      @listeners[event].call(*args) if @listeners[event].respond_to? :call
     end
 
   end
@@ -112,15 +108,6 @@ module Menus
           end
         end
       end
-    end
-
-    def on(event, &callback)
-      (@listeners ||= {})[event] = callback
-    end
-
-    private
-    def notify(event, *args)
-      @listeners[event].call(*args) if @listeners[event].respond_to? :call
     end
   end
 end

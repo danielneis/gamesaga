@@ -1,10 +1,13 @@
 module EventDispatcher
+
   def setup_listeners
     @event_dispatcher_listeners = {}
   end
-  def subscribe(event, &callback)
+
+  def on(event, &callback)
     (@event_dispatcher_listeners[event] ||= []) << callback
   end
+
   protected
   def notify(event, *args)
     if @event_dispatcher_listeners[event]
