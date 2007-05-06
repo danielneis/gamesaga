@@ -23,6 +23,8 @@ class World
     @all_sprites = [@items, @enemies, @player].flatten!
 
     @screen.update()
+
+    run
   end
 
   def add_player(image)
@@ -69,6 +71,14 @@ class World
 
   def background=(image)
     @background = Rubygame::Image.load(image)
+  end
+
+  def run
+    screen = Rubygame::Screen.get_surface
+    screen.show_cursor = false
+    loop do
+      update()
+    end
   end
 
   def update

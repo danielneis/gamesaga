@@ -31,6 +31,9 @@ module Menus
 
       @screen.update()
 
+    end
+
+    def run
       loop do
         update
       end
