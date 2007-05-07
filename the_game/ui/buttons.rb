@@ -3,6 +3,7 @@ module Buttons
 
   class Button
 
+    include EventDispatcher
     include Rubygame::Sprites::Sprite
 
     attr_accessor :rect
@@ -13,6 +14,7 @@ module Buttons
       @rect = Rubygame::Rect.new(0,0,*@image.size)
 
       @state_machine = state_machine
+      setup_listeners()
     end
 
     def click
@@ -27,7 +29,7 @@ module Buttons
     end
 
     def click
-      throw :end_game
+      notify :quit_game
     end
   end
 
@@ -38,7 +40,7 @@ module Buttons
     end
 
     def click
-      throw :start_game
+      notify :start_game
     end
   end
 
@@ -49,7 +51,6 @@ module Buttons
     end
 
     def click
-      @state_machine.change_state(States::Game::MainMenu)
       #throw :run_game
     end
   end

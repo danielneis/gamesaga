@@ -31,6 +31,16 @@ module Menus
 
       @screen.update()
 
+      menu.each do |button|
+        button.on :start_game do 
+          notify :start_game
+        end
+        button.on :quit_game do
+          notify :quit_game
+        end
+      end
+
+      run
     end
 
     def run

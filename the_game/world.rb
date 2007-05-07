@@ -4,6 +4,8 @@ class World
 
   def initialize
 
+    setup_listeners()
+
     yield self if block_given?
 
     @screen = Rubygame::Screen.get_surface
@@ -18,7 +20,6 @@ class World
     @kills_display =  Display.new('Kills:', [100,0], @kills.to_s)
 
 
-    setup_listeners()
 
     @all_sprites = [@items, @enemies, @player].flatten!
 

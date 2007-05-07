@@ -40,19 +40,21 @@ Menus::Main.new do |mm|
 
       # Make the background
       world.background = (PIX_ROOT+'background.png')
-    end
+      
+      # Listen for to create the pause menu
+      world.on :pause do
+        Menus::Pause.new do |pm|
 
-    game.on :pause do
-      Menus::Pause.new do |pm|
-
-        pm.on :continue do
-          game.run
+          pm.on :continue do
+            world.run
+          end
         end
       end
     end
   end
 
-  mm.on :end_game do
+
+  mm.on :quit_game do
     exit
   end
-end.run
+end
