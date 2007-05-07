@@ -95,7 +95,7 @@ class Character
   end
 
   def attack(direction = :right)
-    change_state(States::Attack)
+    change_state(States::Attack) if not in_state? States::Jump
   end
 
   def swap_image(image)
