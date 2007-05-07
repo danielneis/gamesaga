@@ -91,8 +91,9 @@ class World
     @enemies.update()
     @items.update()
 
-    [@player, @enemies, @items].flatten!.sort! { |a,b| a.rect.bottom <=> b.rect.bottom }
-    [@player, @enemies, @items].flatten!.each  { |sprite| sprite.draw(@screen) }
+    
+    all_sprites = [@player, @enemies, @items].flatten!.sort! { |a,b| a.rect.bottom <=> b.rect.bottom }
+    all_sprites.each  { |sprite| sprite.draw(@screen) }
 
     @screen.update()
 
