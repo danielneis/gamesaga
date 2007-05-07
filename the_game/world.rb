@@ -19,10 +19,6 @@ class World
     @kills = 0
     @kills_display =  Display.new('Kills:', [100,0], @kills.to_s)
 
-
-
-    @all_sprites = [@items, @enemies, @player].flatten!
-
     @screen.update()
 
     run
@@ -95,8 +91,8 @@ class World
     @enemies.update()
     @items.update()
 
-    @all_sprites.sort! { |a,b| a.rect.bottom <=> b.rect.bottom }
-    @all_sprites.each  { |sprite| sprite.draw(@screen) }
+    [@player, @enemies, @items].flatten!.sort! { |a,b| a.rect.bottom <=> b.rect.bottom }
+    [@player, @enemies, @items].flatten!.each  { |sprite| sprite.draw(@screen) }
 
     @screen.update()
 
