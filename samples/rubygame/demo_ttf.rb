@@ -5,7 +5,8 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-require "rubygame"
+require 'rubygems'
+require_gem "rubygame", '2.0.0'
 include Rubygame
 Rubygame.init()
 

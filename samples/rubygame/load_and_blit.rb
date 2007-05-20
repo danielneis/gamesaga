@@ -2,7 +2,8 @@
 
 # A very basic sample application.
 
-require "rubygame"
+require 'rubygems'
+require_gem "rubygame", '2.0.0'
 include Rubygame
 
 Rubygame.init

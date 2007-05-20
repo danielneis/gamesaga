@@ -8,7 +8,8 @@
 # it only allows ruby-opengl to use the Screen as its viewport. You MUST
 # have ruby-opengl installed to run this demo!
 
-require 'rubygame'
+require 'rubygems'
+require_gem "rubygame", '2.0.0'
 
 begin
   require 'opengl'

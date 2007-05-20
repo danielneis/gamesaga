@@ -9,7 +9,8 @@
 # Rubygame's features, so it acts as a test program to see
 # whether your installation of Rubygame is working.
 
-require "rubygame"
+require 'rubygems'
+require_gem "rubygame", '2.0.0'
 include Rubygame
 
 $stdout.sync = true

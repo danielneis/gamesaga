@@ -3,7 +3,8 @@
 # Original script was contributed by ageldama (Yun, Jonghyouk)
 
 require 'encoding/character/utf-8'
-require 'rubygame'
+require 'rubygems'
+require_gem "rubygame", '2.0.0'
 
 # Initialize Rubygame
 Rubygame.init

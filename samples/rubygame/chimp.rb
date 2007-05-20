@@ -23,7 +23,8 @@
 # noted by comments. As such, this might serve as something of a
 # Rosetta Stone for a pygame user switching to rubygame.
 
-require "rubygame"
+require 'rubygems'
+require_gem "rubygame", '2.0.0'
 
 puts 'Warning, images disabled' unless 
   ($image_ok = (Rubygame::VERSIONS[:sdl_image] != nil))
