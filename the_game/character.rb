@@ -36,18 +36,20 @@ class Character
 
         @screen = Rubygame::Screen.get_surface
 
-        @still_image = Rubygame::Image.load(PIX_ROOT+image)
-        @attack_image = Rubygame::Image.load(PIX_ROOT+'panda.attack.png')
+        @still_image = Rubygame::Surface.load_image(PIX_ROOT+image)
+        @attack_image = Rubygame::Surface.load_image(PIX_ROOT+'panda.attack.png')
 
         @image = @still_image
         @image.set_colorkey(@image.get_at([0, 0]))
-        @rect = Rubygame::Rect.new(x, y, *@image.size)
+        @rect = @image.make_rect
+        @rect.move!(x,y)
 
         # @area is the area of the screen, which the player will walk across
         @area = Rubygame::Rect.new(0, 403, *[SCREEN_WIDTH, SCREEN_HEIGHT - 403])
 
         # to use in first call of update methods
-        @prevAnim = Rubygame::Time.get_ticks()
+        @clock = Rubygame::Clock.new
+        @prevAnim = @clock.ticks()
 
         @state_machine = FiniteStateMachine.new(self)
 

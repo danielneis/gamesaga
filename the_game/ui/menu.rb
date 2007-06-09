@@ -1,16 +1,20 @@
 module UI
 class Menu < Rubygame::Sprites::Group
 
-  attr_reader :size
-  def initialize(orientation)
+  attr_reader :width, :height
+  def initialize(orientation, margin = 10)
+
     @orientation = orientation
-    @margin = 10
+    @margin = margin
     @button_height = 0
     @button_width  = 0
+
   end
 
   def push(*args)
+
     super(*args)
+
     self.each do |button|
       @button_height = button.rect.h if button.rect.h > @button_height
       @button_width = button.rect.w if button.rect.w > @button_width
@@ -38,27 +42,29 @@ class Menu < Rubygame::Sprites::Group
 
     image_detour = 0
     self.collect do |button|
+
       if @orientation == :vertical
         button.rect.move!(@margin, @margin + image_detour)
       elsif @orientation == :horizontal
         button.rect.move!(@margin + image_detour, @margin)
       end
+
       button.draw( destination )
-      button.rect.move!(position[0], position[1])
+      button.rect.move!(*position)
+
       if @orientation == :vertical
         image_detour += @button_height + @margin
       elsif @orientation == :horizontal
         image_detour += @button_width + @margin
       end
-    end
 
+    end
   end
 
   def click(position)
     self.each do |button|
-      button.click() if button.rect.collide_point?(position)
+      button.click() if button.rect.collide_point?(*position)
     end
   end
-
 end
 end

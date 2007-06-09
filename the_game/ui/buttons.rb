@@ -8,24 +8,22 @@ module Buttons
 
     attr_accessor :rect
 
-    def initialize(image, state_machine)
+    def initialize(image)
       super()
-      @image = Rubygame::Image.load(image)
-      @rect = Rubygame::Rect.new(0,0,*@image.size)
+      @image = Rubygame::Surface.load_image(image)
+      @rect = @image.make_rect
 
-      @state_machine = state_machine
       setup_listeners()
     end
 
     def click
     end
-
   end
 
   class Quit < Button
 
-    def initialize(state_machine)
-      super(PIX_ROOT+'menu/quit.png', state_machine)
+    def initialize
+      super(PIX_ROOT+'menu/quit.png')
     end
 
     def click
@@ -35,8 +33,8 @@ module Buttons
 
   class NewGame < Button
 
-    def initialize(state_machine)
-      super(PIX_ROOT+'menu/newgame.png', state_machine)
+    def initialize
+      super(PIX_ROOT+'menu/newgame.png')
     end
 
     def click
@@ -46,12 +44,12 @@ module Buttons
 
   class MainMenu < Button
 
-    def initialize(state_machine)
-      super(PIX_ROOT+'menu/mainmenu.png', state_machine)
+    def initialize
+      super(PIX_ROOT+'menu/mainmenu.png')
     end
 
     def click
-      #throw :run_game
+      notify :main_menu
     end
   end
 end

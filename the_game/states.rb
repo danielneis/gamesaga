@@ -136,7 +136,7 @@ module States
 
       @screen = Rubygame::Screen.get_surface
 
-      @pow_image = Rubygame::Image.load(PIX_ROOT+'pow.png')
+      @pow_image = Rubygame::Surface.load_image(PIX_ROOT+'pow.png')
       @pow_image.blit(@screen, [performer.rect.x, performer.rect.y] )
     end
 

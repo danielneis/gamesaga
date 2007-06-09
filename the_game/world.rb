@@ -9,19 +9,17 @@ class World
     yield self if block_given?
 
     @screen = Rubygame::Screen.get_surface
-    @clock = Rubygame::Time::Clock.new(35)
-    @queue = Rubygame::Queue.instance
+    @clock = Rubygame::Clock.new
+    @queue = Rubygame::EventQueue.new
 
     # Create the life bar, FPS display etc.
-    @fps_display = Display.new('FPS:', [0,0], @clock.fps.to_s)
-    @life_display =  Display.new('Life:', [50,0], @player.life.to_s)
+    @fps_display = Display.new('FPS:', [0,0])
+    @life_display =  Display.new('Life:', [50,0])
 
     @kills = 0
-    @kills_display =  Display.new('Kills:', [100,0], @kills.to_s)
+    @kills_display =  Display.new('Kills:', [100,0])
 
     @screen.update()
-
-    run
   end
 
   def add_player(image)
@@ -34,12 +32,12 @@ class World
       @screen.update()
 
       loop do
-        @queue.get.each do |event|
+        @queue.each do |event|
           case event
-          when Rubygame::QuitEvent then exit
+          when Rubygame::QuitEvent then throw :exit
           when Rubygame::KeyDownEvent
             case event.key
-            when Rubygame::K_ESCAPE then exit
+            when Rubygame::K_ESCAPE then throw :exit
             end
           end
         end
@@ -67,12 +65,11 @@ class World
   end
 
   def background=(image)
-    @background = Rubygame::Image.load(image)
+    @background = Rubygame::Surface.load_image(image)
   end
 
   def run
-    screen = Rubygame::Screen.get_surface
-    screen.show_cursor = false
+    @screen.show_cursor = false
     loop do
       update()
     end
@@ -84,7 +81,7 @@ class World
     @background.blit(@screen, [0, 0])
 
     @life_display.update(@player.life.to_s)
-    @fps_display.update(@clock.fps.to_s)
+    @fps_display.update(@clock.framerate.to_i.to_s)
     @kills_display.update(@kills.to_s)
 
     @player.update(@enemies, @items)
@@ -102,9 +99,9 @@ class World
 
   private
   def handle_inputs
-    @queue.get.each do |event|
+    @queue.each do |event|
       case event
-      when Rubygame::QuitEvent then exit
+      when Rubygame::QuitEvent then throw :exit
       when Rubygame::KeyDownEvent
         case event.key
         when Rubygame::K_ESCAPE, Rubygame::K_RETURN then notify :pause

@@ -9,14 +9,16 @@ class Hud
     @hud_surface.set_colorkey(@hud_surface.get_at([0,0]))
 
     @position = Array.new
-    @position[0] = ((SCREEN_WIDTH - @menu.size[0]) / 2)
+    @position[0] = ((SCREEN_WIDTH - @menu.width) / 2)
+
     if vertical_align == :center
-      @position[1] = ((SCREEN_HEIGHT - @menu.size[1]) / 2)
+      @position[1] = ((SCREEN_HEIGHT - @menu.height) / 2)
     elsif vertical_align == :bottom
-      @position[1] = SCREEN_HEIGHT - @menu.size[1]
+      @position[1] = SCREEN_HEIGHT - @menu.height
     elsif vertical_align == :top
       @position[1] = 0
     end
+
     @menu.draw(@hud_surface, @position)
   end
 

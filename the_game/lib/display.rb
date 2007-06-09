@@ -1,3 +1,4 @@
+require 'rubygame/sfont'
 class Display < Rubygame::SFont
 
   Rubygame::TTF.setup()

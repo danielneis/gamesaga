@@ -8,8 +8,8 @@ module Menus
       @screen = Rubygame::Screen.get_surface
       @screen.show_cursor = true
 
-      @clock = Rubygame::Time::Clock.new(35)
-      @queue = Rubygame::Queue.instance
+      @clock = Rubygame::Clock.new
+      @queue = Rubygame::EventQueue.new
       
       setup_listeners()
     end
@@ -18,15 +18,16 @@ module Menus
   class Main < Menu
 
     def initialize
+
       setup()
 
       yield self if block_given?
 
       menu = UI::Menu.new(:horizontal)
-      menu.push(UI::Buttons::NewGame.new(@state_machine), UI::Buttons::Quit.new(@state_machine))
+      menu.push(UI::Buttons::NewGame.new(), UI::Buttons::Quit.new())
       @hud = UI::Hud.new(menu, :bottom)
 
-      @background = Rubygame::Image.load(PIX_ROOT+'menu_background.jpg')
+      @background = Rubygame::Surface.load_image(PIX_ROOT+'menu_background.jpg')
       @background.blit(@screen, [0,0])
 
       @screen.update()
@@ -36,11 +37,9 @@ module Menus
           notify :start_game
         end
         button.on :quit_game do
-          notify :quit_game
+          throw :exit
         end
       end
-
-      run
     end
 
     def run
@@ -52,12 +51,12 @@ module Menus
     def update
 
       @clock.tick()
-      @queue.get().each do |event|
+      @queue.each do |event|
         case event
-        when Rubygame::QuitEvent then exit
+        when Rubygame::QuitEvent then throw :exit
         when Rubygame::KeyDownEvent
           case event.key
-          when Rubygame::K_ESCAPE then exit
+          when Rubygame::K_ESCAPE then throw :exit
           when Rubygame::K_RETURN then notify :start_game
           end
         when Rubygame::MouseDownEvent
@@ -84,7 +83,7 @@ module Menus
       yield self if block_given?
 
       menu = UI::Menu.new(:vertical)
-      menu.push(UI::Buttons::MainMenu.new(@state_machine), UI::Buttons::Quit.new(@state_machine))
+      menu.push(UI::Buttons::MainMenu.new(), UI::Buttons::Quit.new())
       @hud = UI::Hud.new(menu, :center)
 
       @title = Display.new('[PAUSED]', [240,10], '', 25)
@@ -94,6 +93,17 @@ module Menus
 
       @screen.update()
 
+      menu.each do |button|
+        button.on :quit_game do
+          throw :exit
+        end
+        button.on :main_menu do
+          notify :main_menu
+        end
+      end
+    end
+
+    def run
       loop do
         update
       end
@@ -106,12 +116,12 @@ module Menus
       @hud.draw(@screen)
       @screen.update()
 
-      @queue.get.each do |event|
+      @queue.each do |event|
         case event
         when Rubygame::KeyDownEvent
           case event.key
-          when Rubygame::K_ESCAPE then exit
-          when Rubygame::K_RETURN then notify :continue
+          when Rubygame::K_ESCAPE then throw :exit
+          when Rubygame::K_RETURN then throw :continue
           end
         when Rubygame::MouseDownEvent
           if event.string == 'left'

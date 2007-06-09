@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-require 'rubygame'
+require 'rubygems'
+require_gem 'rubygame', '2.0.0'
 require 'config'
 require 'lib/eventdispatcher'
 require 'lib/automata'
@@ -18,43 +19,44 @@ require 'world'
 
 # Initialize rubygame, set up screen and start the event queue
 Rubygame.init()
-screen = Rubygame::Screen.set_mode(SCREEN_SIZE)
-screen.set_caption(TITLE)
+screen = Rubygame::Screen.new(SCREEN_SIZE)
+screen.title = TITLE
 
-Menus::Main.new do |mm|
+Rubygame::Clock.new do |clock|
+  clock.target_framerate = 35
+end
 
-  mm.on :start_game do
+catch(:exit) do 
+  Menus::Main.new do |mm|
 
-    game = World.new do |world|
+    mm.on :start_game do
 
-      # first, we need a player
-      world.add_player('panda.png')
+      game = World.new do |g|
 
-      #add some NPCs enemies
-      world.add_enemy(Enemy.new(400, 400, 'panda.invert.png'),
-                      Enemy.new(210, 410, 'panda.invert.png'))
+        # first, we need a player
+        g.add_player('panda.png')
 
-      #create some Items
-      world.add_items(Item.new(150, 400, 'chicken.png', {:life => 50}),
-                      Item.new(500, 350, 'meat.png', {:life => 137}))
+        #add some NPCs enemies
+        g.add_enemy(Enemy.new(400, 400, 'panda.invert.png'),
+                        Enemy.new(210, 410, 'panda.invert.png'))
 
-      # Make the background
-      world.background = (PIX_ROOT+'background.png')
-      
-      # Listen for to create the pause menu
-      world.on :pause do
-        Menus::Pause.new do |pm|
+        #create some Items
+        g.add_items(Item.new(150, 400, 'chicken.png', {:life => 50}),
+                        Item.new(500, 350, 'meat.png', {:life => 137}))
 
-          pm.on :continue do
-            world.run
+        # Make the background
+        g.background = (PIX_ROOT+'background.png')
+        
+        # Listen for to create the pause menu
+        g.on :pause do
+          catch :continue do
+            Menus::Pause.new.run
           end
         end
-      end
-    end
-  end
 
-
-  mm.on :quit_game do
-    exit
-  end
+      end.run # game
+    end # start game
+  end.run # main menu
 end
+
+Rubygame::quit

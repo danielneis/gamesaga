@@ -10,9 +10,10 @@ class Item
 
     super()
 
-    @image = Rubygame::Image.load(PIX_ROOT+'items/'+image)
+    @image = Rubygame::Surface.load_image(PIX_ROOT+'items/'+image)
     @image.set_colorkey(@image.get_at([0, 0]))
-    @rect = Rubygame::Rect.new(x, y, *@image.size)
+    @rect = @image.make_rect
+    @rect.move!(x,y)
 
     @effect = effect
 
