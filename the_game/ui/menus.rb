@@ -4,7 +4,7 @@ module Menus
 
     include EventDispatcher
 
-    def setup
+    def initialize
       @screen = Rubygame::Screen.get_surface
       @screen.show_cursor = true
 
@@ -12,34 +12,12 @@ module Menus
       @queue = Rubygame::EventQueue.new
       
       setup_listeners()
-    end
-  end
-
-  class Main < Menu
-
-    def initialize
-
-      setup()
 
       yield self if block_given?
 
-      menu = UI::Menu.new(:horizontal)
-      menu.push(UI::Buttons::NewGame.new(), UI::Buttons::Quit.new())
-      @hud = UI::Hud.new(menu, :bottom)
-
-      @background = Rubygame::Surface.load_image(PIX_ROOT+'menu_background.jpg')
-      @background.blit(@screen, [0,0])
-
+      @background.blit(@screen, [0,0]) unless @background.nil?
+      @hud.draw(@screen)
       @screen.update()
-
-      menu.each do |button|
-        button.on :start_game do 
-          notify :start_game
-        end
-        button.on :quit_game do
-          throw :exit
-        end
-      end
     end
 
     def run
@@ -49,8 +27,33 @@ module Menus
     end
 
     def update
-
       @clock.tick()
+      @hud.draw(@screen)
+      @screen.update()
+    end
+  end
+
+  class Main < Menu
+
+    def initialize
+
+      @menu.each do |button|
+        button.on :start_game do 
+          notify :start_game
+        end
+        button.on :quit_game do
+          throw :exit
+        end
+      end
+
+      super()
+
+    end
+
+    def update
+
+      super()
+
       @queue.each do |event|
         case event
         when Rubygame::QuitEvent then throw :exit
@@ -71,29 +74,16 @@ module Menus
       @hud.draw(@screen)
       @screen.update()
     end
-
   end
 
   class Pause < Menu
 
     def initialize
 
-      setup()
-
-      yield self if block_given?
-
-      menu = UI::Menu.new(:vertical)
-      menu.push(UI::Buttons::MainMenu.new(), UI::Buttons::Quit.new())
-      @hud = UI::Hud.new(menu, :center)
-
       @title = Display.new('[PAUSED]', [240,10], '', 25)
       @title.update()
 
-      @hud.draw(@screen)
-
-      @screen.update()
-
-      menu.each do |button|
+      @menu.each do |button|
         button.on :quit_game do
           throw :exit
         end
@@ -101,20 +91,13 @@ module Menus
           notify :main_menu
         end
       end
-    end
 
-    def run
-      loop do
-        update
-      end
+      super()
     end
 
     def update
-      @clock.tick()
 
       @title.update()
-      @hud.draw(@screen)
-      @screen.update()
 
       @queue.each do |event|
         case event

@@ -12,6 +12,19 @@ module States
     end
   end
 
+  class Stop < State
+
+    def enter(performer)
+      performer.stop if performer.respond_to? 'stop'
+    end
+
+    def execute(performer)
+    end
+
+    def exit(performer)
+    end
+  end
+
   class Walk < State
 
     def execute(performer)

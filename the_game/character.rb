@@ -83,9 +83,17 @@ class Character
   end
 
   def stop_walk(direction)
-    set_next_state(States::State) if in_state?(States::Jump) and @horizontal_direction == direction
+    if in_state?(States::Jump) and @horizontal_direction == direction
+      set_next_state(States::Stop) 
+    end
+
     @horizontal_direction = nil if (not in_state? States::Jump) and @horizontal_direction == direction
     @vertical_direction = nil if @vertical_direction == direction
+  end
+
+  def stop
+    @horizontal_direction = nil
+    @vertical_direction = nil
   end
 
   def jump()

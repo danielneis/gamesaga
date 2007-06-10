@@ -19,14 +19,16 @@ class Menu < Rubygame::Sprites::Group
       @button_height = button.rect.h if button.rect.h > @button_height
       @button_width = button.rect.w if button.rect.w > @button_width
 
-      if @orientation == :vertical
-        @height = (@button_height * self.length) + ((self.length + 1) * @margin)
-        @width  = @button_width + @margin * 2
-      elsif @orientation == :horizontal
-        @width = (@button_width * self.length) + ((self.length + 1) * @margin)
-        @height  = @button_height + @margin * 2
-      end
     end
+
+    if @orientation == :vertical
+      @height = (@button_height * self.length) + ((self.length + 1) * @margin)
+      @width  = @button_width + @margin * 2
+    elsif @orientation == :horizontal
+      @width = (@button_width * self.length) + ((self.length + 1) * @margin)
+      @height  = @button_height + @margin * 2
+    end
+
   end
 
   def size
@@ -40,7 +42,7 @@ class Menu < Rubygame::Sprites::Group
   # muito bizarro. ainda não sei por que isso acontece...
   def draw(destination, position)
 
-    image_detour = 0
+    image_detour = @margin / 2
     self.collect do |button|
 
       if @orientation == :vertical
@@ -49,7 +51,7 @@ class Menu < Rubygame::Sprites::Group
         button.rect.move!(@margin + image_detour, @margin)
       end
 
-      button.draw( destination )
+      button.draw(destination)
       button.rect.move!(*position)
 
       if @orientation == :vertical

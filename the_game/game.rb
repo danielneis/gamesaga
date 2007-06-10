@@ -2,6 +2,7 @@
 require 'rubygems'
 require_gem 'rubygame', '2.0.0'
 require 'config'
+require 'rubygame/sfont'
 require 'lib/eventdispatcher'
 require 'lib/automata'
 require 'lib/fsm'
@@ -9,7 +10,11 @@ require 'lib/display'
 require 'ui/hud'
 require 'ui/menu'
 require 'ui/buttons'
+require 'ui/textbuttons'
+require 'ui/graphicbuttons'
 require 'ui/menus'
+require 'ui/graphicmenus'
+require 'ui/textmenus'
 require 'states'
 require 'character'
 require 'player'
@@ -27,7 +32,7 @@ Rubygame::Clock.new do |clock|
 end
 
 catch(:exit) do 
-  Menus::Main.new do |mm|
+  Menus::Text::Main.new do |mm|
 
     mm.on :start_game do
 
@@ -41,8 +46,8 @@ catch(:exit) do
                         Enemy.new(210, 410, 'panda.invert.png'))
 
         #create some Items
-        g.add_items(Item.new(150, 400, 'chicken.png', {:life => 50}),
-                        Item.new(500, 350, 'meat.png', {:life => 137}))
+        g.add_items(Item.new(150, 400, 'chicken.png', {:life => -50}),
+                        Item.new(500, 350, 'meat.png', {:life => -137}))
 
         # Make the background
         g.background = (PIX_ROOT+'background.png')
@@ -50,7 +55,7 @@ catch(:exit) do
         # Listen for to create the pause menu
         g.on :pause do
           catch :continue do
-            Menus::Pause.new.run
+            Menus::Text::Pause.new.run
           end
         end
 
