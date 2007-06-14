@@ -11,7 +11,7 @@ module Components
       @max_lenght = max_lenght;
       @position = position
 
-      @renderer = Rubygame::TTF.new(FONT_ROOT+'default.ttf', 15)
+      @renderer = Rubygame::TTF.new(FONT_ROOT+'default.ttf', 25)
 
       @background = Rubygame::Surface.new([150, @renderer.height])
       @background.fill([255,255,255])
@@ -29,9 +29,9 @@ module Components
         @text.chop!
         clear_background
       elsif (@text.size <= @max_lenght && 
-             (input.key >= Rubygame::K_0   && input.key <= Rubygame::K_9 )  || # numbers
+             ((input.key >= Rubygame::K_0   && input.key <= Rubygame::K_9 )  || # numbers
              (input.key >= Rubygame::K_KP0 && input.key <= Rubygame::K_KP9) || # numbers from keypad
-             (input.key >= Rubygame::K_A   && input.key <= Rubygame::K_Z))     # letters
+             (input.key >= Rubygame::K_A   && input.key <= Rubygame::K_Z)))     # letters
           @text += input.string
       end
 
