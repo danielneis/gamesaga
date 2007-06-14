@@ -5,6 +5,7 @@ module Menus
     include EventDispatcher
 
     def initialize
+
       @screen = Rubygame::Screen.get_surface
       @screen.show_cursor = true
 
@@ -27,6 +28,7 @@ module Menus
     end
 
     def update
+      @background.blit(@screen, [0,0]) unless @background.nil?
       @clock.tick()
       @hud.draw(@screen)
       @screen.update()
@@ -44,6 +46,9 @@ module Menus
         button.on :quit_game do
           throw :exit
         end
+        button.on :options do
+          notify :options
+        end
       end
 
       super()
@@ -51,8 +56,6 @@ module Menus
     end
 
     def update
-
-      super()
 
       @queue.each do |event|
         case event
@@ -71,7 +74,8 @@ module Menus
         end
       end
 
-      @hud.draw(@screen)
+      super()
+
       @screen.update()
     end
   end
@@ -114,6 +118,47 @@ module Menus
           end
         end
       end
+    end
+  end
+
+  class Options < Menu
+
+    def initialize
+
+      @title = Display.new('[OPTIONS]', [240,10], '', 25)
+      @title.update()
+
+      @menu.each do |button|
+        button.on :main_menu do
+          throw :main_menu
+        end
+        button.on :quit_game do
+          throw :exit
+        end
+      end
+
+      super()
+    end
+
+    def update
+
+      @queue.each do |event|
+        case event
+        when Rubygame::QuitEvent then throw :exit
+        when Rubygame::KeyDownEvent
+          @input_text.handle_input(event)
+        when Rubygame::MouseDownEvent
+          if event.string == 'left'
+            if @hud.respond_to?('click')
+              @hud.click(event.pos)
+            end
+          end
+        end
+      end
+
+      @input_text.show_text(@screen)
+
+      @screen.update()
     end
   end
 end

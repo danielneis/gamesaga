@@ -15,7 +15,6 @@ module Buttons
   end
 
   module Quit
-
     def click
       notify :quit_game
     end
@@ -30,6 +29,12 @@ module Buttons
   module MainMenu
     def click
       notify :main_menu
+    end
+  end
+
+  module Options
+    def click
+      notify :options
     end
   end
 end

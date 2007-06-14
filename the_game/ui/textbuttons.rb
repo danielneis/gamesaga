@@ -21,38 +21,37 @@ module Text
   end
 
   class MainMenu < Button
+    include UI::Buttons::MainMenu
 
     def initialize
-      super('Main Menu', 'valium', 60)
-    end
-
-    def click
-      notify :main_menu
+      super('Main Menu', 'valium', 40)
     end
   end
 
   class NewGame < Button
+    include UI::Buttons::NewGame
     
     def initialize
-      super('New Game', 'valium', 60)
+      super('New Game', 'valium', 40)
     end
 
-    def click
-      notify :start_game
-    end
   end
 
   class Quit < Button
+    include UI::Buttons::Quit
 
     def initialize
-      super('Quit', 'valium', 60)
-    end
-
-    def click
-      notify :quit_game
+      super('Quit', 'valium', 40)
     end
   end
 
+  class Options < Button
+    include UI::Buttons::Options
+
+    def initialize
+      super('Options', 'valium', 40)
+    end
+  end
 end
 end
 end

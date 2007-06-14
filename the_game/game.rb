@@ -7,6 +7,7 @@ require 'lib/eventdispatcher'
 require 'lib/automata'
 require 'lib/fsm'
 require 'lib/display'
+require 'lib/components/inputtext'
 require 'ui/hud'
 require 'ui/menu'
 require 'ui/buttons'
@@ -34,6 +35,12 @@ end
 catch(:exit) do 
   Menus::Text::Main.new do |mm|
 
+    mm.on :options do
+      catch :main_menu do
+        Menus::Text::Options.new.run
+      end
+    end
+
     mm.on :start_game do
 
       game = World.new do |g|
@@ -58,7 +65,6 @@ catch(:exit) do
             Menus::Text::Pause.new.run
           end
         end
-
       end.run # game
     end # start game
   end.run # main menu
