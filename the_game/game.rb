@@ -7,15 +7,11 @@ require 'lib/eventdispatcher'
 require 'lib/automata'
 require 'lib/fsm'
 require 'lib/display'
-require 'lib/components/inputtext'
+require 'ui/components/inputtext'
 require 'ui/hud'
 require 'ui/menu'
 require 'ui/buttons'
-require 'ui/textbuttons'
-require 'ui/graphicbuttons'
 require 'ui/menus'
-require 'ui/graphicmenus'
-require 'ui/textmenus'
 require 'states'
 require 'character'
 require 'player'
@@ -33,11 +29,11 @@ Rubygame::Clock.new do |clock|
 end
 
 catch(:exit) do 
-  Menus::Text::Main.new do |mm|
+  Menus::Main.new do |mm|
 
     mm.on :options do
       catch :main_menu do
-        Menus::Text::Options.new.run
+        Menus::Options.new.run
       end
     end
 
@@ -62,7 +58,7 @@ catch(:exit) do
         # Listen for to create the pause menu
         g.on :pause do
           catch :continue do
-            Menus::Text::Pause.new.run
+            Menus::Pause.new.run
           end
         end
 

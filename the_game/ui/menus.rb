@@ -39,6 +39,14 @@ module Menus
 
     def initialize
 
+      @menu = UI::Menu.new(:horizontal, 30)
+      @menu.push(UI::Buttons::NewGame.new(),
+                 UI::Buttons::Options.new(),
+                 UI::Buttons::Quit.new())
+      @hud = UI::Hud.new(@menu, :bottom)
+
+      @background = Rubygame::Surface.load_image(PIX_ROOT+'menu_background.jpg')
+
       @menu.each do |button|
         button.on :start_game do 
           notify :start_game
@@ -84,6 +92,10 @@ module Menus
 
     def initialize
 
+      @menu = UI::Menu.new(:vertical, 20)
+      @menu.push(UI::Buttons::MainMenu.new(), UI::Buttons::Quit.new())
+      @hud = UI::Hud.new(@menu, :center)
+
       @title = Display.new('[PAUSED]', [240,10], '', 25)
       @title.update()
 
@@ -124,6 +136,15 @@ module Menus
   class Options < Menu
 
     def initialize
+
+      @menu = UI::Menu.new(:horizontal, 20)
+      @menu.push(UI::Buttons::MainMenu.new(),
+                 UI::Buttons::Quit.new())
+      @hud = UI::Hud.new(@menu, :bottom)
+
+      @background = Rubygame::Surface.load_image(PIX_ROOT+'menu_background.jpg')
+
+      @input_text = Components::InputText.new(10, [500, 10])
 
       @title = Display.new('[OPTIONS]', [240,10], '', 25)
       @title.update()

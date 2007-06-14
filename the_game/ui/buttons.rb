@@ -8,31 +8,83 @@ module Buttons
 
     attr_accessor :rect
 
-    def initialize
-      super()
+    def initialize(label = {}, bg_image = '')
       setup_listeners()
+
+      if (label.is_a? Hash)
+
+        Rubygame::TTF.setup()
+        renderer = Rubygame::TTF.new(FONT_ROOT + label[:font] +'.ttf', label[:size])
+        @image = renderer.render(label[:text], true, label[:fg_color], label[:bg_color])
+        @rect = @image.make_rect
+
+      elsif (!bg_image.empty?)
+        @image = Rubygame::Surface.load_image(bg_image)
+        @rect = @image.make_rect
+      else 
+        raise "Missing text and bg_image"
+      end
+
+      super()
     end
   end
 
-  module Quit
+  class Quit < Button
+
+    def initialize
+      super({:text =>'Quit',
+             :font => 'default',
+             :size => 20,
+             :fg_color => [255,255,255],
+             :bg_color => [0,0,0]})
+    end
+
     def click
       notify :quit_game
     end
   end
 
-  module NewGame
+  class NewGame < Button
+
+    def initialize
+      super({:text => 'New Game',
+             :font => 'default',
+             :font => 'default',
+             :size => 20,
+             :fg_color => [255,255,255],
+             :bg_color => [0,0,0]})
+    end
+
     def click
       notify :start_game
     end
   end
 
-  module MainMenu
+  class MainMenu < Button
+
+    def initialize
+      super({:text => 'Main Menu',
+             :font => 'default',
+             :size => 20,
+             :fg_color => [255,255,255],
+             :bg_color => [0,0,0]})
+    end
+
     def click
       notify :main_menu
     end
   end
 
-  module Options
+  class Options < Button
+
+    def initialize
+      super({:text => 'Options',
+             :font => 'default',
+             :size => 20,
+             :fg_color => [255,255,255],
+             :bg_color => [0,0,0]})
+    end
+
     def click
       notify :options
     end

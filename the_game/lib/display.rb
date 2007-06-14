@@ -10,7 +10,7 @@ class Display < Rubygame::SFont
     @size = size
     @destination = Rubygame::Screen.get_surface()
 
-    @renderer = Rubygame::TTF.new('lib/'+@font+'.ttf', @size)
+    @renderer = Rubygame::TTF.new(FONT_ROOT+@font+'.ttf', @size)
     @output = @renderer.render(@label + text, true, [0,0,0])
   end
 
