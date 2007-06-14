@@ -65,6 +65,7 @@ catch(:exit) do
             Menus::Text::Pause.new.run
           end
         end
+
       end.run # game
     end # start game
   end.run # main menu

@@ -28,8 +28,11 @@ module Components
       if (input.key == Rubygame::K_BACKSPACE)
         @text.chop!
         clear_background
-      elsif @text.size <= @max_lenght
-        @text += input.string
+      elsif (@text.size <= @max_lenght && 
+             (input.key >= Rubygame::K_0   && input.key <= Rubygame::K_9 )  || # numbers
+             (input.key >= Rubygame::K_KP0 && input.key <= Rubygame::K_KP9) || # numbers from keypad
+             (input.key >= Rubygame::K_A   && input.key <= Rubygame::K_Z))     # letters
+          @text += input.string
       end
 
       if (@text.empty?) 
