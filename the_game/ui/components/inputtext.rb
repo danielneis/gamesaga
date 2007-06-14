@@ -11,7 +11,7 @@ module Components
       @max_lenght = max_lenght;
       @position = position
 
-      @renderer = Rubygame::TTF.new(FONT_ROOT+'valium.ttf', 15)
+      @renderer = Rubygame::TTF.new(FONT_ROOT+'default.ttf', 15)
 
       @background = Rubygame::Surface.new([150, @renderer.height])
       @background.fill([255,255,255])

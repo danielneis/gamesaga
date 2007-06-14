@@ -9,6 +9,9 @@ module Buttons
     attr_accessor :rect
 
     def initialize(label = {}, bg_image = '')
+
+      raise "Missing text and background image" if label.empty? and bg_image.empty?
+
       setup_listeners()
 
       if (label.is_a? Hash)
@@ -17,12 +20,15 @@ module Buttons
         renderer = Rubygame::TTF.new(FONT_ROOT + label[:font] +'.ttf', label[:size])
         @image = renderer.render(label[:text], true, label[:fg_color], label[:bg_color])
         @rect = @image.make_rect
+      end
 
-      elsif (!bg_image.empty?)
-        @image = Rubygame::Surface.load_image(bg_image)
+      if (!bg_image.empty?)
+
+        puts 'wuala'
+        @text = image unless @image.nil?
+        @image = Rubygame::Surface.load_image(PIX_ROOT+bg_image+'.png')
         @rect = @image.make_rect
-      else 
-        raise "Missing text and bg_image"
+        @text.blit(@image, [0,0])
       end
 
       super()
