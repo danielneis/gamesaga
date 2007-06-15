@@ -8,7 +8,7 @@ class Menu < Rubygame::Sprites::Group
     @margin = margin
     @button_height = 0
     @button_width  = 0
-
+    @focused = Components::Component.new()
   end
 
   def push(*args)
@@ -18,7 +18,6 @@ class Menu < Rubygame::Sprites::Group
     self.each do |button|
       @button_height = button.rect.h if button.rect.h > @button_height
       @button_width = button.rect.w if button.rect.w > @button_width
-
     end
 
     if @orientation == :vertical
@@ -28,7 +27,6 @@ class Menu < Rubygame::Sprites::Group
       @width = (@button_width * self.length) + ((self.length + 1) * @margin)
       @height  = @button_height + @margin * 2
     end
-
   end
 
   def size
@@ -59,13 +57,12 @@ class Menu < Rubygame::Sprites::Group
       elsif @orientation == :horizontal
         image_detour += @button_width + @margin
       end
-
     end
   end
 
   def click(position)
     self.each do |button|
-      button.click() if button.rect.collide_point?(*position)
+        button.click() if button.rect.collide_point?(*position)
     end
   end
 end

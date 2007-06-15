@@ -1,20 +1,11 @@
-module UI
+module Components
 module Buttons
 
-  class Button
-
-    include EventDispatcher
-    include Rubygame::Sprites::Sprite
-
-    attr_accessor :rect
+  class Button < Component
 
     def initialize(label = {}, bg_image = '')
 
-      raise "Missing text and background image" if label.empty? and bg_image.empty?
-
-      setup_listeners()
-
-      if (label.is_a? Hash)
+      if (label.is_a?(Hash) && !label.empty?)
 
         Rubygame::TTF.setup()
         renderer = Rubygame::TTF.new(FONT_ROOT + label[:font] +'.ttf', label[:size])
@@ -24,7 +15,6 @@ module Buttons
 
       if (!bg_image.empty?)
 
-        puts 'wuala'
         @text = image unless @image.nil?
         @image = Rubygame::Surface.load_image(PIX_ROOT+bg_image+'.png')
         @rect = @image.make_rect

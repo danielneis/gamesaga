@@ -40,9 +40,9 @@ module Menus
     def initialize
 
       @menu = UI::Menu.new(:horizontal, 30)
-      @menu.push(UI::Buttons::NewGame.new(),
-                 UI::Buttons::Options.new(),
-                 UI::Buttons::Quit.new())
+      @menu.push(Components::Buttons::NewGame.new(),
+                 Components::Buttons::Options.new(),
+                 Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :bottom)
 
       @background = Rubygame::Surface.load_image(PIX_ROOT+'menu_background.jpg')
@@ -93,7 +93,7 @@ module Menus
     def initialize
 
       @menu = UI::Menu.new(:vertical, 20)
-      @menu.push(UI::Buttons::MainMenu.new(), UI::Buttons::Quit.new())
+      @menu.push(Components::Buttons::MainMenu.new(), Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :center)
 
       @title = Display.new('[PAUSED]', [240,10], '', 25)
@@ -137,14 +137,14 @@ module Menus
 
     def initialize
 
-      @menu = UI::Menu.new(:horizontal, 20)
-      @menu.push(UI::Buttons::MainMenu.new(),
-                 UI::Buttons::Quit.new())
-      @hud = UI::Hud.new(@menu, :bottom)
-
       @background = Rubygame::Surface.load_image(PIX_ROOT+'menu_background.jpg')
 
-      @input_text = Components::InputText.new(10, [500, 10])
+      @menu = UI::Menu.new(:horizontal, 20)
+      @menu.push(Components::Buttons::MainMenu.new(),
+                 Components::Buttons::Quit.new())
+      @hud = UI::Hud.new(@menu, :bottom)
+
+      @input_text = Components::InputText.new(10, [430, 10])
 
       @title = Display.new('[OPTIONS]', [240,10], '', 25)
       @title.update()
@@ -159,6 +159,9 @@ module Menus
       end
 
       super()
+
+      @input_text.draw(@screen)
+      @screen.update
     end
 
     def update
@@ -168,17 +171,20 @@ module Menus
         when Rubygame::QuitEvent then throw :exit
         when Rubygame::KeyDownEvent
           @input_text.handle_input(event)
+          case event.key
+          when Rubygame::K_ESCAPE then throw :exit
+          end
         when Rubygame::MouseDownEvent
           if event.string == 'left'
             if @hud.respond_to?('click')
               @hud.click(event.pos)
             end
+          @input_text.click(event.pos)
           end
         end
       end
 
-      @input_text.show_text(@screen)
-
+      @input_text.draw(@screen)
       @screen.update()
     end
   end

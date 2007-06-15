@@ -1,6 +1,29 @@
 module Components
 
-  class InputText
+  class Component 
+    
+    include EventDispatcher
+    include Rubygame::Sprites::Sprite
+
+    attr_accessor :rect
+
+    def initialize
+      setup_listeners()
+      super()
+    end
+
+    def lost_focus
+    end
+
+    def click
+    end
+
+    def draw(destination)
+      super(destination)
+    end
+  end
+
+  class InputText < Component
 
     attr_reader :text
 
@@ -19,6 +42,10 @@ module Components
       @queue = Rubygame::EventQueue.new
       @text = ''
       @output = nil
+      @rect = @background.make_rect
+      @rect.move!(*position)
+
+      super()
     end
 
     def handle_input(input)
@@ -42,11 +69,21 @@ module Components
       end
     end
 
-    def show_text(destination)
+    def draw(destination)
       if @output.respond_to? 'blit'
         @output.blit(@background, [0,0])
       end
       @background.blit(destination, @position)
+    end
+
+    def click(position)
+      if @rect.collide_point?(*position)
+        @background.fill([100,50,37])
+      end
+    end
+
+    def lost_focus
+      clear_background
     end
 
     private
