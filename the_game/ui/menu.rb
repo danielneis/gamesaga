@@ -2,13 +2,13 @@ module UI
 class Menu < Rubygame::Sprites::Group
 
   attr_reader :width, :height
+
   def initialize(orientation, margin = 10)
 
     @orientation = orientation
     @margin = margin
     @button_height = 0
     @button_width  = 0
-    @focused = Components::Component.new()
   end
 
   def push(*args)
