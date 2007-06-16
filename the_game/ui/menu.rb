@@ -7,25 +7,25 @@ class Menu < Rubygame::Sprites::Group
 
     @orientation = orientation
     @margin = margin
-    @button_height = 0
-    @button_width  = 0
+    @component_height = 0
+    @component_width  = 0
   end
 
   def push(*args)
 
     super(*args)
 
-    self.each do |button|
-      @button_height = button.rect.h if button.rect.h > @button_height
-      @button_width = button.rect.w if button.rect.w > @button_width
+    self.each do |component|
+      @component_height = component.rect.h if component.rect.h > @component_height
+      @component_width = component.rect.w if component.rect.w > @component_width
     end
 
     if @orientation == :vertical
-      @height = (@button_height * self.length) + ((self.length + 1) * @margin)
-      @width  = @button_width + @margin * 2
+      @height = (@component_height * self.length) + ((self.length + 1) * @margin)
+      @width  = @component_width + @margin * 2
     elsif @orientation == :horizontal
-      @width = (@button_width * self.length) + ((self.length + 1) * @margin)
-      @height  = @button_height + @margin * 2
+      @width = (@component_width * self.length) + ((self.length + 1) * @margin)
+      @height  = @component_height + @margin * 2
     end
   end
 
@@ -41,28 +41,28 @@ class Menu < Rubygame::Sprites::Group
   def draw(destination, position)
 
     image_detour = @margin / 2
-    self.collect do |button|
+    self.collect do |component|
 
       if @orientation == :vertical
-        button.rect.move!(@margin, @margin + image_detour)
+        component.rect.move!(@margin, @margin + image_detour)
       elsif @orientation == :horizontal
-        button.rect.move!(@margin + image_detour, @margin)
+        component.rect.move!(@margin + image_detour, @margin)
       end
 
-      button.draw(destination)
-      button.rect.move!(*position)
+      component.draw(destination)
+      component.rect.move!(*position)
 
       if @orientation == :vertical
-        image_detour += @button_height + @margin
+        image_detour += @component_height + @margin
       elsif @orientation == :horizontal
-        image_detour += @button_width + @margin
+        image_detour += @component_width + @margin
       end
     end
   end
 
   def click(position)
-    self.each do |button|
-        button.click() if button.rect.collide_point?(*position)
+    self.each do |component|
+        component.click() if component.rect.collide_point?(*position)
     end
   end
 end
