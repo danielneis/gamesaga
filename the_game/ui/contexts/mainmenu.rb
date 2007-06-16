@@ -39,11 +39,7 @@ module Contexts
           when Rubygame::K_RETURN then notify :start_game
           end
         when Rubygame::MouseDownEvent
-          if event.string == 'left'
-            if @hud.respond_to?('click')
-              @hud.click(event.pos)
-            end
-          end
+          @hud.click(event.pos) if event.string == 'left'
         end
       end
 

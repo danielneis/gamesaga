@@ -26,8 +26,16 @@ class Hud
     @hud_surface.blit(destination, @position)
   end
 
+  def redraw(destination)
+    @menu.redraw(@hud_surface)
+  end
+
   def click(position)
     @menu.click(position)
+  end
+
+  def handle_input(input)
+    @menu.handle_input(input)
   end
 
 end

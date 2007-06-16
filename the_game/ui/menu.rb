@@ -9,6 +9,7 @@ class Menu < Rubygame::Sprites::Group
     @margin = margin
     @component_height = 0
     @component_width  = 0
+    @focused = Components::Component.new
   end
 
   def push(*args)
@@ -60,10 +61,33 @@ class Menu < Rubygame::Sprites::Group
     end
   end
 
-  def click(position)
-    self.each do |component|
-        component.click() if component.rect.collide_point?(*position)
+  def redraw(destination)
+    self.collect do |component|
+      component.draw(destination)
     end
+  end
+
+  def click(position)
+
+    clicked = nil
+    self.each do |component|
+        if component.rect.collide_point?(*position)
+          clicked = component
+          component.click() 
+        end
+    end
+
+    if clicked.nil?
+      @focused.lost_focus
+      @focused = Components::Component.new
+    elsif (clicked != @focused)
+      @focused.lost_focus
+      @focused = clicked
+    end
+  end
+
+  def handle_input(input)
+    @focused.handle_input(input)
   end
 end
 end

@@ -11,7 +11,9 @@ module Contexts
                  Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :bottom)
 
-      @input_text = Components::InputText.new(10, [430, 10])
+      @inputs_menu = UI::Menu.new(:vertical, 15)
+      @inputs_menu.push(Components::InputText.new(10))
+      @inputs_hud = UI::Hud.new(@inputs_menu, :center)
 
       @title = Display.new('[OPTIONS]', [240,10], '', 25)
       @title.update()
@@ -27,7 +29,7 @@ module Contexts
 
       super()
 
-      @input_text.draw(@screen)
+      @inputs_hud.draw(@screen)
       @screen.update
     end
 
@@ -37,21 +39,20 @@ module Contexts
         case event
         when Rubygame::QuitEvent then throw :exit
         when Rubygame::KeyDownEvent
-          @input_text.handle_input(event)
+          @inputs_hud.handle_input(event)
           case event.key
           when Rubygame::K_ESCAPE then throw :exit
           end
         when Rubygame::MouseDownEvent
           if event.string == 'left'
-            if @hud.respond_to?('click')
               @hud.click(event.pos)
-            end
-          @input_text.click(event.pos)
+              @inputs_hud.click(event.pos)
           end
         end
       end
 
-      @input_text.draw(@screen)
+      @title.update()
+      @inputs_hud.redraw(@screen)
       @screen.update()
     end
   end

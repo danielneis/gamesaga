@@ -7,6 +7,7 @@ require 'lib/eventdispatcher'
 require 'lib/automata'
 require 'lib/fsm'
 require 'lib/display'
+require 'ui/components/component'
 require 'ui/components/inputtext'
 require 'ui/components/buttons'
 require 'ui/contexts/context'
@@ -34,44 +35,39 @@ end
 catch(:exit) do 
   Contexts::Main.new do |mm|
 
-    catch :main_menu do
-      mm.on :options do
-          Contexts::Options.new.run
+    mm.on :options do
+      catch :main_menu do
+        Contexts::Options.new.run
       end
-
-      mm.on :start_game do
-
-        game = World.new do |g|
-
-          # first, we need a player
-          g.add_player('panda.png')
-
-          #add some NPCs enemies
-          g.add_enemy(Enemy.new(400, 400, 'panda.invert.png'),
-                          Enemy.new(210, 410, 'panda.invert.png'))
-
-          #create some Items
-          g.add_items(Item.new(150, 400, 'chicken.png', {:life => -50}),
-                          Item.new(500, 350, 'meat.png', {:life => -137}))
-
-          # Make the background
-          g.background = (PIX_ROOT+'background.png')
-          
-          # Listen for to create the pause menu
-          g.on :pause do
-            catch :continue do
-              Contexts::Pause.new.run
-            end
-          end
-
-          g.on :main_menu do
-            puts 'e'
-            throw :main_menu
-          end
-
-        end.run # game
-      end # start game
     end
+
+    mm.on :start_game do
+
+      game = World.new do |g|
+
+        # first, we need a player
+        g.add_player('panda.png')
+
+        #add some NPCs enemies
+        g.add_enemy(Enemy.new(400, 400, 'panda.invert.png'),
+                    Enemy.new(210, 410, 'panda.invert.png'))
+
+        #create some Items
+        g.add_items(Item.new(150, 400, 'chicken.png', {:life => -50}),
+                    Item.new(500, 350, 'meat.png', {:life => -137}))
+
+        # Make the background
+        g.background = (PIX_ROOT+'background.png')
+
+        # Listen for to create the pause menu
+        g.on :pause do
+          catch :continue do
+            Contexts::Pause.new.run
+          end
+        end
+
+      end.run # game
+    end # start game
   end.run # main menu
 end
 
