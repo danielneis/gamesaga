@@ -1,0 +1,6 @@
+# Global constants
+screen_width: 640
+screen_height: 480
+pix_root: "/home/daniel/jogo.wc/the_game/pix/"
+font_root: "/home/daniel/jogo.wc/the_game/ui/fonts/"
+title: "A game in rubygame"

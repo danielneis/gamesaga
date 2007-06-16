@@ -1,8 +1,10 @@
 #!/usr/bin/env ruby
+require 'yaml'
 require 'rubygems'
+
 require_gem 'rubygame', '2.0.0'
-require 'config'
 require 'rubygame/sfont'
+
 require 'lib/eventdispatcher'
 require 'lib/automata'
 require 'lib/fsm'
@@ -25,8 +27,9 @@ require 'world'
 
 # Initialize rubygame, set up screen and start the event queue
 Rubygame.init()
-screen = Rubygame::Screen.new(SCREEN_SIZE)
-screen.title = TITLE
+config = YAML::load_file 'config.yaml'
+screen = Rubygame::Screen.new([config['screen_width'], config['screen_height']])
+screen.title = config['title']
 
 Rubygame::Clock.new do |clock|
   clock.target_framerate = 35
@@ -57,7 +60,7 @@ catch(:exit) do
                     Item.new(500, 350, 'meat.png', {:life => -137}))
 
         # Make the background
-        g.background = (PIX_ROOT+'background.png')
+        g.background = (config['pix_root']+'background.png')
 
         # Listen for to create the pause menu
         g.on :pause do

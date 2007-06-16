@@ -144,12 +144,14 @@ module States
 
     def enter(performer)
 
+      config = YAML::load_file('config.yaml')
+
       @hit_stage = 0
       @hit_stages = 5
 
       @screen = Rubygame::Screen.get_surface
 
-      @pow_image = Rubygame::Surface.load_image(PIX_ROOT+'pow.png')
+      @pow_image = Rubygame::Surface.load_image(config['pix_root']+'pow.png')
       @pow_image.blit(@screen, [performer.rect.x, performer.rect.y] )
     end
 

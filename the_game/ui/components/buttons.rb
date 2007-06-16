@@ -5,10 +5,13 @@ module Buttons
 
     def initialize(label = {}, bg_image = '')
 
+      2.times {$:.unshift File.join(File.dirname(__FILE__), "..")}
+      config = YAML::load_file('config.yaml')
+
       if (label.is_a?(Hash) && !label.empty?)
 
         Rubygame::TTF.setup()
-        renderer = Rubygame::TTF.new(FONT_ROOT + label[:font] +'.ttf', label[:size])
+        renderer = Rubygame::TTF.new(config['font_root'] + label[:font] +'.ttf', label[:size])
         @image = renderer.render(label[:text], true, label[:fg_color], label[:bg_color])
         @rect = @image.make_rect
       end

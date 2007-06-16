@@ -4,13 +4,16 @@ module Contexts
 
     def initialize
 
+      2.times {$:.unshift File.join(File.dirname(__FILE__), "..")}
+      config = YAML::load_file('config.yaml')
+
       @menu = UI::Menu.new(:horizontal, 30)
       @menu.push(Components::Buttons::NewGame.new(),
                  Components::Buttons::Options.new(),
                  Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :bottom)
 
-      @background = Rubygame::Surface.load_image(PIX_ROOT+'menu_background.jpg')
+      @background = Rubygame::Surface.load_image(config['pix_root']+'menu_background.jpg')
 
       @menu.each do |button|
         button.on :start_game do 
