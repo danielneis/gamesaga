@@ -49,6 +49,8 @@ class Character
         @rect = @image.make_rect
         @rect.move!(x,y)
 
+        @ground = @rect.bottom
+
         # @area is the area of the screen, which the player will walk across
         @area = Rubygame::Rect.new(0, 403, *[config['screen_width'], config['screen_height'] - 403])
 
