@@ -1,3 +1,7 @@
+require 'player'
+require 'enemy'
+require 'items'
+
 class World
 
   include EventDispatcher

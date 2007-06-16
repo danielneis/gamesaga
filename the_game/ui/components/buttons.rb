@@ -1,3 +1,5 @@
+require File.dirname(__FILE__)+'/component'
+
 module Components
 module Buttons
 

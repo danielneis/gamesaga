@@ -1,3 +1,5 @@
+require 'character'
+
 class Player < Character
 
   life 20

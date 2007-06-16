@@ -1,3 +1,6 @@
+require 'lib/states'
+require 'character'
+
 class Character
 
   include EventDispatcher

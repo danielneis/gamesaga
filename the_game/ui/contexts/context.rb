@@ -1,3 +1,10 @@
+$:.unshift File.join(File.dirname(__FILE__), "..")
+require 'hud'
+require 'menu'
+require 'display'
+require 'components/inputtext'
+require 'components/buttons'
+
 module Contexts
 
   class Context

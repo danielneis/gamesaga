@@ -1,3 +1,5 @@
+require 'character'
+
 class Enemy < Character
 
   life 20
