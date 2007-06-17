@@ -43,6 +43,7 @@ module States
       end
       
       performer.rect.bottom += vertical_speed if not vertical_speed.nil?
+      performer.update_ground
     end
   end
 

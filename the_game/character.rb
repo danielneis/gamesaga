@@ -115,6 +115,10 @@ class Character
     change_state(States::Attack) if not in_state? States::Jump
   end
 
+  def update_ground
+    @ground = @rect.bottom
+  end
+
   def swap_image(image)
     if image == :attack
 
