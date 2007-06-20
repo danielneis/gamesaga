@@ -12,7 +12,7 @@ module Automata
   end
 
   def set_next_state(state)
-    @state_machine.next_state = state;
+    @state_machine.next_state = state
   end
 
   def has_next_state?

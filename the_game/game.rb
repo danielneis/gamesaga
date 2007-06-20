@@ -34,7 +34,7 @@ catch(:exit) do
 
     mm.on :start_game do
 
-      game = World.new do |g|
+      World.new do |g|
 
         # first, we need a player
         g.add_player('panda.png')
