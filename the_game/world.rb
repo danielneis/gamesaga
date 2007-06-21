@@ -26,8 +26,9 @@ class World
     @screen.update()
   end
 
-  def add_player(image)
-    @player = Player.new(300, 400, image)
+  def add_player(player)
+
+    @player = player
 
     @player.on :player_death do
       title = Display.new('DIED! press [ESC] to end game', [50, 200], '', 25)

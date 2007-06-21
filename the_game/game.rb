@@ -37,7 +37,7 @@ catch(:exit) do
       World.new do |g|
 
         # first, we need a player
-        g.add_player('panda.png')
+        g.add_player(Player.new(300, 400, 'panda.png'))
 
         #add some NPCs enemies
         g.add_enemy(Enemy.new(400, 400, 'panda.invert.png'),
