@@ -42,7 +42,7 @@ module States
         vertical_speed = nil
       end
       
-      performer.rect.bottom += vertical_speed if not vertical_speed.nil?
+      performer.move(0, vertical_speed) if not vertical_speed.nil?
       performer.update_ground
     end
   end
@@ -63,7 +63,7 @@ module States
 
       horizontal_speed = horizontal_speed * 5 if ( not horizontal_speed.nil?) and performer.in_state? Jump
 
-      performer.rect.x += horizontal_speed if not horizontal_speed.nil?
+      performer.move(horizontal_speed) if not horizontal_speed.nil?
     end
   end
 
@@ -106,7 +106,7 @@ module States
       end
       
       # move the character
-      performer.rect.bottom += vertical_speed if not vertical_speed.nil?
+      performer.move(0, vertical_speed) if not vertical_speed.nil?
     end
 
     def exit(performer)

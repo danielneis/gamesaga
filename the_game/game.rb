@@ -43,11 +43,11 @@ catch(:exit) do
                     Enemy.new(210, 410, 'panda.invert.png'))
 
         #create some Items
-        g.add_items(Item.new(150, 400, 'chicken.png', {:life => -50}),
-                    Item.new(500, 350, 'meat.png', {:life => -137}))
+        g.add_items(Item.new(150, 400, 'chicken.png', {:life => 50}),
+                    Item.new(500, 350, 'meat.png', {:life => 137}))
 
         # Make the background
-        g.background = (config.pix_root+'background.png')
+        g.background = (config.pix_root + 'background.png')
 
         # Listen for to create the pause menu
         g.on :pause do

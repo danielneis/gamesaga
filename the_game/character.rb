@@ -68,8 +68,8 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed
 
-  attr_reader :ground, :area, :horizontal_direction
-  attr_accessor :rect, :vertical_direction, :damage
+  attr_reader :rect, :ground, :area, :horizontal_direction
+  attr_accessor :vertical_direction, :damage
 
   def take_damage(amount, to_side)
     @damage = amount
@@ -113,6 +113,11 @@ class Character
 
   def attack(direction = :right)
     change_state(States::Attack) if not in_state? States::Jump
+  end
+
+  def move(x = 0, y = 0)
+    @rect.bottom += y
+    @rect.x += x
   end
 
   def update_ground
