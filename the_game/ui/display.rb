@@ -5,8 +5,7 @@ class Display < Rubygame::SFont
 
   def initialize(label, position, text = '', size = 12, font = 'default')
 
-    $:.unshift File.join(File.dirname(__FILE__), "..")
-    config = YAML::load_file('config.yaml')
+    config = Configuration.instance
 
     @font = font
     @position = position
@@ -14,7 +13,7 @@ class Display < Rubygame::SFont
     @size = size
     @destination = Rubygame::Screen.get_surface()
 
-    @renderer = Rubygame::TTF.new(config['font_root']+@font+'.ttf', @size)
+    @renderer = Rubygame::TTF.new(config.font_root + @font + '.ttf', @size)
     @output = @renderer.render(@label + text, true, [0,0,0])
   end
 

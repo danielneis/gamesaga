@@ -8,14 +8,13 @@ module Components
 
     def initialize(max_lenght = 10)
 
-      2.times {$:.unshift File.join(File.dirname(__FILE__), "..")}
-      config = YAML::load_file('config.yaml')
+      config = Configuration.instance
 
       Rubygame::TTF.setup()
 
       @max_lenght = max_lenght;
 
-      @renderer = Rubygame::TTF.new(config['font_root']+'default.ttf', 25)
+      @renderer = Rubygame::TTF.new(config.font_root + 'default.ttf', 25)
 
       @background = Rubygame::Surface.new([150, @renderer.height])
       @background_color = [255,255,255]

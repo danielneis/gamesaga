@@ -33,7 +33,7 @@ class Character
       define_method( :initialize ) do |x,y,image|
         super()
 
-        config = YAML::load_file('config.yaml')
+        config = Configuration.instance
 
         self.class.traits.each do |k,v|
           instance_variable_set("@#{k}", v)
@@ -41,8 +41,8 @@ class Character
 
         @screen = Rubygame::Screen.get_surface
 
-        @still_image = Rubygame::Surface.load_image(config['pix_root']+image)
-        @attack_image = Rubygame::Surface.load_image(config['pix_root']+'panda.attack.png')
+        @still_image = Rubygame::Surface.load_image(config.pix_root + image)
+        @attack_image = Rubygame::Surface.load_image(config.pix_root + 'panda.attack.png')
 
         @image = @still_image
         @image.set_colorkey(@image.get_at([0, 0]))
@@ -52,7 +52,7 @@ class Character
         @ground = @rect.bottom
 
         # @area is the area of the screen, which the player will walk across
-        @area = Rubygame::Rect.new(0, 403, *[config['screen_width'], config['screen_height'] - 403])
+        @area = Rubygame::Rect.new(0, 403, *[config.screen_width, config.screen_height - 403])
 
         # to use in first call of update methods
         @clock = Rubygame::Clock.new

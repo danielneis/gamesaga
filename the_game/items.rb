@@ -10,9 +10,9 @@ class Item
 
     super()
 
-    config = YAML::load_file('config.yaml')
+    config = Configuration.instance
 
-    @image = Rubygame::Surface.load_image(config['pix_root']+'items/'+image)
+    @image = Rubygame::Surface.load_image(config.pix_root + 'items/'+image)
     @image.set_colorkey(@image.get_at([0, 0]))
     @rect = @image.make_rect
     @rect.move!(x,y)
