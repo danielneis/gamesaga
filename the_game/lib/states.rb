@@ -161,7 +161,7 @@ module States
       if @hit_stage < @hit_stages
         @hit_stage += 1
       else 
-        performer.life = performer.life - performer.damage
+        performer.life -= performer.damage
         performer.back_to_last_state
       end
     end

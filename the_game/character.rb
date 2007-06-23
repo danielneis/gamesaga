@@ -49,7 +49,7 @@ class Character
         @rect = @image.make_rect
         @rect.move!(x,y)
 
-        @ground = @rect.bottom
+        update_ground
 
         # @area is the area of the screen, which the player will walk across
         @area = Rubygame::Rect.new(0, 403, *[config.screen_width, config.screen_height - 403])
@@ -68,8 +68,8 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed
 
-  attr_reader :rect, :ground, :area, :horizontal_direction
-  attr_accessor :vertical_direction, :damage
+  attr_reader :rect, :ground, :area, :horizontal_direction, :damage
+  attr_accessor :vertical_direction
 
   def take_damage(amount, to_side)
     @damage = amount
@@ -106,7 +106,7 @@ class Character
   def jump()
     if not in_state? States::Jump
       @vertical_direction = :up
-      @ground = @rect.bottom
+      update_ground
       change_state(States::Jump)
     end
   end
