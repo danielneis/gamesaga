@@ -39,8 +39,6 @@ class Character
           instance_variable_set("@#{k}", v)
         end
 
-        @screen = Rubygame::Screen.get_surface
-
         @still_image = Rubygame::Surface.load_image(config.pix_root + image)
         @attack_image = Rubygame::Surface.load_image(config.pix_root + 'panda.attack.png')
 
@@ -53,10 +51,6 @@ class Character
 
         # @area is the area of the screen, which the player will walk across
         @area = Rubygame::Rect.new(0, 403, *[config.screen_width, config.screen_height - 403])
-
-        # to use in first call of update methods
-        @clock = Rubygame::Clock.new
-        @prevAnim = @clock.ticks()
 
         @state_machine = FiniteStateMachine.new(self)
 
@@ -78,23 +72,22 @@ class Character
 
   def walk(direction)
 
-    if (not in_state? States::Jump) and (direction == :left or direction == :right)
-      @horizontal_direction = direction
-      change_state(States::Walk)
-    end
-
-    if (not in_state? States::Jump) and (direction == :up or direction == :down)
-      @vertical_direction = direction
+    if (not in_state? States::Jump)
+      if (direction == :left or direction == :right)
+        @horizontal_direction = direction
+      elsif (direction == :up or direction == :down)
+        @vertical_direction = direction
+      end
       change_state(States::Walk)
     end
   end
 
   def stop_walk(direction)
-    if in_state?(States::Jump) and @horizontal_direction == direction
-      set_next_state(States::Stop) 
+    if in_state?(States::Jump)
+      set_next_state(States::Stop) if @horizontal_direction == direction
+    else
+      @horizontal_direction = nil if @horizontal_direction == direction
     end
-
-    @horizontal_direction = nil if (not in_state? States::Jump) and @horizontal_direction == direction
     @vertical_direction = nil if @vertical_direction == direction
   end
 
@@ -103,7 +96,7 @@ class Character
     @vertical_direction = nil
   end
 
-  def jump()
+  def jump
     if not in_state? States::Jump
       @vertical_direction = :up
       update_ground

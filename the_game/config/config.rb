@@ -16,11 +16,11 @@ class Configuration
     configuration = YAML::load_file 'config/config.yaml'
 
     configuration.each do |config, value|
+      instance_variable_set("@#{config}", value)
+      @configurations ||= {}
+      @configurations[config] = value
       metaclass.instance_eval do
-        define_method(config.to_sym) do
-          @configs ||= {}
-          @configs[config] = value
-        end
+        attr_accessor config.to_sym
       end
     end
   end
