@@ -12,6 +12,9 @@ module Components
       super()
     end
 
+    def get_focus
+    end
+
     def lost_focus
     end
 

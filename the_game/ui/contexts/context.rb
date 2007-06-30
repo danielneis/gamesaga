@@ -4,6 +4,7 @@ require 'menu'
 require 'display'
 require 'components/inputtext'
 require 'components/buttons'
+require 'components/radiobutton'
 
 module Contexts
 

@@ -73,7 +73,7 @@ class Menu < Rubygame::Sprites::Group
     self.each do |component|
         if component.rect.collide_point?(*position)
           clicked = component
-          component.click() 
+          component.click
         end
     end
 

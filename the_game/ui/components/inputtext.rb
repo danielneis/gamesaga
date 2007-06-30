@@ -50,7 +50,7 @@ module Components
       if @output.respond_to? 'blit'
         @output.blit(@background, [0,0])
       end
-      @background.blit(@screen, [@rect.x, @rect.y])
+      @background.blit(@screen, @rect.topleft)
     end
 
     def click
