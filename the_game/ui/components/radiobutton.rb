@@ -4,7 +4,8 @@ module Components
 
     def initialize(radius)
 
-      @background = Rubygame::Surface.new([radius * 2, radius * 2])
+      @screen = Rubygame::Screen.get_surface
+      @background = Rubygame::Surface.new([radius * 2.1 , radius * 2.1])
       @rect = @background.make_rect
       @center = @rect.center
       @radius = radius
@@ -17,7 +18,7 @@ module Components
     end
 
     def draw(destination)
-      @background.blit(destination, @center)
+      @background.blit(@screen, @rect.topleft)
     end
 
     def lost_focus
@@ -25,7 +26,7 @@ module Components
     end
 
     def click
-      @background.fill([0,0,0], [0, 0, @radius, @radius])
+      @background.draw_circle_s(@center, @little_radius, [0,0,0])
     end
   end
 end

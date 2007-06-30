@@ -1,5 +1,4 @@
 require File.dirname(__FILE__)+'/component'
-
 module Components
 
   class InputText < Component

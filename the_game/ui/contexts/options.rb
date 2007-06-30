@@ -17,7 +17,8 @@ module Contexts
 
       @inputs_menu = UI::Menu.new(:vertical, 15)
       @inputs_menu.push(Components::RadioButton.new(20),
-                        Components::InputText.new(10))
+                        Components::InputText.new(10),
+                        Components::Checkbox.new(40))
       @inputs_hud = UI::Hud.new(@inputs_menu, :center)
 
       @title = Display.new('[OPTIONS]', [240,10], '', 25)
