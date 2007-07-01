@@ -22,10 +22,6 @@ module Components
       @background.blit(@screen, @rect.topleft)
     end
 
-    def lost_focus
-      @background.fill([255,255,255])
-    end
-
     def click
 
       if (@checked)

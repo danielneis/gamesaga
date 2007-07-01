@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'rubygems'
-require_gem 'rubygame', '2.0.0'
+require_gem 'rubygame', '2.0.1'
 require 'rubygame/sfont'
 
 require 'config/config.rb'
