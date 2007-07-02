@@ -2,21 +2,18 @@ module Components
   class RadioGroup < Component
     include EventDispatcher
 
-    def initialize(*radio_buttons)
-
-      super()
-
-      @radio_buttons = radio_buttons
+    def initialize
+      super
       @checked = nil
+    end
 
-      callback = lambda do |radio|
-        if @checked.respond_to? :uncheck && radio != @checked
-          @checked.uncheck 
+    def add(button)
+      button.on :clicked do |radio|
+        if radio != @checked
+          @checked.uncheck unless @checked.nil?
           @checked = radio
         end
       end
-
-      @radio_buttons.each { |radio| radio.on(:clicked, &callback) }
     end
   end
 end

@@ -16,9 +16,12 @@ module Contexts
       @hud = UI::Hud.new(@menu, :bottom)
 
       @inputs_menu = UI::Menu.new(:vertical, 15)
-      @inputs_menu.push(Components::RadioButton.new(20),
+      @inputs_menu.push(Components::RadioButton.new(20, 'grupo1'),
+                        Components::RadioButton.new(20, 'grupo1'),
                         Components::InputText.new(10),
-                        Components::Checkbox.new(40))
+                        Components::Checkbox.new(40),
+                        Components::RadioButton.new(20, 'grupo2'),
+                        Components::RadioButton.new(20, 'grupo2'))
       @inputs_hud = UI::Hud.new(@inputs_menu, :center)
 
       @title = Display.new('[OPTIONS]', [240,10], '', 25)

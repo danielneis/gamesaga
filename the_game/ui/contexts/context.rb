@@ -5,6 +5,7 @@ require 'display'
 require 'components/inputtext'
 require 'components/buttons'
 require 'components/radiobutton'
+require 'components/radiogroup'
 require 'components/checkbox'
 
 module Contexts

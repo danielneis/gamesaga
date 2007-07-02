@@ -16,9 +16,16 @@ class Menu < Rubygame::Sprites::Group
 
     super(*args)
 
-    self.each do |component|
+    args.each do |component|
       @component_height = component.rect.h if component.rect.h > @component_height
       @component_width = component.rect.w if component.rect.w > @component_width
+
+      # special case to radiobuttons: need a group to manage them
+      if component.is_a? Components::RadioButton
+        @radio_groups ||= {}
+        @radio_groups[component.group] ||= Components::RadioGroup.new
+        @radio_groups[component.group].add component
+      end
     end
 
     if @orientation == :vertical
