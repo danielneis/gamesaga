@@ -12,7 +12,7 @@ module Components
       @little_radius = @radius / 1.3
       @background.fill([111,111,111])
       @background.set_colorkey(@background.get_at([0, 0]))
-      lost_focus
+      @background.draw_circle_s(@center, @radius , [255,255,255])
 
       super()
     end
@@ -21,11 +21,12 @@ module Components
       @background.blit(@screen, @rect.topleft)
     end
 
-    def lost_focus
+    def uncheck
       @background.draw_circle_s(@center, @radius , [255,255,255])
     end
 
     def click
+      notify :clicked
       @background.draw_circle_s(@center, @little_radius, [0,0,0])
     end
   end
