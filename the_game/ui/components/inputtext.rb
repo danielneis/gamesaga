@@ -19,7 +19,6 @@ module Components
       @background_color = [255,255,255]
       update_background
 
-      @queue = Rubygame::EventQueue.new
       @text = ''
       @output = nil
       @rect = @background.make_rect

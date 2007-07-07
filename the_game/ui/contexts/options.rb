@@ -10,6 +10,15 @@ module Contexts
 
       @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg')
 
+      @labels_menu = UI::Menu.new(:vertical, 15)
+      @labels_menu.push(Components::Label.new('800x600'),
+                        Components::Label.new('640x480'),
+                        Components::Label.new('Titulo'),
+                        Components::Label.new('Dificil'),
+                        Components::Label.new('Blabla'),
+                        Components::Label.new('Tralala'))
+      @labels_hud = UI::Hud.new(@labels_menu, :center, :left)
+
       @menu = UI::Menu.new(:horizontal, 20)
       @menu.push(Components::Buttons::MainMenu.new(),
                  Components::Buttons::Quit.new())
@@ -22,7 +31,7 @@ module Contexts
                         Components::Checkbox.new(40),
                         Components::RadioButton.new(20, 'grupo2'),
                         Components::RadioButton.new(20, 'grupo2'))
-      @inputs_hud = UI::Hud.new(@inputs_menu, :center)
+      @inputs_hud = UI::Hud.new(@inputs_menu, :center, :right)
 
       @title = Display.new('[OPTIONS]', [240,10], '', 25)
       @title.update()
@@ -39,6 +48,7 @@ module Contexts
       super()
 
       @inputs_hud.draw(@screen)
+      @labels_hud.draw(@screen)
       @screen.update
     end
 
@@ -62,6 +72,7 @@ module Contexts
 
       @title.update()
       @inputs_hud.redraw(@screen)
+      @labels_hud.redraw(@screen)
       @screen.update()
     end
   end

@@ -9,8 +9,6 @@ module Components
       @radius = radius
       @group = group
 
-      @screen = Rubygame::Screen.get_surface
-
       @background = Rubygame::Surface.new([radius * 2.1 , radius * 2.1])
 
       @background.fill([111,111,111])

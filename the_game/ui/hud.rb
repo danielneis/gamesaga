@@ -1,7 +1,7 @@
 module UI
 class Hud
 
-  def initialize(menu, vertical_align)
+  def initialize(menu, vertical_align = :bottom, horizontal_align = :center)
 
     config = Configuration.instance
 
@@ -12,7 +12,14 @@ class Hud
     @hud_surface.set_colorkey(@hud_surface.get_at([0,0]))
 
     @position = Array.new
-    @position[0] = (config.screen_width - @menu.width) / 2
+
+    if horizontal_align == :left 
+      @position[0] = 0
+    elsif horizontal_align == :center
+      @position[0] = (config.screen_width - @menu.width) / 2
+    elsif horizontal_align == :right
+      @position[0] = config.screen_width - @menu.width
+    end
 
     if vertical_align == :center
       @position[1] = (config.screen_height - @menu.height) / 2
