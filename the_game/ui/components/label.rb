@@ -21,7 +21,6 @@ module Components
       @output = @renderer.render(text, true, [0,0,0])
       @output.blit(@background, [0,0])
 
-      puts @rect.topleft
       super()
     end
 
