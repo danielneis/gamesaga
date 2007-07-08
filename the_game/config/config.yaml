@@ -1,6 +1,6 @@
 --- 
-title: xoP
-fullscreen: true
+title: A game in rubygame
+fullscreen: false
 pix_root: /home/daniel/jogo.wc/the_game/pix/
 font_root: /home/daniel/jogo.wc/the_game/ui/fonts/
 screen_width: 640
