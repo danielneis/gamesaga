@@ -2,9 +2,10 @@ require File.dirname(__FILE__)+'/component'
 module Components
   class Checkbox < Component
 
-    def initialize(side, id = "cb")
+    def initialize(side, id = "cb", checked = false)
 
       @id = id
+      @checked = !checked
 
       @screen = Rubygame::Screen.get_surface
       @background = Rubygame::Surface.new([side, side])
@@ -15,7 +16,7 @@ module Components
       @v_point = [@rect.r / 2.5, @rect.b]
       @e_point = [@rect.r, @rect.y]
 
-      @checked = false
+      click
 
       super()
     end

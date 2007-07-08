@@ -14,10 +14,22 @@ module Contexts
       @labels_menu.push(Components::Label.new('800x600'),
                         Components::Label.new('640x480'),
                         Components::Label.new('Titulo'),
-                        Components::Label.new('Dificil'),
+                        Components::Label.new('Fullscreen'),
                         Components::Label.new('Blabla'),
                         Components::Label.new('Tralala'))
       @labels_hud = UI::Hud.new(@labels_menu, :center, :left)
+
+      @inputs_menu = UI::Menu.new(:vertical, 15)
+
+      chk1 = (config.screen_width == 800)
+      chk2 = (config.screen_width == 640)
+      @inputs_menu.push(Components::RadioButton.new(20, 'resolution', '800x600', chk1),
+                        Components::RadioButton.new(20, 'resolution', '640x480', chk2),
+                        Components::InputText.new(10, 'title', config.title),
+                        Components::Checkbox.new(40, 'fullscreen', config.fullscreen),
+                        Components::RadioButton.new(20, 'grupo2', 'terceiro'),
+                        Components::RadioButton.new(20, 'grupo2', 'quarto'))
+      @inputs_hud = UI::Hud.new(@inputs_menu, :center, :right)
 
       @menu = UI::Menu.new(:horizontal, 20)
       @menu.push(Components::Buttons::MainMenu.new(),
@@ -25,17 +37,6 @@ module Contexts
                  Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :bottom)
 
-      @inputs_menu = UI::Menu.new(:vertical, 15)
-      @inputs_menu.push(Components::RadioButton.new(20, 'grupo1', 'primeiro'),
-                        Components::RadioButton.new(20, 'grupo1', 'segundo'),
-                        Components::InputText.new(10, 'title'),
-                        Components::Checkbox.new(40, 'hard'),
-                        Components::RadioButton.new(20, 'grupo2', 'terceiro'),
-                        Components::RadioButton.new(20, 'grupo2', 'quarto'))
-      @inputs_hud = UI::Hud.new(@inputs_menu, :center, :right)
-
-      @title = Display.new('[OPTIONS]', [240,10], '', 25)
-      @title.update()
 
       @menu.each do |button|
         button.on :main_menu do
@@ -47,15 +48,43 @@ module Contexts
         button.on :save do
 
           options = @inputs_menu.values
-          options.each do |k,v|
-            puts k,v
+
+          if options['resolution'] == '800x600'
+            config.screen_width = 800
+            config.screen_height = 600
+          elsif options['resolution'] == '640x480' 
+            config.screen_width = 640
+            config.screen_height = 480
           end
+
+          config.title = options['title']
+          config.fullscreen = options['fullscreen']
+
+          if config.fullscreen
+            fullscreen = [Rubygame::FULLSCREEN]
+          else
+            fullscreen = []
+          end
+
+          Rubygame::Screen.set_mode([config.screen_width, config.screen_height], 32, fullscreen)
+
+          @screen.title = config.title
+
+          config.save
+
+          @background.blit(@screen, [0,0])
+          @title.update()
+          @hud.draw(@screen)
 
         end
       end
 
       super()
 
+      @title = Display.new('[OPTIONS]', [240,10], '', 25)
+      @title.update()
+
+      @hud.draw(@screen)
       @inputs_hud.draw(@screen)
       @labels_hud.draw(@screen)
       @screen.update
@@ -79,7 +108,6 @@ module Contexts
         end
       end
 
-      @title.update()
       @inputs_hud.redraw(@screen)
       @labels_hud.redraw(@screen)
       @screen.update()

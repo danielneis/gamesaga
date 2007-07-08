@@ -5,7 +5,7 @@ module Components
 
     attr_reader :text
 
-    def initialize(max_lenght = 10, id = "it")
+    def initialize(max_lenght = 10, id = "it", text = '')
 
       @id = id
       config = Configuration.instance
@@ -20,8 +20,13 @@ module Components
       @background_color = [255,255,255]
       update_background
 
-      @text = ''
+      @text = text
       @output = nil
+      if @text == ''
+        @output = nil
+      else
+        @output = @renderer.render(@text, true, [0,0,0])
+      end
       @rect = @background.make_rect
 
       super()
@@ -34,7 +39,7 @@ module Components
       if (input.key == Rubygame::K_BACKSPACE)
         @text.chop!
         update_background
-      elsif (@text.size <= @max_lenght && !input.string[/[a-z]*[A-Z]*[0-9]*/].empty?)
+      elsif (@text.size <= @max_lenght && !input.string[/[a-z]*[A-Z]*[0-9]*\ */].empty?)
         @text += input.string
       end
 

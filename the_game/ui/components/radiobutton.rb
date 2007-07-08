@@ -4,7 +4,7 @@ module Components
 
     attr_reader :group
 
-    def initialize(radius, group, value)
+    def initialize(radius, group, value, checked = false)
 
       @radius = radius
       @group = group
@@ -22,7 +22,8 @@ module Components
 
       @background.draw_circle_s(@center, @radius , [255,255,255])
 
-      @checked = false
+      @checked = checked
+      check if @checked
 
       super()
     end
@@ -37,8 +38,12 @@ module Components
     end
 
     def click
-      @checked = true
+      check
       notify(:clicked, self)
+    end
+
+    def check
+      @checked = true
       @background.draw_circle_s(@center, @little_radius, [0,0,0])
     end
 

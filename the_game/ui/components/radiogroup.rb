@@ -8,6 +8,7 @@ module Components
     end
 
     def add(button)
+      @checked = button if button.checked?
       button.on :clicked do |radio|
         if radio != @checked
           @checked.uncheck unless @checked.nil?
