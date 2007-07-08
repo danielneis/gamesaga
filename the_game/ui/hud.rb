@@ -47,6 +47,5 @@ class Hud
   def handle_input(input)
     @menu.handle_input(input)
   end
-
 end
 end

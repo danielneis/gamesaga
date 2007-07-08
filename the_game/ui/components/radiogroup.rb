@@ -3,7 +3,7 @@ module Components
     include EventDispatcher
 
     def initialize
-      super
+      super()
       @checked = nil
     end
 

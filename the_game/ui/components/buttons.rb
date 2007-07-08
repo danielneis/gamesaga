@@ -89,5 +89,19 @@ module Buttons
       notify :options
     end
   end
+
+  class Save < Button
+    def initialize
+      super({:text => 'Save',
+             :font => 'default',
+             :size => 20,
+             :fg_color => [255,255,255],
+             :bg_color => [0,0,0]})
+    end
+
+    def click
+      notify :save
+    end
+  end
 end
 end

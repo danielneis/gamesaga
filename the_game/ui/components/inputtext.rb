@@ -5,8 +5,9 @@ module Components
 
     attr_reader :text
 
-    def initialize(max_lenght = 10)
+    def initialize(max_lenght = 10, id = "it")
 
+      @id = id
       config = Configuration.instance
 
       Rubygame::TTF.setup()
@@ -59,6 +60,10 @@ module Components
     def lost_focus
       @background_color = [255,255,255]
       update_background
+    end
+
+    def value
+      @text
     end
 
     private

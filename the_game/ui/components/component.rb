@@ -5,6 +5,7 @@ module Components
     include Rubygame::Sprites::Sprite
 
     attr_accessor :rect
+    attr_reader :id, :value
 
     def initialize
       @screen = Rubygame::Screen.get_surface

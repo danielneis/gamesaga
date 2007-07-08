@@ -21,16 +21,17 @@ module Contexts
 
       @menu = UI::Menu.new(:horizontal, 20)
       @menu.push(Components::Buttons::MainMenu.new(),
+                 Components::Buttons::Save.new(),
                  Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :bottom)
 
       @inputs_menu = UI::Menu.new(:vertical, 15)
-      @inputs_menu.push(Components::RadioButton.new(20, 'grupo1'),
-                        Components::RadioButton.new(20, 'grupo1'),
-                        Components::InputText.new(10),
-                        Components::Checkbox.new(40),
-                        Components::RadioButton.new(20, 'grupo2'),
-                        Components::RadioButton.new(20, 'grupo2'))
+      @inputs_menu.push(Components::RadioButton.new(20, 'grupo1', 'primeiro'),
+                        Components::RadioButton.new(20, 'grupo1', 'segundo'),
+                        Components::InputText.new(10, 'title'),
+                        Components::Checkbox.new(40, 'hard'),
+                        Components::RadioButton.new(20, 'grupo2', 'terceiro'),
+                        Components::RadioButton.new(20, 'grupo2', 'quarto'))
       @inputs_hud = UI::Hud.new(@inputs_menu, :center, :right)
 
       @title = Display.new('[OPTIONS]', [240,10], '', 25)
@@ -42,6 +43,14 @@ module Contexts
         end
         button.on :quit_game do
           throw :exit
+        end
+        button.on :save do
+
+          options = @inputs_menu.values
+          options.each do |k,v|
+            puts k,v
+          end
+
         end
       end
 

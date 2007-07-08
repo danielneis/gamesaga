@@ -23,7 +23,7 @@ class Menu < Rubygame::Sprites::Group
       # special case to radiobuttons: need a group to manage them
       if component.is_a? Components::RadioButton
         @radio_groups ||= {}
-        @radio_groups[component.group] ||= Components::RadioGroup.new
+        @radio_groups[component.group] ||= Components::RadioGroup.new()
         @radio_groups[component.group].add component
       end
     end
@@ -78,10 +78,12 @@ class Menu < Rubygame::Sprites::Group
 
     clicked = nil
     self.each do |component|
+      unless component.is_a? Components::RadioGroup
         if component.rect.collide_point?(*position)
           clicked = component
           component.click
         end
+      end
     end
 
     if clicked.nil?
@@ -95,6 +97,19 @@ class Menu < Rubygame::Sprites::Group
 
   def handle_input(input)
     @focused.handle_input(input)
+  end
+
+  def values
+    values = {}
+    self.each do |component|
+      if component.is_a? Components::RadioButton
+        values[component.group] ||= ''
+        values[component.group] = component.value if component.checked?
+      else
+        values[component.id] = component.value
+      end
+    end
+    values
   end
 end
 end

@@ -4,10 +4,11 @@ module Components
 
     attr_reader :group
 
-    def initialize(radius, group)
+    def initialize(radius, group, value)
 
       @radius = radius
       @group = group
+      @value = value
 
       @background = Rubygame::Surface.new([radius * 2.1 , radius * 2.1])
 
@@ -21,6 +22,8 @@ module Components
 
       @background.draw_circle_s(@center, @radius , [255,255,255])
 
+      @checked = false
+
       super()
     end
 
@@ -29,12 +32,18 @@ module Components
     end
 
     def uncheck
+      @checked = false
       @background.draw_circle_s(@center, @radius , [255,255,255])
     end
 
     def click
+      @checked = true
       notify(:clicked, self)
       @background.draw_circle_s(@center, @little_radius, [0,0,0])
+    end
+
+    def checked?
+      @checked
     end
   end
 end
