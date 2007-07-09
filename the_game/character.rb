@@ -40,10 +40,17 @@ class Character
         end
 
         @still_image = Rubygame::Surface.load_image(config.pix_root + image)
+        @still_image.set_colorkey(@still_image.get_at([0,0]))
+
         @attack_image = Rubygame::Surface.load_image(config.pix_root + 'panda.attack.png')
+        @attack_image.set_colorkey(@attack_image.get_at([0,0]))
+        
+        if config.screen_width == 800
+          @still_image = @still_image.zoom(1.4, true)
+          @attack_image = @attack_image.zoom(1.4, true)
+        end
 
         @image = @still_image
-        @image.set_colorkey(@image.get_at([0, 0]))
         @rect = @image.make_rect
         @rect.move!(x,y)
 
@@ -118,16 +125,15 @@ class Character
   end
 
   def swap_image(image)
+
     if image == :attack
 
       @image = @attack_image
-      @image.set_colorkey(@image.get_at([0, 0]))
       @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
 
     elsif image == :still
 
       @image = @still_image
-      @image.set_colorkey(@image.get_at([0, 0]))
       @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
     end
   end

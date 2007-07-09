@@ -71,6 +71,7 @@ class World
 
   def background=(image)
     @background = Rubygame::Surface.load_image(image)
+    @background = @background.zoom_to(800, 600) if Configuration.instance.screen_width == 800
   end
 
   def run
