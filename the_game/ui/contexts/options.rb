@@ -15,20 +15,25 @@ module Contexts
                         Components::Label.new('640x480'),
                         Components::Label.new('Titulo'),
                         Components::Label.new('Fullscreen'),
-                        Components::Label.new('Blabla'),
-                        Components::Label.new('Tralala'))
+                        Components::Label.new('16 bits'),
+                        Components::Label.new('32 bits'),
+                        Components::Label.new('Default bits'))
       @labels_hud = UI::Hud.new(@labels_menu, :center, :left)
 
       @inputs_menu = UI::Menu.new(:vertical, 15)
 
       chk1 = (config.screen_width == 800)
       chk2 = (config.screen_width == 640)
+      chk3 = (config.color_depth == 16)
+      chk4 = (config.color_depth == 32)
+      chk5 = (config.color_depth == 0)
       @inputs_menu.push(Components::RadioButton.new(20, 'resolution', '800x600', chk1),
                         Components::RadioButton.new(20, 'resolution', '640x480', chk2),
                         Components::InputText.new(10, 'title', config.title),
                         Components::Checkbox.new(40, 'fullscreen', config.fullscreen),
-                        Components::RadioButton.new(20, 'grupo2', 'terceiro'),
-                        Components::RadioButton.new(20, 'grupo2', 'quarto'))
+                        Components::RadioButton.new(20, 'color_depth', 16, chk3),
+                        Components::RadioButton.new(20, 'color_depth', 32, chk4),
+                        Components::RadioButton.new(20, 'color_depth', 0, chk5))
       @inputs_hud = UI::Hud.new(@inputs_menu, :center, :right)
 
       @menu = UI::Menu.new(:horizontal, 20)
@@ -59,6 +64,7 @@ module Contexts
 
           config.title = options['title']
           config.fullscreen = options['fullscreen']
+          config.color_depth = options['color_depth']
 
           if config.fullscreen
             fullscreen = [Rubygame::FULLSCREEN]
@@ -66,7 +72,7 @@ module Contexts
             fullscreen = []
           end
 
-          Rubygame::Screen.set_mode([config.screen_width, config.screen_height], 32, fullscreen)
+          Rubygame::Screen.set_mode([config.screen_width, config.screen_height], config.color_depth, fullscreen)
 
           @screen.title = config.title
 

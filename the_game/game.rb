@@ -15,12 +15,12 @@ require 'world'
 # Initialize rubygame, set up screen and start the event queue
 Rubygame.init()
 config = Configuration.instance
+video_configs = []
 if config.fullscreen
-  fullscreen = [Rubygame::FULLSCREEN]
-else
-  fullscreen = []
+  video_configs << Rubygame::FULLSCREEN
 end
-screen = Rubygame::Screen.new([config.screen_width, config.screen_height], 0, fullscreen)
+
+screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, video_configs)
 screen.title = config.title
 
 Rubygame::Clock.new do |clock|
