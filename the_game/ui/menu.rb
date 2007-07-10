@@ -16,10 +16,7 @@ class Menu < Rubygame::Sprites::Group
 
     super(*args)
 
-    args.each do |component|
-      @component_height = component.rect.h if component.rect.h > @component_height
-      @component_width = component.rect.w if component.rect.w > @component_width
-
+    each do |component|
       # special case to radiobuttons: need a group to manage them
       if component.is_a? Components::RadioButton
         @radio_groups ||= {}
@@ -28,11 +25,14 @@ class Menu < Rubygame::Sprites::Group
       end
     end
 
+    @component_height = sort{ |a,b| a.rect.h <=> b.rect.h }.last.rect.h
+    @component_width = sort{ |a,b| a.rect.w <=> b.rect.w }.last.rect.w
+
     if @orientation == :vertical
-      @height = (@component_height * self.length) + ((self.length + 1) * @margin)
+      @height = (@component_height * length) + ((length + 1) * @margin)
       @width  = @component_width + @margin * 2
     elsif @orientation == :horizontal
-      @width = (@component_width * self.length) + ((self.length + 1) * @margin)
+      @width = (@component_width * length) + ((length + 1) * @margin)
       @height  = @component_height + @margin * 2
     end
   end
@@ -49,7 +49,7 @@ class Menu < Rubygame::Sprites::Group
   def draw(destination, position)
 
     image_detour = @margin / 2
-    self.collect do |component|
+    collect do |component|
 
       if @orientation == :vertical
         component.rect.move!(@margin, @margin + image_detour)

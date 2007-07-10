@@ -14,7 +14,7 @@ module Contexts
                  Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :bottom)
 
-      @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg')
+      @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
 
       @menu.each do |button|
         button.on :start_game do 
@@ -47,7 +47,8 @@ module Contexts
         end
       end
 
-      super()
+      @background.blit(@screen, [0,0]) unless @background.nil?
+      @hud.draw(@screen)
 
       @screen.update()
     end

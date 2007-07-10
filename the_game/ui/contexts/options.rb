@@ -8,7 +8,7 @@ module Contexts
 
       config = Configuration.instance
 
-      @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg')
+      @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
 
       @labels_menu = UI::Menu.new(:vertical, 15)
       @labels_menu.push(Components::Label.new('800x600'),
@@ -18,23 +18,22 @@ module Contexts
                         Components::Label.new('16 bits'),
                         Components::Label.new('32 bits'),
                         Components::Label.new('Default bits'))
-      @labels_hud = UI::Hud.new(@labels_menu, :center, :left)
+      @labels_hud = UI::Hud.new(@labels_menu, :middle, :left)
 
       @inputs_menu = UI::Menu.new(:vertical, 15)
-
-      chk1 = (config.screen_width == 800)
-      chk2 = (config.screen_width == 640)
-      chk3 = (config.color_depth == 16)
-      chk4 = (config.color_depth == 32)
-      chk5 = (config.color_depth == 0)
-      @inputs_menu.push(Components::RadioButton.new(20, 'resolution', '800x600', chk1),
-                        Components::RadioButton.new(20, 'resolution', '640x480', chk2),
+      @inputs_menu.push(Components::RadioButton.new(15, 'resolution', '800x600',
+                                                    config.screen_width == 800),
+                        Components::RadioButton.new(15, 'resolution', '640x480',
+                                                    config.screen_width == 640),
                         Components::InputText.new(10, 'title', config.title),
-                        Components::Checkbox.new(40, 'fullscreen', config.fullscreen),
-                        Components::RadioButton.new(20, 'color_depth', 16, chk3),
-                        Components::RadioButton.new(20, 'color_depth', 32, chk4),
-                        Components::RadioButton.new(20, 'color_depth', 0, chk5))
-      @inputs_hud = UI::Hud.new(@inputs_menu, :center, :right)
+                        Components::Checkbox.new(30, 'fullscreen', config.fullscreen),
+                        Components::RadioButton.new(15, 'color_depth', 16,
+                                                   config.color_depth == 16),
+                        Components::RadioButton.new(15, 'color_depth', 32,
+                                                   config.color_depth == 32),
+                        Components::RadioButton.new(15, 'color_depth', 0,
+                                                   config.color_depth == 0))
+      @inputs_hud = UI::Hud.new(@inputs_menu, :middle, :right)
 
       @menu = UI::Menu.new(:horizontal, 20)
       @menu.push(Components::Buttons::MainMenu.new(),
@@ -57,9 +56,11 @@ module Contexts
           if options['resolution'] == '800x600'
             config.screen_width = 800
             config.screen_height = 600
+            @background = @background.zoom_to(800, 600, true)
           elsif options['resolution'] == '640x480' 
             config.screen_width = 640
             config.screen_height = 480
+            @background = @background.zoom_to(640, 480, true)
           end
 
           config.title = options['title']
@@ -79,9 +80,7 @@ module Contexts
           config.save
 
           @background.blit(@screen, [0,0])
-          @title.update()
-          @hud.draw(@screen)
-
+          @title.update
         end
       end
 
@@ -116,6 +115,7 @@ module Contexts
 
       @inputs_hud.redraw(@screen)
       @labels_hud.redraw(@screen)
+      @hud.draw(@screen)
       @screen.update()
     end
   end

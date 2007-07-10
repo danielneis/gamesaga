@@ -21,7 +21,7 @@ class Hud
       @position[0] = config.screen_width - @menu.width
     end
 
-    if vertical_align == :center
+    if vertical_align == :middle
       @position[1] = (config.screen_height - @menu.height) / 2
     elsif vertical_align == :bottom
       @position[1] = config.screen_height - @menu.height

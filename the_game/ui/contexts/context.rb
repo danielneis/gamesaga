@@ -39,10 +39,6 @@ module Contexts
     end
 
     def update
-      @background.blit(@screen, [0,0]) unless @background.nil?
-      @clock.tick()
-      @hud.draw(@screen)
-      @screen.update()
     end
   end
 end
