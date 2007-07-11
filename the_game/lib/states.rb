@@ -12,106 +12,32 @@ module States
     end
   end
 
-  class Stop < State
-
-    def enter(performer)
-      performer.stop if performer.respond_to? 'stop'
-    end
-
-    def execute(performer)
-    end
-
-    def exit(performer)
-    end
-  end
-
   class Walk < State
 
     def execute(performer)
-
-      speed = performer.speed
-
-      help_state = HorizontalMove.new
-      help_state.execute(performer)
-
-      if performer.vertical_direction == :up and performer.rect.bottom > performer.area.top
-        vertical_speed = -speed
-      elsif performer.vertical_direction == :down and performer.rect.bottom < performer.area.bottom
-        vertical_speed = speed
-      else
-        vertical_speed = nil
-      end
-      
-      performer.move(0, vertical_speed) if not vertical_speed.nil?
-      performer.update_ground
-    end
-  end
-
-  class HorizontalMove < State
-
-    def execute(performer)
-
-      speed = performer.speed
-
-      if performer.horizontal_direction == :left and performer.rect.left > performer.area.left
-        horizontal_speed = -speed
-      elsif performer.horizontal_direction == :right and performer.rect.right < performer.area.right
-        horizontal_speed = speed
-      else
-        horizontal_speed = nil
-      end
-
-      horizontal_speed = horizontal_speed * 5 if ( not horizontal_speed.nil?) and performer.in_state? Jump
-
-      performer.move(horizontal_speed) if not horizontal_speed.nil?
+      performer.move
     end
   end
 
   class Jump < State
 
     def enter(performer)
-      @jump_stage = 0
-      @jump_stages = 5
-      @jump_speed = -(performer.speed * 3)
+      performer.y_speed = performer.speed
+      performer.move
     end
 
     def execute(performer)
 
-      help_state = HorizontalMove.new
-      help_state.execute(performer)
-
-      if performer.vertical_direction == :up
-
-        if @jump_stage < @jump_stages
-          vertical_speed = @jump_speed
-          @jump_stage += 1
+      if performer.rect.bottom < performer.ground
+        performer.y_speed -= performer.y_speed * 0.1
+        performer.move
+      else
+        performer.y_speed = 0
+        if performer.x_speed != 0
+          performer.change_state(States::Walk)
         else
-          performer.vertical_direction = :down
-          @jump_stage = 0
+          performer.change_state(States::State)
         end
-
-      elsif  performer.vertical_direction == :down
-
-        if performer.rect.bottom < performer.ground
-          vertical_speed = -@jump_speed
-        else
-          performer.stop_walk :down
-          vertical_speed = nil
-          if (performer.has_next_state?)
-            performer.go_to_next_state
-          else
-            performer.back_to_last_state
-          end
-        end
-      end
-      
-      # move the character
-      performer.move(0, vertical_speed) if not vertical_speed.nil?
-    end
-
-    def exit(performer)
-      if performer.has_next_state? and performer.next_state == States::State
-        performer.stop_walk(performer.horizontal_direction)
       end
     end
   end

@@ -53,13 +53,15 @@ class Character
         @image = @still_image
         @rect = @image.make_rect
         @rect.move!(x,y)
-
-        update_ground
+        @ground = @rect.bottom
 
         # @area is the area of the screen, which the player will walk across
         @area = Rubygame::Rect.new(0, 403, *[config.screen_width, config.screen_height - 403])
 
         @state_machine = FiniteStateMachine.new(self)
+
+        @x_speed = 0
+        @y_speed = 0
 
         setup_listeners()
       end
@@ -69,8 +71,8 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed
 
-  attr_reader :rect, :ground, :area, :horizontal_direction, :damage
-  attr_accessor :vertical_direction
+  attr_reader :rect, :ground, :area, :damage, :x_speed
+  attr_accessor :y_speed
 
   def take_damage(amount, to_side)
     @damage = amount
@@ -79,49 +81,44 @@ class Character
 
   def walk(direction)
 
-    if (not in_state? States::Jump)
-      if (direction == :left or direction == :right)
-        @horizontal_direction = direction
-      elsif (direction == :up or direction == :down)
-        @vertical_direction = direction
+    unless in_state? States::Jump
+      case direction
+      when :left then @x_speed = -@speed
+      when :right then @x_speed = @speed
+      when :up then @y_speed = -@speed
+      when :down then @y_speed = @speed
       end
       change_state(States::Walk)
     end
   end
 
   def stop_walk(direction)
-    if in_state?(States::Jump)
-      set_next_state(States::Stop) if @horizontal_direction == direction
-    else
-      @horizontal_direction = nil if @horizontal_direction == direction
-    end
-    @vertical_direction = nil if @vertical_direction == direction
-  end
 
-  def stop
-    @horizontal_direction = nil
-    @vertical_direction = nil
+    unless in_state? States::Jump
+      case direction
+      when :left
+        @x_speed = 0 if @x_speed < 0
+      when :right
+        @x_speed = 0 if @x_speed > 0
+      when :up
+        @y_speed = 0 if @y_speed < 0
+      when :down
+        @y_speed = 0 if @y_speed > 0
+      end
+    end
   end
 
   def jump
-    if not in_state? States::Jump
-      @vertical_direction = :up
-      update_ground
-      change_state(States::Jump)
-    end
+    change_state(States::Jump) unless in_state? States::Jump
+  end
+
+  def move
+    @rect.move!(@x_speed, @y_speed)
+    @ground = @rect.bottom unless in_state? States::Jump
   end
 
   def attack(direction = :right)
     change_state(States::Attack) if not in_state? States::Jump
-  end
-
-  def move(x = 0, y = 0)
-    @rect.bottom += y
-    @rect.x += x
-  end
-
-  def update_ground
-    @ground = @rect.bottom
   end
 
   def swap_image(image)
