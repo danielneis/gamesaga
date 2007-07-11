@@ -69,10 +69,10 @@ class Character
   end
   
   # Creature attributes are read-only
-  traits :life, :strength, :speed
+  traits :life, :strength, :speed, :jump_s
 
   attr_reader :rect, :ground, :area, :damage, :x_speed
-  attr_accessor :y_speed
+  attr_accessor :x_speed, :y_speed
 
   def take_damage(amount, to_side)
     @damage = amount

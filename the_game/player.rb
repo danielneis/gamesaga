@@ -5,6 +5,7 @@ class Player < Character
   life 20
   strength 100
   speed 3
+  jump_s 7
 
   def update(*group)
 

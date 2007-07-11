@@ -5,6 +5,7 @@ class Enemy < Character
   life 20
   strength 400
   speed 3
+  jump_s 15
 
   def update
 

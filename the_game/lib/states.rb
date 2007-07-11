@@ -22,18 +22,23 @@ module States
   class Jump < State
 
     def enter(performer)
-      performer.y_speed = performer.speed
+      performer.y_speed = -performer.jump_s
       performer.move
+      performer.x_speed *= 5
+      @time_span = 1
     end
 
     def execute(performer)
 
-      if performer.rect.bottom < performer.ground
-        performer.y_speed -= performer.y_speed * 0.1
+      if performer.rect.bottom <= performer.ground
+        puts performer.y_speed
+        performer.y_speed += 0.9 * @time_span
         performer.move
+        @time_span += 1
       else
         performer.y_speed = 0
         if performer.x_speed != 0
+          performer.x_speed /= 5
           performer.change_state(States::Walk)
         else
           performer.change_state(States::State)
