@@ -15,7 +15,7 @@ module States
   class Walk < State
 
     def execute(performer)
-      performer.move
+      performer.move if performer.should_walk
     end
   end
 
@@ -31,7 +31,6 @@ module States
     def execute(performer)
 
       if performer.rect.bottom <= performer.ground
-        puts performer.y_speed
         performer.y_speed += 0.9 * @time_span
         performer.move
         @time_span += 1
