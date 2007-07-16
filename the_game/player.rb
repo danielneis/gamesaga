@@ -18,6 +18,7 @@ class Player < Character
     notify :player_death if @life <= 0
   end
 
+  private
   def handle_collisions(collide_group)
 
     collide_group.collect do |collide_sprite|

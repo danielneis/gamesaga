@@ -56,7 +56,7 @@ class Character
         @ground = @rect.bottom
 
         # @area is the area of the screen, which the player will walk across
-        @area = Rubygame::Rect.new(0, 403, *[config.screen_width, config.screen_height - 403])
+        @area = Rubygame::Rect.new(0, 400, *[config.screen_width, config.screen_height])
 
         @state_machine = FiniteStateMachine.new(self)
 
@@ -71,7 +71,7 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed, :jump_s
 
-  attr_reader :rect, :ground, :area, :damage, :x_speed
+  attr_reader :ground, :damage
   attr_accessor :x_speed, :y_speed
 
   def take_damage(amount, to_side)
@@ -115,6 +115,13 @@ class Character
   def move
     @rect.move!(@x_speed, @y_speed)
     @ground = @rect.bottom unless in_state? States::Jump
+  end
+
+  def should_walk
+    ((@rect.x + @x_speed > @area.x) &&
+     (@rect.r + @x_speed < @area.r) &&
+     (@rect.y + @y_speed > @area.y) &&
+     (@rect.b + @y_speed < @area.b))
   end
 
   def attack(direction = :right)
