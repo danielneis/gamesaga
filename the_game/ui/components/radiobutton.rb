@@ -37,7 +37,7 @@ module Components
       @background.draw_circle_s(@center, @radius , [255,255,255])
     end
 
-    def click
+    def click(position)
       check
       notify(:clicked, self)
     end

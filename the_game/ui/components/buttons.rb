@@ -39,7 +39,7 @@ module Buttons
              :bg_color => [0,0,0]})
     end
 
-    def click
+    def click(position)
       notify :quit_game
     end
   end
@@ -55,7 +55,7 @@ module Buttons
              :bg_color => [0,0,0]})
     end
 
-    def click
+    def click(position)
       notify :start_game
     end
   end
@@ -70,7 +70,7 @@ module Buttons
              :bg_color => [0,0,0]})
     end
 
-    def click
+    def click(position)
       notify :main_menu
     end
   end
@@ -85,7 +85,7 @@ module Buttons
              :bg_color => [0,0,0]})
     end
 
-    def click
+    def click(position)
       notify :options
     end
   end
@@ -99,7 +99,7 @@ module Buttons
              :bg_color => [0,0,0]})
     end
 
-    def click
+    def click(position)
       notify :save
     end
   end

@@ -4,7 +4,6 @@ module Components
     include EventDispatcher
     include Rubygame::Sprites::Sprite
 
-    attr_accessor :rect
     attr_reader :id, :value
 
     def initialize
@@ -19,14 +18,26 @@ module Components
     def lost_focus
     end
 
-    def click
-    end
-
-    def draw(destination)
-      super(destination)
+    def click(position)
     end
 
     def handle_input(input)
+    end
+
+    def move!(*pos)
+      @rect.move!(*pos)
+    end
+
+    def width
+      @rect.w
+    end
+
+    def height
+      @rect.h
+    end
+
+    def collide_point?(*position)
+      @rect.collide_point?(*position)
     end
   end
 end

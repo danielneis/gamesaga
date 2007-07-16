@@ -8,6 +8,7 @@ require 'components/radiobutton'
 require 'components/radiogroup'
 require 'components/checkbox'
 require 'components/label'
+require 'components/selectlist'
 
 module Contexts
 

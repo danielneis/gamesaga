@@ -57,7 +57,7 @@ module Components
       @background.blit(@screen, @rect.topleft)
     end
 
-    def click
+    def click(position)
       @background_color = [100,50,37]
       update_background
     end

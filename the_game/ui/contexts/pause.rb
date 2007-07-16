@@ -7,7 +7,7 @@ module Contexts
 
       @menu = UI::Menu.new(:vertical, 20)
       @menu.push(Components::Buttons::MainMenu.new(), Components::Buttons::Quit.new())
-      @hud = UI::Hud.new(@menu, :center)
+      @hud = UI::Hud.new(@menu, :middle)
 
       @title = Display.new('[PAUSED]', [240,10], '', 25)
       @title.update()

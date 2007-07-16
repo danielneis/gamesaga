@@ -16,7 +16,7 @@ module Components
       @v_point = [@rect.r / 2.5, @rect.b]
       @e_point = [@rect.r, @rect.y]
 
-      click
+      click([0,0])
 
       super()
     end
@@ -25,7 +25,7 @@ module Components
       @background.blit(@screen, @rect.topleft)
     end
 
-    def click
+    def click(position)
 
       if (@checked)
         @background.fill([255,255,255])

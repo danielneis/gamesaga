@@ -11,8 +11,7 @@ module Contexts
       @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
 
       @labels_menu = UI::Menu.new(:vertical, 15)
-      @labels_menu.push(Components::Label.new('800x600'),
-                        Components::Label.new('640x480'),
+      @labels_menu.push(Components::Label.new('Resolution'),
                         Components::Label.new('Titulo'),
                         Components::Label.new('Fullscreen'),
                         Components::Label.new('16 bits'),
@@ -21,10 +20,14 @@ module Contexts
       @labels_hud = UI::Hud.new(@labels_menu, :middle, :left)
 
       @inputs_menu = UI::Menu.new(:vertical, 15)
-      @inputs_menu.push(Components::RadioButton.new(15, 'resolution', '800x600',
-                                                    config.screen_width == 800),
-                        Components::RadioButton.new(15, 'resolution', '640x480',
-                                                    config.screen_width == 640),
+
+      if config.screen_width == 640
+        resolution_selected = 1
+      elsif config.screen_width == 800
+        resolution_selected =  0
+      end
+
+      @inputs_menu.push(Components::SelectList.new('resolution', ['800x600', '640x480'], resolution_selected, 150),
                         Components::InputText.new(10, 'title', config.title),
                         Components::Checkbox.new(30, 'fullscreen', config.fullscreen),
                         Components::RadioButton.new(15, 'color_depth', 16,
@@ -33,6 +36,7 @@ module Contexts
                                                    config.color_depth == 32),
                         Components::RadioButton.new(15, 'color_depth', 0,
                                                    config.color_depth == 0))
+
       @inputs_hud = UI::Hud.new(@inputs_menu, :middle, :right)
 
       @menu = UI::Menu.new(:horizontal, 20)

@@ -41,6 +41,7 @@ module Contexts
           case event.key
           when Rubygame::K_ESCAPE then throw :exit
           when Rubygame::K_RETURN then notify :start_game
+          when Rubygame::K_O      then notify :options
           end
         when Rubygame::MouseDownEvent
           @hud.click(event.pos) if event.string == 'left'
