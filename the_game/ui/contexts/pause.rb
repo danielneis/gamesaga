@@ -5,12 +5,11 @@ module Contexts
 
     def initialize
 
+      super()
+
       @menu = UI::Menu.new(:vertical, 20)
       @menu.push(Components::Buttons::MainMenu.new(), Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :middle)
-
-      @title = Display.new('[PAUSED]', [240,10], '', 25)
-      @title.update()
 
       @menu.each do |button|
         button.on :quit_game do
@@ -21,7 +20,10 @@ module Contexts
         end
       end
 
-      super()
+      @title = Display.new('[PAUSED]', [240,10], '', 25)
+      @title.update()
+      @hud.draw(@screen)
+
     end
 
     def update
@@ -43,6 +45,8 @@ module Contexts
           end
         end
       end
+
+      @screen.update()
     end
   end
 end

@@ -6,6 +6,10 @@ module Contexts
 
     def initialize
 
+      super()
+
+      yield self if block_given?
+
       config = Configuration.instance
 
       @menu = UI::Menu.new(:horizontal, 30)
@@ -13,8 +17,6 @@ module Contexts
                  Components::Buttons::Options.new(),
                  Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :bottom)
-
-      @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
 
       @menu.each do |button|
         button.on :start_game do 
@@ -28,8 +30,9 @@ module Contexts
         end
       end
 
-      super()
-
+      @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
+      @background.blit(@screen, [0,0])
+      @hud.draw(@screen)
     end
 
     def update
@@ -48,9 +51,8 @@ module Contexts
         end
       end
 
-      @background.blit(@screen, [0,0]) unless @background.nil?
+      @background.blit(@screen, [0,0])
       @hud.draw(@screen)
-
       @screen.update()
     end
   end

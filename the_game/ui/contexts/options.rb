@@ -6,9 +6,11 @@ module Contexts
 
     def initialize
 
+      super()
+      yield self if block_given?
+
       config = Configuration.instance
 
-      @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
 
       @labels_menu = UI::Menu.new(:vertical, 15)
       @labels_menu.push(Components::Label.new('Resolution'),
@@ -88,15 +90,14 @@ module Contexts
         end
       end
 
-      super()
-
       @title = Display.new('[OPTIONS]', [240,10], '', 25)
       @title.update()
 
+      @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
+      @background.blit(@screen, [0,0])
       @hud.draw(@screen)
       @inputs_hud.draw(@screen)
       @labels_hud.draw(@screen)
-      @screen.update
     end
 
     def update

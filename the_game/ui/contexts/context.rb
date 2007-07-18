@@ -25,12 +25,6 @@ module Contexts
       @queue = Rubygame::EventQueue.new
       
       setup_listeners()
-
-      yield self if block_given?
-
-      @background.blit(@screen, [0,0]) unless @background.nil?
-      @hud.draw(@screen)
-      @screen.update()
     end
 
     def run
