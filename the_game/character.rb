@@ -63,6 +63,8 @@ class Character
         @x_speed = 0
         @y_speed = 0
 
+        @collisions = []
+
         setup_listeners()
       end
     end
@@ -71,7 +73,7 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed, :jump_s
 
-  attr_reader :ground, :damage
+  attr_reader :ground, :damage, :collisions
   attr_accessor :x_speed, :y_speed
 
   def take_damage(amount, to_side)
@@ -142,7 +144,9 @@ class Character
     end
   end
 
-  def update
+  def update(*collidables)
+    collidables.flatten!
+    @collisions = collide_group(collidables)
     @state_machine.update()
   end
 end

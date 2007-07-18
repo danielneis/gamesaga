@@ -91,7 +91,7 @@ class World
     @kills_display.update(@kills.to_s)
 
     @player.update(@enemies, @items)
-    @enemies.update()
+    @enemies.update(@player)
     @items.update()
 
     all_sprites = [@player, @enemies, @items].flatten!.sort! { |a,b| a.ground <=> b.ground }

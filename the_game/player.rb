@@ -7,34 +7,20 @@ class Player < Character
   speed 3
   jump_s 7
 
-  def update(*group)
+  def update(*collidables)
 
-    super()
-
-    group.flatten!
-
-    handle_collisions(collide_group(group))
+    super(*collidables)
 
     notify :player_death if @life <= 0
+
+    handle_collisions
   end
 
   private
-  def handle_collisions(collide_group)
+  def handle_collisions
 
-    collide_group.collect do |collide_sprite|
-      if collide_sprite.is_a? Enemy
-
-        if @rect.centerx < collide_sprite.rect.centerx
-          player_relative_position = :left
-          enemy_relative_position = :right
-        elsif @rect.centerx > collide_sprite.rect.centerx
-          player_relative_position = :right
-          enemy_relative_position = :left
-        end
-
-        collide_sprite.take_damage(@strength, enemy_relative_position) if @state_machine.in_state? States::Attack
-
-      elsif collide_sprite.is_a? Item
+    @collisions.collect do |collide_sprite|
+      if collide_sprite.is_a? Item
 
         collide_sprite.effect.collect do |method, new_value|
           old_value = self.send(method)

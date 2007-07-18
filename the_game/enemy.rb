@@ -2,16 +2,15 @@ require 'character'
 
 class Enemy < Character
 
-  life 20
+  life 500
   strength 400
   speed 3
   jump_s 15
 
-  def update
+  def update(*collidables)
 
-    super()
+    super(*collidables)
 
     notify(:enemy_death, self) if @life <= 0
   end
-
 end

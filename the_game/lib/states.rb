@@ -54,6 +54,21 @@ module States
       @attack_stages = 3
 
       performer.swap_image :attack
+
+      performer.collisions.each do |colision|
+
+        if colision.respond_to? :take_damage
+          if performer.rect.centerx < colision.rect.centerx
+            attacker_relative_position = :left
+            hitted_relative_position = :right
+          elsif performer.rect.centerx > colision.rect.centerx
+            attacker_relative_position = :right
+            enemy_relative_position = :left
+          end
+
+          colision.take_damage(performer.strength, enemy_relative_position)
+        end
+      end
     end
 
     def execute(performer)
@@ -84,6 +99,8 @@ module States
 
       @pow_image = Rubygame::Surface.load_image(config.pix_root + 'pow.png')
       @pow_image.blit(@screen, [performer.rect.x, performer.rect.y] )
+
+      performer.life -= performer.damage
     end
 
     def execute(performer)
@@ -91,7 +108,6 @@ module States
       if @hit_stage < @hit_stages
         @hit_stage += 1
       else 
-        performer.life -= performer.damage
         performer.back_to_last_state
       end
     end
