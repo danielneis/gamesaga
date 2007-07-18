@@ -116,4 +116,20 @@ module States
       @pow_image = nil
     end
   end
+
+  class Catch < State
+
+    def enter(performer)
+
+      performer.items_to_catch.each do |item|
+        item.each_effect do |method, new_value|
+
+          old_value = performer.send(method)
+          performer.send(method.to_s+'=', old_value + new_value)
+
+          item.catched
+        end
+      end
+    end
+  end
 end

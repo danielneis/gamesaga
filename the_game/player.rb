@@ -12,24 +12,14 @@ class Player < Character
     super(*collidables)
 
     notify :player_death if @life <= 0
-
-    handle_collisions
   end
 
-  private
-  def handle_collisions
-
-    @collisions.collect do |collide_sprite|
-      if collide_sprite.is_a? Item
-
-        collide_sprite.effect.collect do |method, new_value|
-          old_value = self.send(method)
-          self.send(method.to_s+'=', old_value + new_value)
-
-          collide_sprite.catched = true
-        end
-
-      end
+  def act
+    items_to_catch = @collisions.select { |c| c.is_a? Item }
+    if items_to_catch.empty?
+      attack
+    else
+      catch_items(items_to_catch) 
     end
   end
 end

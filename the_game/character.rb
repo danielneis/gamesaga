@@ -73,7 +73,7 @@ class Character
   # Creature attributes are read-only
   traits :life, :strength, :speed, :jump_s
 
-  attr_reader :ground, :damage, :collisions
+  attr_reader :ground, :damage, :collisions, :items_to_catch
   attr_accessor :x_speed, :y_speed
 
   def take_damage(amount, to_side)
@@ -128,6 +128,11 @@ class Character
 
   def attack(direction = :right)
     change_state(States::Attack) if not in_state? States::Jump
+  end
+
+  def catch_items(items)
+    @items_to_catch = items
+    change_state(States::Catch)
   end
 
   def swap_image(image)

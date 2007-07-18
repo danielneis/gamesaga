@@ -3,8 +3,7 @@ class Item
   include EventDispatcher
   include Rubygame::Sprites::Sprite
 
-  attr_reader :effect, :rect, :ground
-  attr_accessor :catched
+  attr_reader :ground
 
   def initialize(x, y, image, effect)
 
@@ -21,13 +20,14 @@ class Item
 
     @effect = effect
 
-    @catched = false
-    
     setup_listeners()
   end
 
-  def update
-    notify(:item_catched, self) if @catched
+  def catched
+    notify(:item_catched, self)
   end
 
+  def each_effect
+    @effect.each { |e| yield e }
+  end
 end

@@ -92,7 +92,6 @@ class World
 
     @player.update(@enemies, @items)
     @enemies.update(@player)
-    @items.update()
 
     all_sprites = [@player, @enemies, @items].flatten!.sort! { |a,b| a.ground <=> b.ground }
     all_sprites.each  { |sprite| sprite.draw(@screen) }
@@ -114,7 +113,7 @@ class World
         when Rubygame::K_RIGHT  then @player.walk :right
         when Rubygame::K_UP     then @player.walk :up
         when Rubygame::K_DOWN   then @player.walk :down
-        when Rubygame::K_S      then @player.attack
+        when Rubygame::K_S      then @player.act
         when Rubygame::K_D      then @player.jump
         end
       when Rubygame::KeyUpEvent
