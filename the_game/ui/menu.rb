@@ -40,11 +40,6 @@ class Menu < Rubygame::Sprites::Group
     return [@width, @height]
   end
 
-  # vamos documentar algo estranho aqui...
-  # primeiro eu preciso mover o retângulo da imagem e sua posição está relacionada com a 'surface'  na qual vai ser desenhada
-  # depois disso eu a desenho e parece que seu retângulo volta para a posição [0,0]
-  # por ultimo eu preciso mover o retângulo novamente para cima da imagem, mas agora a sua posição está relacionada a tela
-  # muito bizarro. ainda não sei por que isso acontece...
   def draw(destination, position)
 
     image_detour = @margin / 2
