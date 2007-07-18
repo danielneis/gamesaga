@@ -58,7 +58,7 @@ module Components
         @selected -= 1 unless @selected == 0
         update_output
       elsif @down_rect.collide_point?(*position)
-        @selected += 1 unless @selected == @options.size
+        @selected += 1 unless @selected == @options.size() - 1
         update_output
       end
     end
