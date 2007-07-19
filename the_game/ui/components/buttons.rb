@@ -13,7 +13,7 @@ module Buttons
 
       if (!bg_image.empty?)
 
-        @image = Rubygame::Surface.load_image(PIX_ROOT+bg_image+'.png')
+        @image = Rubygame::Surface.load_image(config.pix_root + bg_image + '.png')
         @background = Rubygame::Surface.new([@image.w, @image.h])
         @image.blit(@background, [0,0])
       end
