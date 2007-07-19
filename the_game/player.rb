@@ -5,7 +5,7 @@ class Player < Character
   life 20
   strength 100
   speed 3
-  jump_s 7
+  jump_s 2
 
   def update(*collidables)
 

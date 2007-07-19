@@ -23,8 +23,6 @@ end
 screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, video_configs)
 screen.title = config.title
 
-Rubygame::Clock.new { |clock| clock.target_framerate = 35 }
-
 catch(:exit) do 
   Contexts::Main.new do |mm|
 

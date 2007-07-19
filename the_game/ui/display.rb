@@ -3,7 +3,9 @@ class Display < Rubygame::SFont
 
   Rubygame::TTF.setup()
 
-  def initialize(label, position, text = '', size = 12, font = 'default')
+  attr_reader :rect
+
+  def initialize(label, position, text = '', size = 22, font = 'default')
 
     config = Configuration.instance
 
@@ -15,6 +17,10 @@ class Display < Rubygame::SFont
 
     @renderer = Rubygame::TTF.new(config.font_root + @font + '.ttf', @size)
     @output = @renderer.render(@label + text, true, [0,0,0])
+
+    @rect = @output.make_rect
+    @rect.w += 300
+    @rect.move!(*position)
   end
 
   def update(text = '')

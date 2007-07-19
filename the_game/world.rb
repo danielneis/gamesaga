@@ -8,22 +8,27 @@ class World
 
   def initialize
 
+    @all_sprites = Rubygame::Sprites::Group.new
+    @all_sprites.extend(Rubygame::Sprites::UpdateGroup)
+
     setup_listeners()
 
-    yield self if block_given?
-
     @screen = Rubygame::Screen.get_surface
-    @clock = Rubygame::Clock.new
+    @clock = Rubygame::Clock.new { |clock| clock.target_framerate = 35 }
     @queue = Rubygame::EventQueue.new
 
     # Create the life bar, FPS display etc.
     @fps_display = Display.new('FPS:', [0,0])
-    @life_display =  Display.new('Life:', [50,0])
+    @life_display =  Display.new('Life:', [250,0])
 
     @kills = 0
-    @kills_display =  Display.new('Kills:', [100,0])
 
-    @screen.update()
+    @kills_display =  Display.new('Kills:', [400,0])
+
+    yield self if block_given?
+
+    @background.blit(@screen, [0, 0])
+    @screen.update
   end
 
   def add_player(player)
@@ -48,31 +53,45 @@ class World
         end
       end
     end
+
+    @all_sprites << player
   end
 
   def add_enemy(*enemies)
     (@enemies ||= Rubygame::Sprites::Group.new).push *enemies
 
     callback = lambda do |enemy|
+      @all_sprites.delete(enemy)
       @enemies.delete(enemy)
       @kills += 1
     end
 
-    @enemies.each { |enemy| enemy.on(:enemy_death, &callback) }
+    @enemies.each do |enemy| 
+      enemy.on(:enemy_death, &callback)
+      @all_sprites << enemy
+    end
+    
   end
 
   def add_items(*items)
     (@items ||= Rubygame::Sprites::Group.new).push *items
 
-    callback = lambda { |item| @items.delete(item) }
+    callback = lambda do |item|
+      @all_sprites.delete(item)
+      @items.delete(item)
+    end
 
-    @items.each { |item| item.on(:item_catched, &callback)}
+    @items.each do |item|
+      item.on(:item_catched, &callback)
+      @all_sprites << item
+    end
   end
 
   def background=(image)
     config = Configuration.instance
     @background = Rubygame::Surface.load_image(image)
     @background = @background.zoom_to(config.screen_width, config.screen_height)
+    @background.blit(@screen, [0,0])
   end
 
   def run
@@ -83,9 +102,10 @@ class World
   end
 
   def update
+
     @clock.tick()
 
-    @background.blit(@screen, [0, 0])
+    @all_sprites.undraw(@screen, @background)
 
     @life_display.update(@player.life.to_s)
     @fps_display.update(@clock.framerate.to_i.to_s)
@@ -94,10 +114,9 @@ class World
     @player.update(@enemies, @items)
     @enemies.update(@player)
 
-    all_sprites = [@player, @enemies, @items].flatten!.sort! { |a,b| a.ground <=> b.ground }
-    all_sprites.each  { |sprite| sprite.draw(@screen) }
-
-    @screen.update()
+    @all_sprites.sort! { |a,b| a.ground <=> b.ground }
+    dirty_rects = @all_sprites.draw(@screen) + [@life_display.rect, @fps_display.rect, @kills_display.rect]
+    @screen.update_rects(dirty_rects.uniq)
 
     handle_inputs
   end

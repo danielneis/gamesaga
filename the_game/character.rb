@@ -96,7 +96,18 @@ class Character
 
   def stop_walk(direction)
 
-    unless in_state? States::Jump
+    if in_state? States::Jump
+      case direction
+      when :left
+        set_next_state(States::Stop) if @x_speed < 0
+      when :right
+        set_next_state(States::Stop) if @x_speed > 0
+      when :up
+        set_next_state(States::Stop) if @y_speed < 0
+      when :down
+        set_next_state(States::Stop) if @y_speed > 0
+      end
+    else
       case direction
       when :left
         @x_speed = 0 if @x_speed < 0
@@ -126,7 +137,7 @@ class Character
      (@rect.b + @y_speed < @area.b))
   end
 
-  def attack(direction = :right)
+  def attack
     change_state(States::Attack) if not in_state? States::Jump
   end
 

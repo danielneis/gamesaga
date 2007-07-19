@@ -12,6 +12,14 @@ module States
     end
   end
 
+  class Stop < State
+
+    def enter(performer)
+      performer.x_speed = 0
+      performer.y_speed = 0
+    end
+  end
+
   class Walk < State
 
     def execute(performer)
@@ -24,7 +32,6 @@ module States
     def enter(performer)
       performer.y_speed = -performer.jump_s
       performer.move
-      performer.x_speed *= 3
       @time_span = 1
       @initial_ground = performer.ground
     end
@@ -32,17 +39,16 @@ module States
     def execute(performer)
 
       if performer.rect.bottom <= @initial_ground
-        performer.y_speed += 0.6 * @time_span
+        performer.y_speed += 0.01 * @time_span
         performer.move
         @time_span += 1
       else
         performer.rect.bottom = @initial_ground
         performer.y_speed = 0
-        if performer.x_speed != 0
-          performer.x_speed /= 3
-          performer.change_state(States::Walk)
+        if (performer.has_next_state?)
+          performer.go_to_next_state
         else
-          performer.change_state(States::State)
+          performer.back_to_last_state
         end
       end
     end

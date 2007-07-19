@@ -5,6 +5,8 @@ module Contexts
 
     def initialize
 
+      top = 30
+      left = Configuration.instance.screen_width / 2
       super()
 
       @menu = UI::Menu.new(:vertical, 20)
@@ -20,7 +22,7 @@ module Contexts
         end
       end
 
-      @title = Display.new('[PAUSED]', [240,10], '', 25)
+      @title = Display.new('[PAUSED]', [left, top], '', 25)
     end
 
     def update
