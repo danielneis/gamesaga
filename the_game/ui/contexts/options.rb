@@ -24,12 +24,14 @@ module Contexts
       @inputs_menu = UI::Menu.new(:vertical, 15)
 
       if config.screen_width == 640
-        resolution_selected = 1
+        resolution_selected = 0
       elsif config.screen_width == 800
-        resolution_selected =  0
+        resolution_selected =  1
+      elsif config.screen_width == 1024
+        resolution_selected =  2
       end
 
-      @inputs_menu.push(Components::SelectList.new('resolution', ['800x600', '640x480'], resolution_selected, 150),
+      @inputs_menu.push(Components::SelectList.new('resolution', ['640x480', '800x600', '1024x768'], resolution_selected, 150),
                         Components::InputText.new(10, 'title', config.title),
                         Components::Checkbox.new(30, 'fullscreen', config.fullscreen),
                         Components::RadioButton.new(15, 'color_depth', 16,
@@ -59,7 +61,11 @@ module Contexts
 
           options = @inputs_menu.values
 
-          if options['resolution'] == '800x600'
+          if options['resolution'] == '1024x768'
+            config.screen_width = 1024
+            config.screen_height = 768
+            @background = @background.zoom_to(1024, 768, true)
+          elsif options['resolution'] == '800x600'
             config.screen_width = 800
             config.screen_height = 600
             @background = @background.zoom_to(800, 600, true)

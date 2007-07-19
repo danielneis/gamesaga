@@ -26,15 +26,17 @@ module States
       performer.move
       performer.x_speed *= 3
       @time_span = 1
+      @initial_ground = performer.ground
     end
 
     def execute(performer)
 
-      if performer.rect.bottom <= performer.ground
+      if performer.rect.bottom <= @initial_ground
         performer.y_speed += 0.6 * @time_span
         performer.move
         @time_span += 1
       else
+        performer.rect.bottom = @initial_ground
         performer.y_speed = 0
         if performer.x_speed != 0
           performer.x_speed /= 3
