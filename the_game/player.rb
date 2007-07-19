@@ -15,11 +15,13 @@ class Player < Character
   end
 
   def act
-    items_to_catch = @collisions.select { |c| c.is_a? Item }
-    if items_to_catch.empty?
-      attack
-    else
-      catch_items(items_to_catch) 
+    unless in_state? States::Jump
+      items_to_catch = @collisions.select { |c| c.is_a? Item }
+      if items_to_catch.empty?
+        attack
+      else
+        catch_items(items_to_catch) 
+      end
     end
   end
 end
