@@ -24,6 +24,11 @@ module Components
     def handle_input(input)
     end
 
+    def reset_position!
+      @rect.x = 0
+      @rect.y = 0
+    end
+
     def move!(*pos)
       @rect.move!(*pos)
     end

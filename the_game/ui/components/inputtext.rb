@@ -7,6 +7,8 @@ module Components
 
     def initialize(max_lenght = 10, id = "it", text = '')
 
+      super()
+
       @id = id
       config = Configuration.instance
 
@@ -29,7 +31,6 @@ module Components
       end
       @rect = @background.make_rect
 
-      super()
     end
 
     def handle_input(input)

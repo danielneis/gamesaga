@@ -45,7 +45,7 @@ module Contexts
       @menu.push(Components::Buttons::MainMenu.new(),
                  Components::Buttons::Save.new(),
                  Components::Buttons::Quit.new())
-      @hud = UI::Hud.new(@menu, :bottom)
+      @buttons_hud = UI::Hud.new(@menu, :bottom)
 
 
       @menu.each do |button|
@@ -87,6 +87,9 @@ module Contexts
 
           @background.blit(@screen, [0,0])
           @title.update
+          @labels_hud.align
+          @inputs_hud.align
+          @buttons_hud.align
         end
       end
 
@@ -94,10 +97,6 @@ module Contexts
       @title.update()
 
       @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
-      @background.blit(@screen, [0,0])
-      @hud.draw(@screen)
-      @inputs_hud.draw(@screen)
-      @labels_hud.draw(@screen)
     end
 
     def update
@@ -112,15 +111,16 @@ module Contexts
           end
         when Rubygame::MouseDownEvent
           if event.string == 'left'
-              @hud.click(event.pos)
+              @buttons_hud.click(event.pos)
               @inputs_hud.click(event.pos)
           end
         end
       end
 
-      @inputs_hud.redraw(@screen)
-      @labels_hud.redraw(@screen)
-      @hud.draw(@screen)
+      @background.blit(@screen, [0,0])
+      @inputs_hud.draw(@screen)
+      @labels_hud.draw(@screen)
+      @buttons_hud.draw(@screen)
       @screen.update()
     end
   end

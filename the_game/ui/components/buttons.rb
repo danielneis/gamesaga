@@ -7,25 +7,34 @@ module Buttons
 
     def initialize(label = {}, bg_image = '')
 
+      super()
+
       config = Configuration.instance
-
-      if (label.is_a?(Hash) && !label.empty?)
-
-        Rubygame::TTF.setup()
-        renderer = Rubygame::TTF.new(config.font_root + label[:font] +'.ttf', label[:size])
-        @image = renderer.render(label[:text], true, label[:fg_color], label[:bg_color])
-        @rect = @image.make_rect
-      end
 
       if (!bg_image.empty?)
 
-        @text = image unless @image.nil?
         @image = Rubygame::Surface.load_image(PIX_ROOT+bg_image+'.png')
-        @rect = @image.make_rect
-        @text.blit(@image, [0,0])
+        @background = Rubygame::Surface.new([@image.w, @image.h])
+        @image.blit(@background, [0,0])
       end
 
-      super()
+      if (label.is_a?(Hash) && !label.empty?)
+
+
+        Rubygame::TTF.setup()
+        renderer = Rubygame::TTF.new(config.font_root + label[:font] +'.ttf', label[:size])
+        @output = renderer.render(label[:text], true, label[:fg_color], label[:bg_color])
+
+        @background ||= Rubygame::Surface.new([@output.w, @output.h])
+
+        @output.blit(@background, [0,0])
+      end
+
+      @rect = @background.make_rect
+    end
+
+    def draw(destination)
+      @background.blit(@screen, @rect.topleft)
     end
   end
 

@@ -21,9 +21,6 @@ module Contexts
       end
 
       @title = Display.new('[PAUSED]', [240,10], '', 25)
-      @title.update()
-      @hud.draw(@screen)
-
     end
 
     def update
@@ -46,6 +43,7 @@ module Contexts
         end
       end
 
+      @hud.draw(@screen)
       @screen.update()
     end
   end

@@ -39,6 +39,14 @@ module Components
       super()
     end
 
+    def reset_position!
+      super()
+      @up_rect.x = 0
+      @up_rect.y = 0
+      @down_rect.x = 0
+      @down_rect.y = 0
+    end
+
     def draw(destination)
       @output.blit(@background, [0,0])
       @up.blit(@background, [@rect.w - @up_rect.w, 0])

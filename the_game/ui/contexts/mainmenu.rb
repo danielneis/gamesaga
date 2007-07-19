@@ -30,9 +30,7 @@ module Contexts
         end
       end
 
-      @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
-      @background.blit(@screen, [0,0])
-      @hud.draw(@screen)
+      @background = Rubygame::Surface.load_image(config.pix_root + 'mm_background.png').zoom_to(config.screen_width, config.screen_height, true)
     end
 
     def update

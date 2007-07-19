@@ -1,8 +1,8 @@
 --- 
-title: O jogo
+title: eh
 fullscreen: false
 pix_root: /home/daniel/jogo.wc/the_game/pix/
-color_depth: 0
 font_root: /home/daniel/jogo.wc/the_game/ui/fonts/
-screen_width: 640
-screen_height: 480
+color_depth: 0
+screen_height: 600
+screen_width: 800

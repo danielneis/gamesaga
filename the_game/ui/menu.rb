@@ -40,10 +40,12 @@ class Menu < Rubygame::Sprites::Group
     return [@width, @height]
   end
 
-  def draw(destination, position)
+  def align(position)
 
     image_detour = @margin / 2
     collect do |component|
+
+      component.reset_position!
 
       if @orientation == :vertical
         component.move!(@margin, @margin + image_detour)
@@ -51,7 +53,6 @@ class Menu < Rubygame::Sprites::Group
         component.move!(@margin + image_detour, @margin)
       end
 
-      component.draw(destination)
       component.move!(*position)
 
       if @orientation == :vertical
@@ -62,7 +63,7 @@ class Menu < Rubygame::Sprites::Group
     end
   end
 
-  def redraw(destination)
+  def draw(destination)
     self.collect do |component|
       component.draw(destination)
     end
