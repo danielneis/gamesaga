@@ -7,9 +7,9 @@ module Components
     attr_reader :id, :value
 
     def initialize
+      super()
       @screen = Rubygame::Screen.get_surface
       setup_listeners()
-      super()
     end
 
     def get_focus

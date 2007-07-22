@@ -1,9 +1,13 @@
 module UI
 class Menu < Rubygame::Sprites::Group
 
+  include Rubygame::Sprites::UpdateGroup
+
   attr_reader :width, :height
 
   def initialize(orientation, margin = 10)
+
+    super()
 
     @orientation = orientation
     @margin = margin
@@ -60,12 +64,6 @@ class Menu < Rubygame::Sprites::Group
       elsif @orientation == :horizontal
         image_detour += @component_width + @margin
       end
-    end
-  end
-
-  def draw(destination)
-    self.collect do |component|
-      component.draw(destination)
     end
   end
 
