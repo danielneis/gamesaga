@@ -77,6 +77,8 @@ class World
     (@items ||= Rubygame::Sprites::Group.new).push *items
 
     callback = lambda do |item|
+      @background.blit(@screen, item.rect, item.rect)
+      @screen.update_rects([item.rect])
       @all_sprites.delete(item)
       @items.delete(item)
     end
