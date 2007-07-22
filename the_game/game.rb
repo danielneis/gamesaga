@@ -12,15 +12,10 @@ require 'ui/contexts/options'
 require 'ui/contexts/pause'
 require 'world'
 
-# Initialize rubygame, set up screen and start the event queue
 Rubygame.init()
 config = Configuration.instance
-video_configs = []
-if config.fullscreen
-  video_configs << Rubygame::FULLSCREEN
-end
 
-screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, video_configs)
+screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, [Rubygame::FULLSCREEN])
 screen.title = config.title
 
 catch(:exit) do 
