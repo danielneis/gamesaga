@@ -8,6 +8,7 @@ class World
 
   def initialize
 
+    @dirty_rects = []
     @all_sprites = Rubygame::Sprites::Group.new
     @all_sprites.extend(Rubygame::Sprites::UpdateGroup)
 
@@ -61,6 +62,7 @@ class World
     (@enemies ||= Rubygame::Sprites::Group.new).push *enemies
 
     callback = lambda do |enemy|
+      @dirty_rects.push(enemy.undraw(@screen, @background))
       @all_sprites.delete(enemy)
       @enemies.delete(enemy)
       @kills += 1
@@ -77,8 +79,7 @@ class World
     (@items ||= Rubygame::Sprites::Group.new).push *items
 
     callback = lambda do |item|
-      @background.blit(@screen, item.rect, item.rect)
-      @screen.update_rects([item.rect])
+      @dirty_rects.push(item.undraw(@screen, @background))
       @all_sprites.delete(item)
       @items.delete(item)
     end
@@ -117,8 +118,9 @@ class World
     @enemies.update(@player)
 
     @all_sprites.sort! { |a,b| a.ground <=> b.ground }
-    dirty_rects = @all_sprites.draw(@screen) + [@life_display.rect, @fps_display.rect, @kills_display.rect]
-    @screen.update_rects(dirty_rects.uniq)
+    @dirty_rects += @all_sprites.draw(@screen) + [@life_display.rect, @fps_display.rect, @kills_display.rect]
+    @screen.update_rects(@dirty_rects)
+    @dirty_rects.clear
 
     handle_inputs
   end

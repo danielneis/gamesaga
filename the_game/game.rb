@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
-require 'rubygems'
-require_gem 'rubygame', '2.0.1'
+require 'rubygame'
+#require 'rubygems'
+#require_gem 'rubygame', '2.0.1'
 require 'rubygame/sfont'
 
 require 'config/config.rb'
@@ -15,7 +16,10 @@ require 'world'
 Rubygame.init()
 config = Configuration.instance
 
-screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, [Rubygame::FULLSCREEN])
+options = []
+options.push(Rubygame::FULLSCREEN) if config.fullscreen
+
+screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, options)
 screen.title = config.title
 
 catch(:exit) do 
