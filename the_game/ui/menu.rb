@@ -41,7 +41,7 @@ class Menu < Rubygame::Sprites::Group
   end
 
   def size
-    return [@width, @height]
+    [@width, @height]
   end
 
   def align(position)
@@ -96,7 +96,7 @@ class Menu < Rubygame::Sprites::Group
     values = {}
     self.each do |component|
       if component.is_a? Components::RadioButton
-        values[component.group] ||= ''
+        values[component.group] ||= nil
         values[component.group] = component.value if component.checked?
       else
         values[component.id] = component.value

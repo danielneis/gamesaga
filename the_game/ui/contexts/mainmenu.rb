@@ -17,6 +17,7 @@ module Contexts
       @menu = UI::Menu.new(:horizontal, 30)
       @menu.push(Components::Buttons::NewGame.new(),
                  Components::Buttons::Options.new(),
+                 Components::Buttons::Instructions.new(),
                  Components::Buttons::Quit.new())
       @hud = UI::Hud.new(@menu, :bottom)
 
