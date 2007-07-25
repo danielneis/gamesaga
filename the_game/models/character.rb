@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../lib/fsm'
-require File.dirname(__FILE__) + '/object'
+require File.dirname(__FILE__) + '/model'
 require 'lib/states'
 
 module Models

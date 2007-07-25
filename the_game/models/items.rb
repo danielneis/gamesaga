@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/model'
+
 module Models
   class Item < Model
 

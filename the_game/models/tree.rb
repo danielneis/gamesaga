@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/object'
+require File.dirname(__FILE__) + '/model'
 
 module Models
   class Tree < Model
