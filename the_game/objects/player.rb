@@ -1,5 +1,6 @@
-require 'character'
+require File.dirname(__FILE__) + '/character'
 
+module Models
 class Player < Character
 
   life 20
@@ -24,4 +25,5 @@ class Player < Character
       end
     end
   end
+end
 end

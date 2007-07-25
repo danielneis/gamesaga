@@ -1,12 +1,15 @@
-require 'player'
-require 'enemy'
-require 'items'
+require 'objects/player'
+require 'objects/enemy'
+require 'objects/items'
+require 'objects/tree'
 
 class World
 
   include EventDispatcher
 
   def initialize
+
+    @item_types = {:chicken => Models::Chicken, :meat => Models::Meat}
 
     @dirty_rects = []
     @all_sprites = Rubygame::Sprites::Group.new
@@ -32,9 +35,9 @@ class World
     @screen.update
   end
 
-  def add_player(player)
+  def add_player(position)
 
-    @player = player
+    @player = Models::Player.new(position, 'panda.png')
 
     @player.on :player_death do
       title = Display.new('DIED! press [ESC] to end game', [50, 200], '', 25)
@@ -55,11 +58,16 @@ class World
       end
     end
 
-    @all_sprites << player
+    @all_sprites << @player
   end
 
-  def add_enemy(*enemies)
-    (@enemies ||= Rubygame::Sprites::Group.new).push *enemies
+  def add_enemies(*positions)
+
+    @enemies ||= Rubygame::Sprites::Group.new
+
+    positions.each do |pos|
+      @enemies.push  Models::Enemy.new(pos, 'panda.invert.png')
+    end
 
     callback = lambda do |enemy|
       @dirty_rects.push(enemy.undraw(@screen, @background))
@@ -72,11 +80,15 @@ class World
       enemy.on(:enemy_death, &callback)
       @all_sprites << enemy
     end
-    
   end
 
-  def add_items(*items)
-    (@items ||= Rubygame::Sprites::Group.new).push *items
+  def add_items(positions_and_types)
+
+    @items ||= Rubygame::Sprites::Group.new
+
+    positions_and_types.each do |pos, type|
+      @items.push(@item_types[type].new(pos))
+    end
 
     callback = lambda do |item|
       @dirty_rects.push(item.undraw(@screen, @background))
@@ -87,6 +99,14 @@ class World
     @items.each do |item|
       item.on(:item_catched, &callback)
       @all_sprites << item
+    end
+  end
+
+  def add_object(*objects)
+    (@objects ||= Rubygame::Sprites::Group.new).push *objects
+
+    objects.each do |obj|
+      @all_sprites << obj
     end
   end
 

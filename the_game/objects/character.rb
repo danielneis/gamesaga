@@ -1,12 +1,10 @@
+require File.dirname(__FILE__) + '/../lib/fsm'
+require File.dirname(__FILE__) + '/object'
 require 'lib/states'
-require 'character'
 
-class Character
+module Models
+class Character < Model
 
-  include EventDispatcher
-  include Automata
-  include Rubygame::Sprites::Sprite
-  
   # Get a metaclass for this class
   def self.metaclass; class << self; self; end; end
 
@@ -30,7 +28,7 @@ class Character
     # 3. For each monster, the `initialize' method
     #    should use the default number for each trait.
     class_eval do
-      define_method( :initialize ) do |x,y,image|
+      define_method( :initialize ) do |pos, image|
         super()
 
         config = Configuration.instance
@@ -45,14 +43,9 @@ class Character
         @attack_image = Rubygame::Surface.load_image(config.pix_root + 'panda.attack.png')
         @attack_image.set_colorkey(@attack_image.get_at([0,0]))
         
-        if config.screen_width == 800
-          @still_image = @still_image.zoom(1.4, true)
-          @attack_image = @attack_image.zoom(1.4, true)
-        end
-
         @image = @still_image
         @rect = @image.make_rect
-        @rect.move!(x,y)
+        @rect.move!(*pos)
         @ground = @rect.bottom
 
         # @area is the area of the screen, which the player will walk across
@@ -64,16 +57,15 @@ class Character
         @y_speed = 0
 
         @collisions = []
-
-        setup_listeners()
       end
     end
   end
+
   
   # Creature attributes are read-only
   traits :life, :strength, :speed, :jump_s
 
-  attr_reader :ground, :damage, :collisions, :items_to_catch
+  attr_reader :damage, :collisions, :items_to_catch
   attr_accessor :x_speed, :y_speed
 
   def take_damage(amount, to_side)
@@ -165,4 +157,5 @@ class Character
     @collisions = collide_group(collidables)
     @state_machine.update()
   end
+end
 end

@@ -1,13 +1,8 @@
 #!/usr/bin/env ruby
 require 'rubygame'
-#require 'rubygems'
-#require_gem 'rubygame', '2.0.1'
 require 'rubygame/sfont'
 
 require 'config/config.rb'
-require 'lib/eventdispatcher'
-require 'lib/automata'
-require 'lib/fsm'
 require 'ui/contexts/mainmenu'
 require 'ui/contexts/options'
 require 'ui/contexts/pause'
@@ -36,15 +31,16 @@ catch(:exit) do
       World.new do |g|
 
         # first, we need a player
-        g.add_player(Player.new(300, 400, 'panda.png'))
+        g.add_player([300,500])
 
         #add some NPCs enemies
-        g.add_enemy(Enemy.new(400, 400, 'panda.invert.png'),
-                    Enemy.new(210, 410, 'panda.invert.png'))
+        g.add_enemies([400,500], [210, 410])
 
         #create some Items
-        g.add_items(Item.new(150, 400, 'chicken.png', {:life => 50}),
-                    Item.new(500, 350, 'meat.png', {:life => 137}))
+        g.add_items({[150,700] => :chicken, [500, 550] => :meat})
+
+        #add some objects to make things more fun
+        g.add_object(Models::Tree.new([650,400], [170,300]))
 
         # Make the background
         g.background = (config.pix_root + 'background.png')

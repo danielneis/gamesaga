@@ -1,5 +1,6 @@
-require 'character'
+require File.dirname(__FILE__) + '/character'
 
+module Models
 class Enemy < Character
 
   life 500
@@ -13,4 +14,5 @@ class Enemy < Character
 
     notify(:enemy_death, self) if @life <= 0
   end
+end
 end
