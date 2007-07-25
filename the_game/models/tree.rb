@@ -15,6 +15,12 @@ module Models
       @rect.move!(*position)
 
       @ground = @rect.bottom
+
+      @col_rect = @rect.dup
+      @col_rect.width /= 2.3
+      @col_rect.height /= 17
+      @col_rect.t = @rect.b - @col_rect.h
+      @col_rect.x = @rect.x + @col_rect.w / 2
     end
   end
 end

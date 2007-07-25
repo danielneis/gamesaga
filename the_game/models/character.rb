@@ -118,15 +118,24 @@ class Character < Model
   end
 
   def move
-    @rect.move!(@x_speed, @y_speed)
+
+    @col_rect.move!(@x_speed, @y_speed)
+
+    solids = @collidables.reject { |c| c.is_a? Item }
+    if collide_group(solids).empty?
+      @rect.move!(@x_speed, @y_speed)
+    else
+      @col_rect.move!(-@x_speed, -@y_speed)
+    end
+
     @ground = @rect.bottom unless in_state? States::Jump
   end
 
   def should_walk
-    ((@rect.x + @x_speed > @area.x) &&
-     (@rect.r + @x_speed < @area.r) &&
-     (@rect.y + @y_speed > @area.y) &&
-     (@rect.b + @y_speed < @area.b))
+    ((@col_rect.x + @x_speed > @area.x) &&
+     (@col_rect.r + @x_speed < @area.r) &&
+     (@col_rect.y + @y_speed > @area.y) &&
+     (@col_rect.b + @y_speed < @area.b))
   end
 
   def attack
@@ -144,17 +153,19 @@ class Character < Model
 
       @image = @attack_image
       @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
+      @col_rect.w = @rect.w
 
     elsif image == :still
 
       @image = @still_image
       @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
+      @col_rect.w = @rect.w / 1.75
     end
   end
 
   def update(*collidables)
-    collidables.flatten!
-    @collisions = collide_group(collidables)
+    @collidables = collidables.flatten!
+    @collisions = collide_group(@collidables) unless @collidables.nil?
     @state_machine.update()
   end
 end

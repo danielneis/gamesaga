@@ -8,6 +8,16 @@ class Player < Character
   speed 3
   jump_s 2
 
+  def initialize(pos, image)
+    super(pos, image)
+
+    height = @rect.h / 3
+    width = @rect.w / 1.75
+    x = @rect.x + width / 2
+    y = @rect.b - height
+    @col_rect = Rubygame::Rect.new(x, y, width, height )
+  end
+
   def update(*collidables)
 
     super(*collidables)
