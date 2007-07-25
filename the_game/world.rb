@@ -1,7 +1,7 @@
-require 'objects/player'
-require 'objects/enemy'
-require 'objects/items'
-require 'objects/tree'
+require 'models/player'
+require 'models/enemy'
+require 'models/items'
+require 'models/tree'
 
 class World
 
