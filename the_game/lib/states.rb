@@ -31,7 +31,6 @@ module States
 
     def enter(performer)
       performer.y_speed = -performer.jump_s
-      performer.move
       @time_span = 1
       @initial_ground = performer.ground
     end
@@ -44,6 +43,7 @@ module States
         @time_span += 1
       else
         performer.rect.bottom = @initial_ground
+        performer.col_rect.bottom = @initial_ground
         performer.y_speed = 0
         if (performer.has_next_state?)
           performer.go_to_next_state
@@ -63,18 +63,19 @@ module States
 
       performer.swap_image :attack
 
-      performer.collisions.each do |colision|
+      performer.collisions.each do |collision|
 
-        if colision.respond_to? :take_damage
-          if performer.rect.centerx < colision.rect.centerx
+        puts collision
+        if collision.respond_to? :take_damage
+          if performer.rect.centerx < collision.rect.centerx
             attacker_relative_position = :left
             hitted_relative_position = :right
-          elsif performer.rect.centerx > colision.rect.centerx
+          elsif performer.rect.centerx > collision.rect.centerx
             attacker_relative_position = :right
             enemy_relative_position = :left
           end
 
-          colision.take_damage(performer.strength, enemy_relative_position)
+          collision.take_damage(performer.strength, enemy_relative_position)
         end
       end
     end

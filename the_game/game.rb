@@ -31,7 +31,7 @@ catch(:exit) do
       World.new do |g|
 
         # first, we need a player
-        g.add_player([300,500])
+        g.add_player([500,500])
 
         #add some NPCs enemies
         g.add_enemies([400,500], [210, 410])
@@ -40,7 +40,7 @@ catch(:exit) do
         g.add_items({[150,700] => :chicken, [500, 550] => :meat})
 
         #add some objects to make things more fun
-        g.add_object(Models::Tree.new([650,400], [170,300]))
+        g.add_object(Models::Tree.new([250,400], [170,300]))
 
         # Make the background
         g.background = (config.pix_root + 'background.png')

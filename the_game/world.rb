@@ -29,6 +29,10 @@ class World
 
     @kills_display =  Display.new('Kills:', [400,0])
 
+    @enemies = Rubygame::Sprites::Group.new
+    @items   = Rubygame::Sprites::Group.new
+    @objects = Rubygame::Sprites::Group.new
+
     yield self if block_given?
 
     @background.blit(@screen, [0, 0])
@@ -63,8 +67,6 @@ class World
 
   def add_enemies(*positions)
 
-    @enemies ||= Rubygame::Sprites::Group.new
-
     positions.each do |pos|
       @enemies.push  Models::Enemy.new(pos, 'panda.invert.png')
     end
@@ -84,8 +86,6 @@ class World
 
   def add_items(positions_and_types)
 
-    @items ||= Rubygame::Sprites::Group.new
-
     positions_and_types.each do |pos, type|
       @items.push(@item_types[type].new(pos))
     end
@@ -103,7 +103,7 @@ class World
   end
 
   def add_object(*objects)
-    (@objects ||= Rubygame::Sprites::Group.new).push *objects
+    @objects.push *objects
 
     objects.each do |obj|
       @all_sprites << obj
@@ -134,7 +134,7 @@ class World
     @fps_display.update(@clock.framerate.to_i.to_s)
     @kills_display.update(@kills.to_s)
 
-    @player.update(@enemies, @items)
+    @player.update(@enemies, @items, @objects)
     @enemies.update(@player)
 
     @all_sprites.sort! { |a,b| a.ground <=> b.ground }

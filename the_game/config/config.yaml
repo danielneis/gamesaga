@@ -2,7 +2,7 @@
 title: eh
 fullscreen: false
 pix_root: /home/daniel/jogo.wc/the_game/pix/
-font_root: /home/daniel/jogo.wc/the_game/ui/fonts/
 color_depth: 0
-screen_height: 768
+font_root: /home/daniel/jogo.wc/the_game/ui/fonts/
 screen_width: 1024
+screen_height: 768
