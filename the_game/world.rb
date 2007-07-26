@@ -137,7 +137,7 @@ class World
     @player.update(@enemies, @items, @objects)
     @enemies.update(@player)
 
-    @all_sprites.sort! { |a,b| a.ground <=> b.ground }
+    @all_sprites.sort! { |a,b| a.ground.begin <=> b.ground.begin }
     @dirty_rects += @all_sprites.draw(@screen) + [@life_display.rect, @fps_display.rect, @kills_display.rect]
     @screen.update_rects(@dirty_rects)
     @dirty_rects.clear

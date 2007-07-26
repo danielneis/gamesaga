@@ -46,7 +46,6 @@ class Character < Model
         @image = @still_image
         @rect = @image.make_rect
         @rect.move!(*pos)
-        @ground = @rect.bottom
 
         # @area is the area of the screen, which the player will walk across
         @area = Rubygame::Rect.new(0, config.screen_height / 2, *[config.screen_width, config.screen_height / 2])
@@ -55,8 +54,6 @@ class Character < Model
 
         @x_speed = 0
         @y_speed = 0
-
-        @collisions = []
       end
     end
   end
@@ -65,7 +62,7 @@ class Character < Model
   # Creature attributes are read-only
   traits :life, :strength, :speed, :jump_s
 
-  attr_reader :damage, :collisions, :items_to_catch
+  attr_reader :damage, :items_to_catch
   attr_accessor :x_speed, :y_speed
 
   def take_damage(amount, to_side)
@@ -118,24 +115,20 @@ class Character < Model
   end
 
   def move
-
-    @col_rect.move!(@x_speed, @y_speed)
-
-    solids = @collidables.reject { |c| c.is_a? Item }
-    if collide_group(solids).empty?
-      @rect.move!(@x_speed, @y_speed)
-    else
-      @col_rect.move!(-@x_speed, -@y_speed)
-    end
+    @rect.move!(@x_speed, @y_speed)
 
     @ground = @rect.bottom unless in_state? States::Jump
   end
 
+  def undo_move
+    @rect.move!(-@x_speed, -@y_speed)
+  end
+
   def should_walk
-    ((@col_rect.x + @x_speed > @area.x) &&
-     (@col_rect.r + @x_speed < @area.r) &&
-     (@col_rect.y + @y_speed > @area.y) &&
-     (@col_rect.b + @y_speed < @area.b))
+    ((@rect.x + @x_speed > @area.x) &&
+     (@rect.r + @x_speed < @area.r) &&
+     (@rect.y + @y_speed > @area.y) &&
+     (@rect.b + @y_speed < @area.b))
   end
 
   def attack
@@ -153,20 +146,25 @@ class Character < Model
 
       @image = @attack_image
       @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
-      @col_rect.w = @rect.w
 
     elsif image == :still
 
       @image = @still_image
       @rect = Rubygame::Rect.new(@rect.x, @rect.y, *@image.size)
-      @col_rect.w = @rect.w / 1.75
     end
   end
 
   def update(*collidables)
     @collidables = collidables.flatten!
-    @collisions = collide_group(@collidables) unless @collidables.nil?
     @state_machine.update()
+  end
+
+  def collisions
+    collide_group(@collidables).reject { |c| !c.ground.intersects?(ground) }
+  end
+
+  def ground
+    (@rect.cy)..(@rect.bottom)
   end
 end
 end

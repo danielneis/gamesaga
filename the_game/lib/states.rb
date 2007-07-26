@@ -1,3 +1,6 @@
+require File.dirname(__FILE__) + '/../models/items'
+require File.dirname(__FILE__) + '/range'
+
 module States
 
   class State
@@ -23,7 +26,11 @@ module States
   class Walk < State
 
     def execute(performer)
-      performer.move if performer.should_walk
+      if performer.should_walk
+        performer.move()
+        cols = performer.collisions.reject { |c| c.is_a? Models::Item }
+        performer.undo_move() unless cols.empty?
+      end
     end
   end
 
@@ -37,15 +44,19 @@ module States
 
     def execute(performer)
 
-      if performer.rect.bottom <= @initial_ground
+      if performer.rect.bottom <= @initial_ground.end
         performer.y_speed += 0.01 * @time_span
         performer.move
+        unless performer.collisions.empty?
+          performer.x_speed = 0
+          performer.undo_move
+          performer.move
+        end
         @time_span += 1
       else
-        performer.rect.bottom = @initial_ground
-        performer.col_rect.bottom = @initial_ground
+        performer.rect.bottom = @initial_ground.end
         performer.y_speed = 0
-        if (performer.has_next_state?)
+        if performer.has_next_state?
           performer.go_to_next_state
         else
           performer.back_to_last_state
@@ -65,7 +76,6 @@ module States
 
       performer.collisions.each do |collision|
 
-        puts collision
         if collision.respond_to? :take_damage
           if performer.rect.centerx < collision.rect.centerx
             attacker_relative_position = :left

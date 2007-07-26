@@ -15,7 +15,6 @@ class Player < Character
     width = @rect.w / 1.75
     x = @rect.x + width / 2
     y = @rect.b - height
-    @col_rect = Rubygame::Rect.new(x, y, width, height )
   end
 
   def update(*collidables)
@@ -27,7 +26,7 @@ class Player < Character
 
   def act
     unless in_state? States::Jump
-      items_to_catch = @collisions.select { |c| c.is_a? Item }
+      items_to_catch = collisions.select { |c| c.is_a? Item }
       if items_to_catch.empty?
         attack
       else

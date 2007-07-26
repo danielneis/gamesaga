@@ -14,8 +14,6 @@ module Models
       @rect = @image.make_rect
       @rect.move!(*pos)
       
-      @ground = @rect.top
-
       @effect = effect
     end
 

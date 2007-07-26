@@ -8,11 +8,13 @@ module Models
     include EventDispatcher
     include Rubygame::Sprites::Sprite
 
-    attr_reader :ground
-
     def initialize
       super()
       setup_listeners()
+    end
+
+    def ground
+      (@rect.top)..(@rect.bottom)
     end
   end
 end
