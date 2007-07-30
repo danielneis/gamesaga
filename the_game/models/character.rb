@@ -29,6 +29,7 @@ class Character < Model
     #    should use the default number for each trait.
     class_eval do
       define_method( :initialize ) do |pos, image|
+
         super()
 
         config = Configuration.instance
@@ -160,7 +161,7 @@ class Character < Model
   end
 
   def collisions
-    collide_group(@collidables).reject { |c| !c.ground.intersects?(ground) }
+    collide_group(@collidables)
   end
 
   def ground

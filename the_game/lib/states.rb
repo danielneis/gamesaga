@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../models/items'
+require File.dirname(__FILE__) + '/../models/pieces'
 require File.dirname(__FILE__) + '/range'
 
 module States
@@ -28,7 +28,7 @@ module States
     def execute(performer)
       if performer.should_walk
         performer.move()
-        cols = performer.collisions.reject { |c| c.is_a? Models::Item }
+        cols = performer.collisions.select { |c| (c.is_a?(Models::Piece) or c.is_a?(Models::Character)) and c.ground.intersects?(performer.ground) }
         performer.undo_move() unless cols.empty?
       end
     end
@@ -40,21 +40,24 @@ module States
       performer.y_speed = -performer.jump_s
       @time_span = 1
       @initial_ground = performer.ground
+      @must_stop = false
     end
 
     def execute(performer)
 
-      if performer.rect.bottom <= @initial_ground.end
+      if (performer.rect.bottom <= @initial_ground.end) and !@must_stop
         performer.y_speed += 0.01 * @time_span
         performer.move
-        unless performer.collisions.empty?
-          performer.x_speed = 0
+        cols = performer.collisions.select { |c| c.is_a?(Models::Piece) and c.ground.intersects?(performer.ground) }
+        unless cols.empty?
           performer.undo_move
+          performer.x_speed = 0
           performer.move
+          @must_stop = true
         end
         @time_span += 1
       else
-        performer.rect.bottom = @initial_ground.end
+        performer.rect.bottom = @initial_ground.end unless @must_stop
         performer.y_speed = 0
         if performer.has_next_state?
           performer.go_to_next_state

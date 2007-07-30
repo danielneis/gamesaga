@@ -1,7 +1,7 @@
 require 'models/player'
 require 'models/enemy'
 require 'models/items'
-require 'models/tree'
+require 'models/pieces'
 
 class World
 
@@ -137,7 +137,7 @@ class World
     @player.update(@enemies, @items, @objects)
     @enemies.update(@player)
 
-    @all_sprites.sort! { |a,b| a.ground.begin <=> b.ground.begin }
+    @all_sprites.sort! { |a,b| a.ground.end <=> b.ground.end }
     @dirty_rects += @all_sprites.draw(@screen) + [@life_display.rect, @fps_display.rect, @kills_display.rect]
     @screen.update_rects(@dirty_rects)
     @dirty_rects.clear
