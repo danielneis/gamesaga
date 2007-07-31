@@ -114,6 +114,7 @@ module Buttons
   end
 
   class Save < Button
+
     def initialize
       super { |b| b.text = {:text => 'Save', :font => 'default',
                             :size => 20, :fg_color => [255,255,255],
@@ -122,6 +123,20 @@ module Buttons
 
     def click(position)
       notify :save
+    end
+  end
+
+  class Controllers < Button
+
+    def initialize
+
+      super { |b| b.text = {:text => 'Controllers', :font => 'default',
+                            :size => 20, :fg_color => [255,255,255],
+                            :bg_color => [0,0,0]}}
+    end
+
+    def click(position)
+      notify :controllers
     end
   end
 end

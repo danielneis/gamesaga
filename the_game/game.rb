@@ -6,6 +6,7 @@ require 'config/config.rb'
 require 'ui/contexts/mainmenu'
 require 'ui/contexts/options'
 require 'ui/contexts/pause'
+require 'ui/contexts/controller.config'
 require 'world'
 
 Rubygame.init()

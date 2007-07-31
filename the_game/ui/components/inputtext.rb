@@ -30,7 +30,6 @@ module Components
         @output = @renderer.render(@text, true, [0,0,0])
       end
       @rect = @background.make_rect
-
     end
 
     def handle_input(input)

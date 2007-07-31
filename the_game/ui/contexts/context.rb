@@ -1,14 +1,14 @@
-$:.unshift File.join(File.dirname(__FILE__), "..")
-require 'hud'
-require 'menu'
-require 'display'
-require 'components/inputtext'
-require 'components/buttons'
-require 'components/radiobutton'
-require 'components/radiogroup'
-require 'components/checkbox'
-require 'components/label'
-require 'components/selectlist'
+require File.dirname(__FILE__)+'/../hud'
+require File.dirname(__FILE__)+'/../menu'
+require File.dirname(__FILE__)+'/../display'
+require File.dirname(__FILE__)+'/../components/inputtext'
+require File.dirname(__FILE__)+'/../components/buttons'
+require File.dirname(__FILE__)+'/../components/radiobutton'
+require File.dirname(__FILE__)+'/../components/radiogroup'
+require File.dirname(__FILE__)+'/../components/checkbox'
+require File.dirname(__FILE__)+'/../components/label'
+require File.dirname(__FILE__)+'/../components/selectlist'
+require File.dirname(__FILE__)+'/../components/sensible.display'
 
 module Contexts
 

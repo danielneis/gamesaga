@@ -11,7 +11,6 @@ module Contexts
 
       config = Configuration.instance
 
-
       @labels_menu = UI::Menu.new(:vertical, 15)
       @labels_menu.push(Components::Label.new('Resolution'),
                         Components::Label.new('Titulo'),
@@ -32,7 +31,6 @@ module Contexts
       end
 
       @inputs_menu.push(Components::SelectList.new('resolution', ['640x480', '800x600', '1024x768'], resolution_selected, 150),
-                        Components::InputText.new(10, 'title', config.title),
                         Components::Checkbox.new(30, 'fullscreen', config.fullscreen),
                         Components::RadioButton.new(15, 'color_depth', 16,
                                                    config.color_depth == 16),
@@ -46,11 +44,17 @@ module Contexts
       @menu = UI::Menu.new(:horizontal, 20)
       @menu.push(Components::Buttons::MainMenu.new(),
                  Components::Buttons::Save.new(),
+                 Components::Buttons::Controllers.new(),
                  Components::Buttons::Quit.new())
       @buttons_hud = UI::Hud.new(@menu, :bottom)
 
 
       @menu.each do |button|
+        button.on :controllers do
+          catch :back do
+            Contexts::ControllerConfig.new().run
+          end
+        end
         button.on :main_menu do
           throw :main_menu
         end
@@ -58,49 +62,11 @@ module Contexts
           throw :exit
         end
         button.on :save do
-
-          options = @inputs_menu.values
-
-          if options['resolution'] == '1024x768'
-            config.screen_width = 1024
-            config.screen_height = 768
-            @background = @background.zoom_to(1024, 768, true)
-          elsif options['resolution'] == '800x600'
-            config.screen_width = 800
-            config.screen_height = 600
-            @background = @background.zoom_to(800, 600, true)
-          elsif options['resolution'] == '640x480' 
-            config.screen_width = 640
-            config.screen_height = 480
-            @background = @background.zoom_to(640, 480, true)
-          end
-
-          config.title = options['title']
-          config.fullscreen = options['fullscreen']
-          config.color_depth = options['color_depth']
-
-          if config.fullscreen
-            fullscreen = [Rubygame::FULLSCREEN]
-          else
-            fullscreen = []
-          end
-
-          Rubygame::Screen.set_mode([config.screen_width, config.screen_height], config.color_depth, fullscreen)
-
-          @screen.title = config.title
-
-          config.save
-
-          @background.blit(@screen, [0,0])
-          @title.update
-          @labels_hud.align
-          @inputs_hud.align
-          @buttons_hud.align
+          save_options
         end
       end
 
       @title = Display.new('[OPTIONS]', [240,10], '', 25)
-      @title.update()
 
       @background = Rubygame::Surface.load_image(config.pix_root + 'menu_background.jpg').zoom_to(config.screen_width, config.screen_height, true)
     end
@@ -124,10 +90,52 @@ module Contexts
       end
 
       @background.blit(@screen, [0,0])
+      @title.update
       @inputs_hud.draw(@screen)
       @labels_hud.draw(@screen)
       @buttons_hud.draw(@screen)
       @screen.update()
+    end
+
+    private
+    def save_options
+
+      config = Configuration.instance
+
+      options = @inputs_menu.values
+
+      if options['resolution'] == '1024x768'
+        config.screen_width = 1024
+        config.screen_height = 768
+        @background = @background.zoom_to(1024, 768, true)
+      elsif options['resolution'] == '800x600'
+        config.screen_width = 800
+        config.screen_height = 600
+        @background = @background.zoom_to(800, 600, true)
+      elsif options['resolution'] == '640x480' 
+        config.screen_width = 640
+        config.screen_height = 480
+        @background = @background.zoom_to(640, 480, true)
+      end
+
+      config.fullscreen = options['fullscreen']
+      config.color_depth = options['color_depth']
+
+      if config.fullscreen
+        fullscreen = [Rubygame::FULLSCREEN]
+      else
+        fullscreen = []
+      end
+
+      Rubygame::Screen.set_mode([config.screen_width, config.screen_height], config.color_depth, fullscreen)
+
+      config.save
+
+      @background.blit(@screen, [0,0])
+      @title.update
+      @labels_hud.align
+      @inputs_hud.align
+      @buttons_hud.align
     end
   end
 end

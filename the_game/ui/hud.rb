@@ -1,7 +1,10 @@
 module UI
+  class ConstructionError < StandardError; end
 class Hud
 
   def initialize(menu, vertical_align = :bottom, horizontal_align = :center)
+
+    raise ConstructionError, "You're trying to creat a hud with an empty menu" if menu.empty?
 
     @menu = menu
     @vertical_align = vertical_align
