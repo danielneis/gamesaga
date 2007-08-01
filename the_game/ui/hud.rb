@@ -1,5 +1,4 @@
 module UI
-  class ConstructionError < StandardError; end
 class Hud
 
   def initialize(menu, vertical_align = :bottom, horizontal_align = :center)

@@ -1,3 +1,4 @@
+require File.dirname(__FILE__)+'/../../lib/state.rb'
 require File.dirname(__FILE__)+'/../hud'
 require File.dirname(__FILE__)+'/../menu'
 require File.dirname(__FILE__)+'/../display'
@@ -12,28 +13,15 @@ require File.dirname(__FILE__)+'/../components/sensible.display'
 
 module Contexts
 
-  class Context
-
-    include EventDispatcher
+  class Context < States::State
 
     def initialize
 
-      @screen = Rubygame::Screen.get_surface
-      @screen.show_cursor = true
+      yield self if block_given?
 
-      @clock = Rubygame::Clock.new
       @queue = Rubygame::EventQueue.new
-      
-      setup_listeners()
-    end
-
-    def run
-      loop do
-        update
-      end
-    end
-
-    def update
+      @screen = Rubygame::Screen.get_surface
+      @config = Configuration.instance
     end
   end
 end

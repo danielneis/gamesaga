@@ -65,6 +65,8 @@ class Menu < Rubygame::Sprites::Group
         image_detour += @component_width + @margin
       end
     end
+
+    @rect = Rubygame::Rect.new(position[0], position[1], @width, @height)
   end
 
   def click(position)

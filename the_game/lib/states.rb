@@ -1,19 +1,8 @@
-require File.dirname(__FILE__) + '/../models/pieces'
 require File.dirname(__FILE__) + '/range'
+require File.dirname(__FILE__) + '/state'
+require File.dirname(__FILE__) + '/../models/pieces'
 
 module States
-
-  class State
-
-    def enter(performer)
-    end
-
-    def execute(performer)
-    end
-
-    def exit(performer)
-    end
-  end
 
   class Stop < State
 

@@ -40,7 +40,11 @@ class FiniteStateMachine
 
     @current_state.exit(@owner)
 
-    @current_state = new_state.new
+    if new_state.respond_to? :new
+      @current_state = new_state.new
+    else
+      @current_state = new_state
+    end
 
     @current_state.enter(@owner)
   end

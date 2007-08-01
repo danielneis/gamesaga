@@ -1,13 +1,13 @@
 require File.dirname(__FILE__)+'/context'
 
 module Contexts
+
   class Pause < Context
 
-    def initialize
+    def enter(performer)
 
       top = 30
-      left = Configuration.instance.screen_width / 2
-      super()
+      left = @config.screen_width / 2
 
       @menu = UI::Menu.new(:vertical, 20)
       @menu.push(Components::Buttons::MainMenu.new(), Components::Buttons::Quit.new())

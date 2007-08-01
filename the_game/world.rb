@@ -1,9 +1,10 @@
+require 'lib/state.rb'
 require 'models/player'
 require 'models/enemy'
 require 'models/items'
 require 'models/pieces'
 
-class World
+class World < States::State
 
   include EventDispatcher
 
@@ -33,10 +34,20 @@ class World
     @items   = Rubygame::Sprites::Group.new
     @objects = Rubygame::Sprites::Group.new
 
-    yield self if block_given?
+    @screen.show_cursor = false
+    @screen.update()
 
-    @background.blit(@screen, [0, 0])
-    @screen.update
+    yield self if block_given?
+  end
+
+  def enter(performer)
+
+    config = Configuration.instance
+
+    @background = @background.zoom_to(config.screen_width, config.screen_height)
+    @background.blit(@screen, [0,0])
+
+    @screen.flip
   end
 
   def add_player(position)
@@ -111,20 +122,10 @@ class World
   end
 
   def background=(image)
-    config = Configuration.instance
     @background = Rubygame::Surface.load_image(image)
-    @background = @background.zoom_to(config.screen_width, config.screen_height)
-    @background.blit(@screen, [0,0])
   end
 
-  def run
-    @screen.show_cursor = false
-    loop do
-      update()
-    end
-  end
-
-  def update
+  def execute(performer)
 
     @clock.tick()
 
@@ -138,8 +139,11 @@ class World
     @enemies.update(@player)
 
     @all_sprites.sort! { |a,b| a.ground.end <=> b.ground.end }
-    @dirty_rects += @all_sprites.draw(@screen) + [@life_display.rect, @fps_display.rect, @kills_display.rect]
+
+    @dirty_rects += @all_sprites.draw(@screen)
+
     @screen.update_rects(@dirty_rects)
+
     @dirty_rects.clear
 
     handle_inputs
@@ -152,7 +156,8 @@ class World
       when Rubygame::QuitEvent then throw :exit
       when Rubygame::KeyDownEvent
         case event.key
-        when Rubygame::K_ESCAPE, Rubygame::K_RETURN then notify :pause
+        when Rubygame::K_ESCAPE then throw :exit
+        when Rubygame::K_RETURN then notify :pause
         when Rubygame::K_LEFT   then @player.walk :left
         when Rubygame::K_RIGHT  then @player.walk :right
         when Rubygame::K_UP     then @player.walk :up
@@ -170,5 +175,4 @@ class World
       end
     end
   end
-
 end

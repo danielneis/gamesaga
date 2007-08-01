@@ -1,61 +1,80 @@
-#!/usr/bin/env ruby
 require 'rubygame'
 require 'rubygame/sfont'
 
 require 'config/config.rb'
+require 'lib/automata'
 require 'ui/contexts/mainmenu'
 require 'ui/contexts/options'
 require 'ui/contexts/pause'
 require 'ui/contexts/controller.config'
 require 'world'
 
-Rubygame.init()
-config = Configuration.instance
+class ConstructionError < StandardError; end
 
-options = []
-options.push(Rubygame::FULLSCREEN) if config.fullscreen
+class Game
 
-screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, options)
-screen.title = config.title
+  include Automata
+  attr_writer :start_context, :pause, :options
+  
+  def initialize
 
-catch(:exit) do 
-  Contexts::Main.new do |mm|
+    Rubygame.init()
 
-    mm.on :options do
-      catch :main_menu do
-        Contexts::Options.new.run
+    @start_context = nil
+    @world = nil
+    @options = nil
+
+    config = Configuration.instance
+
+    options = []
+    options.push(Rubygame::FULLSCREEN) if config.fullscreen
+
+    screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, options)
+    screen.title = config.title
+
+    yield self if block_given?
+
+    raise ConstructionError, 'You should set start_context' if @start_context.nil?
+  end
+  
+  def start
+
+    @state_machine = FiniteStateMachine.new(self)
+    @state_machine.change_state(@start_context)
+
+    catch :exit do
+      loop do
+        @state_machine.update
       end
     end
 
-    mm.on :start_game do
+    Rubygame::quit
+  end
 
-      World.new do |g|
+  def back_to_start
+    @state_machine.change_state(@start_context)
+  end
 
-        # first, we need a player
-        g.add_player([500,500])
+  def set_world(&callback)
+    @world = callback
+  end
 
-        #add some NPCs enemies
-        g.add_enemies([400,500], [210, 410])
+  def start_game
+    raise ConstructionError, 'You should set world to start a game' if @world.nil?
+    @world = @world.call
 
-        #create some Items
-        g.add_items({[150,700] => :chicken, [500, 550] => :meat})
+    @world.on :pause do pause_game end
 
-        #add some objects to make things more fun
-        g.add_object(Models::Tree.new([250,400], [170,300]))
+    @state_machine.change_state(@world)
+  end
 
-        # Make the background
-        g.background = (config.pix_root + 'background.png')
+  def pause_game
+    raise ConstructionError, 'You should set pause to stop the a game' if @pause.nil?
+    @state_machine.change_state(@pause)
+  end
 
-        # Listen for to create the pause menu
-        g.on :pause do
-          catch :continue do
-            Contexts::Pause.new.run
-          end
-        end
-
-      end.run # game
-    end # start game
-  end.run # main menu
+  def change_to_options
+    raise ConstructionError, 'You should set options to access it' if @options.nil?
+    @state_machine.change_state(@options)
+  end
 end
-
-Rubygame::quit
