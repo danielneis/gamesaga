@@ -38,7 +38,7 @@ class FiniteStateMachine
 
     @last_state = @current_state
 
-    @current_state.exit(@owner)
+    @last_state.exit(@owner)
 
     if new_state.respond_to? :new
       @current_state = new_state.new

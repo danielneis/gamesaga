@@ -67,6 +67,8 @@ module Contexts
         end
       end
 
+      @screen.show_cursor = true
+
       @title = Display.new('[OPTIONS]', [240,10], '', 25)
 
       @background = Rubygame::Surface.load_image(@config.pix_root + 'menu_background.jpg').zoom_to(@config.screen_width, @config.screen_height, true)
@@ -82,12 +84,6 @@ module Contexts
       @labels_hud.draw(@screen)
       @buttons_hud.draw(@screen)
       @screen.update()
-    end
-
-    def exit(performer)
-      @inputs_hud.undraw(@screen)
-      @labels_hud.undraw(@screen)
-      @buttons_hud.undraw(@screen)
     end
 
     private

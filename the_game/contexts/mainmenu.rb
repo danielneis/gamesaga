@@ -10,8 +10,8 @@ module Contexts
         ih.ignore = [Rubygame::MouseMotionEvent]
         
         ih.key_down = {Rubygame::K_ESCAPE  => lambda do throw :exit end,
-                        Rubygame::K_RETURN => lambda do performer.start_game end,
-                        Rubygame::K_O      => lambda do performer.change_to_options end}
+                       Rubygame::K_RETURN  => lambda do performer.start_game end,
+                       Rubygame::K_O       => lambda do performer.change_to_options end}
 
         ih.mouse_down = {'left' => lambda do |event| @hud.click(event.pos) end}
       end
@@ -42,6 +42,8 @@ module Contexts
       @anim_times_done = 0
       @anim_times = 10
 
+      @screen.show_cursor = true
+
       @background = Rubygame::Surface.new([@config.screen_width, @config.screen_height])
       @background.fill([0,0,0])
 
@@ -65,12 +67,6 @@ module Contexts
       @background.blit(@screen, [0,0])
       @hud.draw(@screen)
       @screen.update()
-    end
-
-    def exit(performer)
-      bg = Rubygame::Surface.new(@screen.size)
-      bg.fill([0,0,0])
-      bg.blit(@screen, [0,0])
     end
 
     private

@@ -6,6 +6,15 @@ module Contexts
 
     def enter(performer)
 
+      @ih = InputsHandler.new do |ih|
+        ih.ignore = [Rubygame::MouseMotionEvent]
+
+        ih.key_down = {Rubygame::K_ESCAPE => lambda do throw :exit end,
+                       Rubygame::K_RETURN => lambda do performer.resume_game end}
+
+        ih.mouse_down = {'left' => lambda do |event| @hud.click(event.pos) end}
+      end
+
       top = 30
       left = @config.screen_width / 2
 
@@ -18,35 +27,21 @@ module Contexts
           throw :exit
         end
         button.on :main_menu do
-          notify :main_menu
+          performer.back_to_start
         end
       end
+
+      @screen.show_cursor = true
 
       @title = Display.new('[PAUSED]', [left, top], '', 25)
-    end
-
-    def update
 
       @title.update()
-
-      @queue.each do |event|
-        case event
-        when Rubygame::KeyDownEvent
-          case event.key
-          when Rubygame::K_ESCAPE then throw :exit
-          when Rubygame::K_RETURN then throw :continue
-          end
-        when Rubygame::MouseDownEvent
-          if event.string == 'left'
-            if @hud.respond_to?('click')
-              @hud.click(event.pos)
-            end
-          end
-        end
-      end
-
       @hud.draw(@screen)
       @screen.update()
+    end
+
+    def execute(performer)
+      @ih.handle
     end
   end
 end

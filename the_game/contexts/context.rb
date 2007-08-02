@@ -23,5 +23,9 @@ module Contexts
       @screen = Rubygame::Screen.get_surface
       @config = Configuration.instance
     end
+
+    def exit(performer)
+      @screen.show_cursor = false
+    end
   end
 end

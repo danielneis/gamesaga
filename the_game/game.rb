@@ -56,12 +56,12 @@ class Game
   end
 
   def set_world(&callback)
-    @world = callback
+    @world_definition = callback
   end
 
   def start_game
-    raise ConstructionError, 'You should set world to start a game' if @world.nil?
-    @world = @world.call
+    raise ConstructionError, 'You should set world to start a game' if @world_definition.nil?
+    @world = @world_definition.call
 
     @world.on :pause do pause_game end
 
@@ -71,6 +71,10 @@ class Game
   def pause_game
     raise ConstructionError, 'You should set pause to stop the a game' if @pause.nil?
     @state_machine.change_state(@pause)
+  end
+
+  def resume_game
+    @state_machine.change_state(@world)
   end
 
   def change_to_options

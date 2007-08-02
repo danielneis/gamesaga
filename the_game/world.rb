@@ -42,19 +42,18 @@ class World < States::State
     # Create the life bar, FPS display etc.
     @fps_display = Display.new('FPS:', [0,0])
     @life_display =  Display.new('Life:', [250,0])
-
-    @kills = 0
-
     @kills_display =  Display.new('Kills:', [400,0])
+    @kills = 0
 
     @enemies = Rubygame::Sprites::Group.new
     @items   = Rubygame::Sprites::Group.new
     @objects = Rubygame::Sprites::Group.new
 
     @screen.show_cursor = false
-    @screen.update()
 
     yield self if block_given?
+
+    @screen.update
   end
 
   def enter(performer)
@@ -64,7 +63,7 @@ class World < States::State
     @background = @background.zoom_to(config.screen_width, config.screen_height)
     @background.blit(@screen, [0,0])
 
-    @screen.flip
+    @screen.update
   end
 
   def add_player(position)
@@ -152,6 +151,8 @@ class World < States::State
     @fps_display.update(@clock.framerate.to_i.to_s)
     @kills_display.update(@kills.to_s)
 
+    @ih.handle
+
     @player.update(@enemies, @items, @objects)
     @enemies.update(@player)
 
@@ -162,8 +163,6 @@ class World < States::State
     @screen.update_rects(@dirty_rects)
 
     @dirty_rects.clear
-
-    @ih.handle
   end
 
 end
