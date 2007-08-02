@@ -3,10 +3,10 @@ require 'rubygame/sfont'
 
 require 'config/config.rb'
 require 'lib/automata'
-require 'ui/contexts/mainmenu'
-require 'ui/contexts/options'
-require 'ui/contexts/pause'
-require 'ui/contexts/controller.config'
+require 'contexts/mainmenu'
+require 'contexts/options'
+require 'contexts/pause'
+require 'contexts/controller.config'
 require 'world'
 
 class ConstructionError < StandardError; end
