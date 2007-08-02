@@ -1,4 +1,5 @@
 require File.dirname(__FILE__)+'/../lib/state.rb'
+require File.dirname(__FILE__)+'/../lib/inputs.handler.rb'
 require File.dirname(__FILE__)+'/../ui/hud'
 require File.dirname(__FILE__)+'/../ui/menu'
 require File.dirname(__FILE__)+'/../ui/display'
@@ -19,7 +20,6 @@ module Contexts
 
       yield self if block_given?
 
-      @queue = Rubygame::EventQueue.new
       @screen = Rubygame::Screen.get_surface
       @config = Configuration.instance
     end

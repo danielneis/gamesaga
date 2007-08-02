@@ -6,6 +6,16 @@ module Contexts
 
     def enter(performer)
 
+      @ih = InputsHandler.new do |ih|
+        ih.ignore = [Rubygame::MouseMotionEvent]
+        
+        ih.key_down = {Rubygame::K_ESCAPE  => lambda do throw :exit end,
+                        Rubygame::K_RETURN => lambda do performer.start_game end,
+                        Rubygame::K_O      => lambda do performer.change_to_options end}
+
+        ih.mouse_down = {'left' => lambda do |event| @hud.click(event.pos) end}
+      end
+
       @clock = Rubygame::Clock.new { |clock| clock.target_framerate = 35 }
 
       @menu = UI::Menu.new(:horizontal, 30)
@@ -40,6 +50,8 @@ module Contexts
 
     def execute(performer)
 
+      @ih.handle
+
       @anim_diff = @previous_animation - @clock.tick
       if (@anim_diff < 15) && (@anim_times_done < @anim_times)
         @anim_times_done += 1
@@ -49,20 +61,6 @@ module Contexts
         @bg_img2.blit(@background, [0,0])
       end
       @previous_animation = @clock.tick
-
-      @queue.each do |event|
-        case event
-        when Rubygame::QuitEvent then throw :exit
-        when Rubygame::KeyDownEvent
-          case event.key
-          when Rubygame::K_ESCAPE then throw :exit
-          when Rubygame::K_RETURN then performer.start_game
-          when Rubygame::K_O      then performer.change_to_options
-          end
-        when Rubygame::MouseDownEvent
-          @hud.click(event.pos) if event.string == 'left'
-        end
-      end
 
       @background.blit(@screen, [0,0])
       @hud.draw(@screen)

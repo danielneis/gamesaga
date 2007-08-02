@@ -6,6 +6,15 @@ module Contexts
 
     def enter(performer)
 
+      @ih = InputsHandler.new do |ih|
+        ih.ignore = [Rubygame::MouseMotionEvent]
+
+        ih.key_down = {Rubygame::K_ESCAPE => lambda do throw :exit end,
+                       :any               => lambda do |event| @inputs_hud.handle_input(event) end}
+
+        ih.mouse_down = {'left' => lambda do |event| @buttons_hud.click(event.pos); @inputs_hud.click(event.pos) end}
+      end
+
       @labels_menu = UI::Menu.new(:vertical, 15)
       @labels_menu.push(Components::Label.new('Resolution'),
                         Components::Label.new('Fullscreen'),
@@ -65,21 +74,7 @@ module Contexts
 
     def execute(performer)
 
-      @queue.each do |event|
-        case event
-        when Rubygame::QuitEvent then throw :exit
-        when Rubygame::KeyDownEvent
-          @inputs_hud.handle_input(event)
-          case event.key
-          when Rubygame::K_ESCAPE then throw :exit
-          end
-        when Rubygame::MouseDownEvent
-          if event.string == 'left'
-              @buttons_hud.click(event.pos)
-              @inputs_hud.click(event.pos)
-          end
-        end
-      end
+      @ih.handle
 
       @background.blit(@screen, [0,0])
       @title.update

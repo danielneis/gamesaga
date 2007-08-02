@@ -20,7 +20,24 @@ class World < States::State
 
     @screen = Rubygame::Screen.get_surface
     @clock = Rubygame::Clock.new { |clock| clock.target_framerate = 35 }
-    @queue = Rubygame::EventQueue.new
+
+    @ih = InputsHandler.new do |ih|
+      ih.ignore = [Rubygame::MouseMotionEvent, Rubygame::MouseDownEvent, Rubygame::MouseUpEvent]
+
+      ih.key_down = {Rubygame::K_ESCAPE => lambda do throw :exit end,
+                     Rubygame::K_RETURN => lambda do notify :pause end,
+                     Rubygame::K_LEFT   => lambda do @player.walk :left end,
+                     Rubygame::K_RIGHT  => lambda do @player.walk :right end,
+                     Rubygame::K_UP     => lambda do @player.walk :up end,
+                     Rubygame::K_DOWN   => lambda do @player.walk :down end,
+                     Rubygame::K_S      => lambda do @player.act end,
+                     Rubygame::K_D      => lambda do @player.jump end}
+
+      ih.key_up = {Rubygame::K_LEFT  => lambda do @player.stop_walk :left end,
+                   Rubygame::K_RIGHT => lambda do @player.stop_walk :right end,
+                   Rubygame::K_UP    => lambda do @player.stop_walk :up end,
+                   Rubygame::K_DOWN  => lambda do @player.stop_walk :down end}
+    end
 
     # Create the life bar, FPS display etc.
     @fps_display = Display.new('FPS:', [0,0])
@@ -146,33 +163,7 @@ class World < States::State
 
     @dirty_rects.clear
 
-    handle_inputs
+    @ih.handle
   end
 
-  private
-  def handle_inputs
-    @queue.each do |event|
-      case event
-      when Rubygame::QuitEvent then throw :exit
-      when Rubygame::KeyDownEvent
-        case event.key
-        when Rubygame::K_ESCAPE then throw :exit
-        when Rubygame::K_RETURN then notify :pause
-        when Rubygame::K_LEFT   then @player.walk :left
-        when Rubygame::K_RIGHT  then @player.walk :right
-        when Rubygame::K_UP     then @player.walk :up
-        when Rubygame::K_DOWN   then @player.walk :down
-        when Rubygame::K_S      then @player.act
-        when Rubygame::K_D      then @player.jump
-        end
-      when Rubygame::KeyUpEvent
-        case event.key
-        when Rubygame::K_LEFT  then @player.stop_walk :left
-        when Rubygame::K_RIGHT then @player.stop_walk :right
-        when Rubygame::K_UP    then @player.stop_walk :up
-        when Rubygame::K_DOWN  then @player.stop_walk :down
-        end
-      end
-    end
-  end
 end
