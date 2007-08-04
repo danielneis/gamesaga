@@ -52,8 +52,6 @@ class World < States::State
     @screen.show_cursor = false
 
     yield self if block_given?
-
-    @screen.update
   end
 
   def enter(performer)
@@ -164,5 +162,4 @@ class World < States::State
 
     @dirty_rects.clear
   end
-
 end

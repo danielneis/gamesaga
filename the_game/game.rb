@@ -42,13 +42,15 @@ class Game
     @state_machine = FiniteStateMachine.new(self)
     @state_machine.change_state(@start_context)
 
-    catch :exit do
-      loop do
-        @state_machine.update
+    begin
+      catch :exit do
+        loop do
+          @state_machine.update
+        end
       end
+    ensure
+      Rubygame::quit
     end
-
-    Rubygame::quit
   end
 
   def back_to_start
