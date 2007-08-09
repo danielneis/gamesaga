@@ -4,9 +4,9 @@ module Contexts
 
   class ControllerConfig < Context
 
-    def initialize
+    def initialize(performer)
 
-      super()
+      super(performer)
 
       config = Configuration.instance
 

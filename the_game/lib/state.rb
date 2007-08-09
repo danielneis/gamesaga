@@ -1,13 +1,17 @@
 module States
   class State
 
-    def enter(performer)
+    def initialize(performer)
+      @performer = performer
     end
 
-    def execute(performer)
+    def enter
     end
 
-    def exit(performer)
+    def execute
+    end
+
+    def exit
     end
   end
 end

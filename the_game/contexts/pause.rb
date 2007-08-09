@@ -4,13 +4,13 @@ module Contexts
 
   class Pause < Context
 
-    def enter(performer)
+    def enter
 
       @ih = InputsHandler.new do |ih|
         ih.ignore = [Rubygame::MouseMotionEvent]
 
         ih.key_down = {Rubygame::K_ESCAPE => lambda do throw :exit end,
-                       Rubygame::K_RETURN => lambda do performer.resume_game end}
+                       Rubygame::K_RETURN => lambda do @performer.resume_game end}
 
         ih.mouse_down = {'left' => lambda do |event| @hud.click(event.pos) end}
       end
@@ -27,7 +27,7 @@ module Contexts
           throw :exit
         end
         button.on :main_menu do
-          performer.back_to_start
+          @performer.back_to_start
         end
       end
 
@@ -40,7 +40,7 @@ module Contexts
       @screen.update()
     end
 
-    def execute(performer)
+    def execute
       @ih.handle
     end
   end

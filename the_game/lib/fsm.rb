@@ -6,13 +6,13 @@ class FiniteStateMachine
 
     @owner = owner
 
-    @global_state = global_state.new
+    @global_state = global_state.new @owner
 
-    @current_state = current_state.new
+    @current_state = current_state.new @owner
     @last_state = @current_state
 
-    @global_state.enter(@owner)
-    @current_state.enter(@owner)
+    @global_state.enter
+    @current_state.enter
 
     @next_state = nil
   end
@@ -38,15 +38,15 @@ class FiniteStateMachine
 
     @last_state = @current_state
 
-    @last_state.exit(@owner)
+    @last_state.exit
 
     if new_state.respond_to? :new
-      @current_state = new_state.new
+      @current_state = new_state.new @owner
     else
       @current_state = new_state
     end
 
-    @current_state.enter(@owner)
+    @current_state.enter
   end
 
   def back_to_last_state
@@ -54,8 +54,8 @@ class FiniteStateMachine
   end
 
   def update
-    @global_state.execute(@owner)
+    @global_state.execute
 
-    @current_state.execute(@owner)
+    @current_state.execute
   end
 end

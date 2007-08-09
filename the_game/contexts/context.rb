@@ -16,7 +16,9 @@ module Contexts
 
   class Context < States::State
 
-    def initialize
+    def initialize(performer)
+
+      super(performer)
 
       yield self if block_given?
 
@@ -24,7 +26,7 @@ module Contexts
       @config = Configuration.instance
     end
 
-    def exit(performer)
+    def exit
       @screen.show_cursor = false
     end
   end

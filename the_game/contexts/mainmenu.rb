@@ -4,14 +4,14 @@ module Contexts
 
   class Main < Context
 
-    def enter(performer)
+    def enter
 
       @ih = InputsHandler.new do |ih|
         ih.ignore = [Rubygame::MouseMotionEvent]
         
         ih.key_down = {Rubygame::K_ESCAPE  => lambda do throw :exit end,
-                       Rubygame::K_RETURN  => lambda do performer.start_game end,
-                       Rubygame::K_O       => lambda do performer.change_to_options end}
+                       Rubygame::K_RETURN  => lambda do @performer.start_game end,
+                       Rubygame::K_O       => lambda do @performer.change_to_options end}
 
         ih.mouse_down = {'left' => lambda do |event| @hud.click(event.pos) end}
       end
@@ -27,13 +27,13 @@ module Contexts
 
       @menu.each do |button|
         button.on :start_game do 
-          performer.start_game
+          @performer.start_game
         end
         button.on :quit_game do
           throw :exit
         end
         button.on :options do
-          performer.change_to_options
+          @performer.change_to_options
         end
       end
 
@@ -50,7 +50,7 @@ module Contexts
       setup_background_images
     end
 
-    def execute(performer)
+    def execute
 
       @ih.handle
 

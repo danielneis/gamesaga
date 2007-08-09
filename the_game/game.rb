@@ -7,6 +7,8 @@ require 'contexts/mainmenu'
 require 'contexts/options'
 require 'contexts/pause'
 require 'contexts/controller.config'
+require 'contexts/gameover'
+require 'contexts/continue'
 require 'world'
 
 class ConstructionError < StandardError; end
@@ -14,7 +16,7 @@ class ConstructionError < StandardError; end
 class Game
 
   include Automata
-  attr_writer :start_context, :pause, :options
+  attr_writer :start_context, :pause, :options, :game_over, :continue
   
   def initialize
 
@@ -23,6 +25,8 @@ class Game
     @start_context = nil
     @world = nil
     @options = nil
+    @game_over = Contexts::GameOver
+    @continue = Contexts::Continue
 
     config = Configuration.instance
 
@@ -63,9 +67,11 @@ class Game
 
   def start_game
     raise ConstructionError, 'You should set world to start a game' if @world_definition.nil?
-    @world = @world_definition.call
+    @world = @world_definition.call(self)
 
     @world.on :pause do pause_game end
+
+    @world.game = self
 
     @state_machine.change_state(@world)
   end
@@ -79,8 +85,21 @@ class Game
     @state_machine.change_state(@world)
   end
 
+  def restart_game
+    @world.revive_player
+    resume_game
+  end
+
   def change_to_options
     raise ConstructionError, 'You should set options to access it' if @options.nil?
     @state_machine.change_state(@options)
+  end
+
+  def request_continue
+    @state_machine.change_state(@continue)
+  end
+
+  def game_over
+    @state_machine.change_state(@game_over)
   end
 end

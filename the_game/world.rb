@@ -8,6 +8,8 @@ class World < States::State
 
   include EventDispatcher
 
+  attr_writer :game
+
   def initialize
 
     @item_types = {:chicken => Models::Chicken, :meat => Models::Meat}
@@ -54,7 +56,7 @@ class World < States::State
     yield self if block_given?
   end
 
-  def enter(performer)
+  def enter
 
     config = Configuration.instance
 
@@ -69,25 +71,18 @@ class World < States::State
     @player = Models::Player.new(position, 'panda.png')
 
     @player.on :player_death do
-      title = Display.new('DIED! press [ESC] to end game', [50, 200], '', 25)
-      title.update()
-
-      @screen.update()
-
-      loop do
-        @queue.each do |event|
-          case event
-          when Rubygame::QuitEvent then throw :exit
-          when Rubygame::KeyDownEvent
-            case event.key
-            when Rubygame::K_ESCAPE then throw :exit
-            end
-          end
-        end
+      if @player.lives > 0
+        @game.request_continue
+      else
+        @game.game_over
       end
     end
 
     @all_sprites << @player
+  end
+
+  def revive_player
+    @player.revive
   end
 
   def add_enemies(*positions)
@@ -139,7 +134,7 @@ class World < States::State
     @background = Rubygame::Surface.load_image(image)
   end
 
-  def execute(performer)
+  def execute
 
     @clock.tick()
 

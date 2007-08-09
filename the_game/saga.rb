@@ -17,7 +17,7 @@ Game.new do |game|
 
       g.add_enemies([400,500], [210, 410])
 
-      g.add_items({[150,700] => :chicken, [500, 550] => :meat})
+      g.add_items({[150,700] => :chicken, [500, 550] => :meat, [350,700] => :chicken, [600, 550] => :meat})
 
       g.add_object(Models::Tree.new([250,400], [170,300]))
 

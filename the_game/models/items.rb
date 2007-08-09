@@ -29,14 +29,14 @@ module Models
   class Chicken < Item
 
     def initialize(pos)
-      super(pos, 'chicken', {:life => 50})
+      super(pos, 'chicken', {:life => 1})
     end
   end
 
   class Meat <Item
 
     def initialize(pos)
-      super(pos, 'meat', {:life => 50})
+      super(pos, 'meat', {:life => 5})
     end
   end
 end

@@ -6,52 +6,52 @@ module States
 
   class Stop < State
 
-    def enter(performer)
-      performer.x_speed = 0
-      performer.y_speed = 0
+    def enter
+      @performer.x_speed = 0
+      @performer.y_speed = 0
     end
   end
 
   class Walk < State
 
-    def execute(performer)
-      if performer.should_walk
-        performer.move()
-        cols = performer.collisions.select { |c| (c.is_a?(Models::Piece) or c.is_a?(Models::Character)) and c.ground.intersects?(performer.ground) }
-        performer.undo_move() unless cols.empty?
+    def execute
+      if @performer.should_walk
+        @performer.move()
+        cols = @performer.collisions.select { |c| (c.is_a?(Models::Piece) or c.is_a?(Models::Character)) and c.ground.intersects?(@performer.ground) }
+        @performer.undo_move() unless cols.empty?
       end
     end
   end
 
   class Jump < State
 
-    def enter(performer)
-      performer.y_speed = -performer.jump_s
+    def enter
+      @performer.y_speed = -@performer.jump_s
       @time_span = 1
-      @initial_ground = performer.ground
+      @initial_ground = @performer.ground
       @must_stop = false
     end
 
-    def execute(performer)
+    def execute
 
-      if (performer.rect.bottom <= @initial_ground.end) and !@must_stop
-        performer.y_speed += 0.01 * @time_span
-        performer.move
-        cols = performer.collisions.select { |c| c.is_a?(Models::Piece) and c.ground.intersects?(performer.ground) }
+      if (@performer.rect.bottom <= @initial_ground.end) and !@must_stop
+        @performer.y_speed += 0.01 * @time_span
+        @performer.move
+        cols = @performer.collisions.select { |c| c.is_a?(Models::Piece) and c.ground.intersects?(@performer.ground) }
         unless cols.empty?
-          performer.undo_move
-          performer.x_speed = 0
-          performer.move
+          @performer.undo_move
+          @performer.x_speed = 0
+          @performer.move
           @must_stop = true
         end
         @time_span += 1
       else
-        performer.rect.bottom = @initial_ground.end unless @must_stop
-        performer.y_speed = 0
-        if performer.has_next_state?
-          performer.go_to_next_state
+        @performer.rect.bottom = @initial_ground.end unless @must_stop
+        @performer.y_speed = 0
+        if @performer.has_next_state?
+          @performer.go_to_next_state
         else
-          performer.back_to_last_state
+          @performer.back_to_last_state
         end
       end
     end
@@ -59,47 +59,47 @@ module States
 
   class Attack < State
 
-    def enter(performer)
+    def enter
 
       @attack_stage = 0
       @attack_stages = 3
 
-      performer.swap_image :attack
+      @performer.swap_image :attack
 
-      performer.collisions.each do |collision|
+      @performer.collisions.each do |collision|
 
         if collision.respond_to? :take_damage
-          if performer.rect.centerx < collision.rect.centerx
+          if @performer.rect.centerx < collision.rect.centerx
             attacker_relative_position = :left
             hitted_relative_position = :right
-          elsif performer.rect.centerx > collision.rect.centerx
+          elsif @performer.rect.centerx > collision.rect.centerx
             attacker_relative_position = :right
             enemy_relative_position = :left
           end
 
-          collision.take_damage(performer.strength, enemy_relative_position)
+          collision.take_damage(@performer.strength, enemy_relative_position)
         end
       end
     end
 
-    def execute(performer)
+    def execute
 
       if @attack_stage < @attack_stages
         @attack_stage += 1
       else
         @attack_stage = 0
-        performer.back_to_last_state
+        @performer.back_to_last_state
       end
     end
 
-    def exit(performer)
-      performer.swap_image :still
+    def exit
+      @performer.swap_image :still
     end
   end
   
   class Hitted < State
 
-    def enter(performer)
+    def enter
 
       config = Configuration.instance
 
@@ -109,34 +109,34 @@ module States
       @screen = Rubygame::Screen.get_surface
 
       @pow_image = Rubygame::Surface.load_image(config.pix_root + 'pow.png')
-      @pow_image.blit(@screen, [performer.rect.x, performer.rect.y] )
+      @pow_image.blit(@screen, [@performer.rect.x, @performer.rect.y] )
 
-      performer.life -= performer.damage
+      @performer.life -= @performer.damage
     end
 
-    def execute(performer)
+    def execute
 
       if @hit_stage < @hit_stages
         @hit_stage += 1
       else 
-        performer.back_to_last_state
+        @performer.back_to_last_state
       end
     end
 
-    def exit(performer)
+    def exit
       @pow_image = nil
     end
   end
 
   class Catch < State
 
-    def enter(performer)
+    def enter
 
-      performer.items_to_catch.each do |item|
+      @performer.items_to_catch.each do |item|
         item.each_effect do |method, new_value|
 
-          old_value = performer.send(method)
-          performer.send(method.to_s+'=', old_value + new_value)
+          old_value = @performer.send(method)
+          @performer.send(method.to_s+'=', old_value + new_value)
 
           item.catched
         end

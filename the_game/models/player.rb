@@ -3,25 +3,31 @@ require File.dirname(__FILE__) + '/character'
 module Models
 class Player < Character
 
-  life 20
-  strength 100
+  life 5
+  strength 1
   speed 3
   jump_s 2
+
+  attr_reader :lives
 
   def initialize(pos, image)
     super(pos, image)
 
-    height = @rect.h / 3
-    width = @rect.w / 1.75
-    x = @rect.x + width / 2
-    y = @rect.b - height
+    @lives = 2
+  end
+
+  def revive
+    @life = 5
   end
 
   def update(*collidables)
 
     super(*collidables)
 
-    notify :player_death if @life <= 0
+    if @life <= 0
+      @lives -= 1
+      notify :player_death 
+    end
   end
 
   def act

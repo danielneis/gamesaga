@@ -4,7 +4,7 @@ module Contexts
 
   class Options < Context
 
-    def enter(performer)
+    def enter
 
       @ih = InputsHandler.new do |ih|
         ih.ignore = [Rubygame::MouseMotionEvent]
@@ -54,10 +54,10 @@ module Contexts
 
       @menu.each do |button|
         button.on :controllers do
-          performer.change_state(Contexts::ControllerConfig)
+          @performer.change_state(Contexts::ControllerConfig)
         end
         button.on :main_menu do
-          performer.back_to_start
+          @performer.back_to_start
         end
         button.on :quit_game do
           throw :exit
@@ -74,7 +74,7 @@ module Contexts
       @background = Rubygame::Surface.load_image(@config.pix_root + 'menu_background.jpg').zoom_to(@config.screen_width, @config.screen_height, true)
     end
 
-    def execute(performer)
+    def execute
 
       @ih.handle
 
