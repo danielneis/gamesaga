@@ -23,7 +23,7 @@ And another two ruby libraries:
 
 2. HOW TO PLAY:
 ---------------
-To run the game type ruby game.rb in this directory
+To run the game just do ./saga.rb
 
 Controls: 
     enter       - (un)pause the game
