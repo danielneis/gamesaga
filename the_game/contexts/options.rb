@@ -53,18 +53,10 @@ module Contexts
 
 
       @menu.each do |button|
-        button.on :controllers do
-          @performer.change_state(Contexts::ControllerConfig)
-        end
-        button.on :main_menu do
-          @performer.back_to_start
-        end
-        button.on :quit_game do
-          throw :exit
-        end
-        button.on :save do
-          save_options
-        end
+        button.on :controllers do @performer.change_state Contexts::ControllerConfig end
+        button.on :main_menu   do @performer.back_to_start end
+        button.on :quit_game   do throw :exit end
+        button.on :save        do save_options end
       end
 
       @screen.show_cursor = true

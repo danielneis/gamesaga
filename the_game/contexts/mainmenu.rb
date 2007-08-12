@@ -11,7 +11,9 @@ module Contexts
         
         ih.key_down = {Rubygame::K_ESCAPE  => lambda do throw :exit end,
                        Rubygame::K_RETURN  => lambda do @performer.start_game end,
-                       Rubygame::K_O       => lambda do @performer.change_to_options end}
+                       Rubygame::K_O       => lambda do @performer.change_to_options end,
+                       Rubygame::K_C       => lambda do @performer.change_state Contexts::ControllerConfig end}
+          
 
         ih.mouse_down = {'left' => lambda do |event| @hud.click(event.pos) end}
       end
@@ -26,15 +28,9 @@ module Contexts
       @hud = UI::Hud.new(@menu, :bottom)
 
       @menu.each do |button|
-        button.on :start_game do 
-          @performer.start_game
-        end
-        button.on :quit_game do
-          throw :exit
-        end
-        button.on :options do
-          @performer.change_to_options
-        end
+        button.on :start_game do @performer.start_game end
+        button.on :quit_game  do throw :exit end
+        button.on :options    do @performer.change_to_options end
       end
 
       @previous_animation = @clock.tick()

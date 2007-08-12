@@ -23,12 +23,8 @@ module Contexts
       @hud = UI::Hud.new(@menu, :middle)
 
       @menu.each do |button|
-        button.on :quit_game do
-          throw :exit
-        end
-        button.on :main_menu do
-          @performer.back_to_start
-        end
+        button.on :quit_game do throw :exit end
+        button.on :main_menu do @performer.back_to_start end
       end
 
       @screen.show_cursor = true

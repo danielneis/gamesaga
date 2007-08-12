@@ -19,7 +19,7 @@ class InputsHandler
         case event
         when Rubygame::QuitEvent then throw :exit
         when Rubygame::KeyDownEvent
-          yield event if @key_down.include? :any
+          @key_down[:any].call(event) if @key_down.include? :any
           if @key_down.include?(event.key)
             @key_down[event.key].call if @key_down[event.key].respond_to? :call
           end

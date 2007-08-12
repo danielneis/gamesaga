@@ -1,43 +1,22 @@
 require File.dirname(__FILE__)+'/component'
+require File.dirname(__FILE__)+'/inputtext'
 module Components
 
-  class SensibleDisplay < Component
+  class SensibleDisplay < InputText
 
     attr_reader :text
 
     def initialize(id, text)
-      super()
-
-      @id = id
-      @text = text
-
-      Rubygame::TTF.setup()
-
-      config = Configuration.instance
-      @renderer = Rubygame::TTF.new(config.font_root + 'default.ttf', 25)
-
-      @background = Rubygame::Surface.new([150, @renderer.height])
-      @background_color = [255,255,255]
-      update_background
-
-      @output = @renderer.render(@text, true, [0,0,0])
-
-      @rect = @background.make_rect
+      super(1, id, text)
     end
 
-    def draw(destination)
-      @output.blit(@background, [0,0])
-      @background.blit(@screen, @rect.topleft)
-    end
+    def handle_input(input)
 
-    def click(position)
-      notify :sensible_display_clicked, self
+      unless input.string.equal? @text
+        @text = input.string
+        @output = @renderer.render(@text, true, [0,0,0])
+        update_background
+      end
     end
-
-    private
-    def update_background
-      @background.fill(@background_color)
-    end
-
   end
 end
