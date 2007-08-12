@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'game'
 
-Game.new do |game|
+Game.new('Saga') do |game|
 
   game.start_context = Contexts::Main
 

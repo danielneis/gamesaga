@@ -7,7 +7,7 @@ To run the game you must have ruby1.8 or later installed.
 It's available to download at www.rubylang.org
 
 After this, install the Rubygame Library, through gems, that's available at http://rubygame.sourceforge.net/
-To install ruby game you'll need the following SDL libraries:
+To install rubygame you'll need the following SDL libraries:
     libsdl1.2debian
     libsdl1.2-dev
     libsdlgfx1.2-4

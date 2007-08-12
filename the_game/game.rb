@@ -18,7 +18,7 @@ class Game
   include Automata
   attr_writer :start_context, :pause, :options, :game_over, :continue
   
-  def initialize
+  def initialize(title = 'game')
 
     Rubygame.init()
 
@@ -29,12 +29,16 @@ class Game
     @continue = Contexts::Continue
 
     config = Configuration.instance
+    config.game_root = File.dirname(File.expand_path(__FILE__))
+    config.pix_root =  config.game_root + '/pix/'
+    config.font_root = config.game_root + '/fonts/'
+    config.save
 
     options = []
     options.push(Rubygame::FULLSCREEN) if config.fullscreen
 
     screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, options)
-    screen.title = config.title
+    screen.title = title
 
     yield self if block_given?
 
