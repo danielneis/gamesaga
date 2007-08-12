@@ -82,18 +82,30 @@ module Contexts
 
       face = Rubygame::Surface.load_image(pix_dir + 'rosto1.png')
       face.set_colorkey(face.get_at([0,0]))
-      face = face.zoom_to(config.screen_width / 4, config.screen_height / 4, true)
-      face.blit(@bg_img2, [(config.screen_width - face.w - 10)/2, 280])
+      face_width = config.screen_width / 4
+      face_height = config.screen_height / 4
+      face = face.zoom_to(face_width, face_height, true)
+
+      face_x = (config.screen_width - face.w - 10) / 2
+      face_y = (config.screen_height - face.h) / 2
+      face.blit(@bg_img2, [face_x, face_y])
 
       left_ray = Rubygame::Surface.load_image(pix_dir + 'raioesquerdo.png')
       left_ray.set_colorkey(left_ray.get_at([0,0]))
-      left_ray = left_ray.zoom_to(150,150)
-      left_ray.blit(@bg_img2, [700, 150])
+      ray_width = config.screen_width / 8
+      ray_height = ray_width
+      left_ray = left_ray.zoom_to(ray_width, ray_height)
+
+      ray_x = config.screen_width / 7
+      ray_y = config.screen_height / 5
+      left_ray.blit(@bg_img2, [ray_x, ray_y])
 
       right_ray = Rubygame::Surface.load_image(pix_dir + 'raiodireito.png')
       right_ray.set_colorkey(right_ray.get_at([0,0]))
-      right_ray = left_ray.zoom_to(150,150)
-      right_ray.blit(@bg_img2, [150, 150])
+      right_ray = left_ray.zoom_to(ray_width, ray_height)
+
+      ray_x = 7 * config.screen_width / 10
+      right_ray.blit(@bg_img2, [ray_x, ray_y])
     end
   end
 end
