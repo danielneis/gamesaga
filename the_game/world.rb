@@ -85,10 +85,10 @@ class World < States::State
     @player.revive
   end
 
-  def add_enemies(*positions)
+  def add_enemies(positions_and_types)
 
-    positions.each do |pos|
-      @enemies.push  Models::Enemy.new(pos, 'panda.invert.png')
+    positions_and_types.each do |pos, type|
+      @enemies.push  Models::Enemy.new(pos, type.to_s)
     end
 
     callback = lambda do |enemy|

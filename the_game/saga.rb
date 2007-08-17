@@ -15,7 +15,7 @@ Game.new('Saga') do |game|
 
       g.add_player([500,500])
 
-      g.add_enemies([400,500], [210, 410])
+      g.add_enemies([400,500] => :enemy1, [110, 410] => :enemy2)
 
       g.add_items({[150,700] => :chicken, [500, 550] => :meat, [350,700] => :chicken, [600, 550] => :meat})
 
