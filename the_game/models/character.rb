@@ -49,7 +49,7 @@ class Character < Model
         @rect.move!(*pos)
 
         # @area is the area of the screen, which the player will walk across
-        @area = Rubygame::Rect.new(0, config.screen_height / 2, *[config.screen_width, config.screen_height / 2])
+        @area = Rubygame::Rect.new(0, 0, *[config.screen_width, config.screen_height])
 
         @state_machine = FiniteStateMachine.new(self)
 
@@ -165,7 +165,9 @@ class Character < Model
   end
 
   def ground
-    (@rect.cy)..(@rect.bottom)
+    start = @rect.bottom - (@rect.height) / 10
+    finish = @rect.bottom
+    Range.new(start, finish)
   end
 end
 end

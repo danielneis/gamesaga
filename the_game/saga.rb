@@ -13,13 +13,13 @@ Game.new('Saga') do |game|
     
     World.new do |g|
 
-      g.add_player([500,500])
+      g.add_player([650,300], :player1)
 
-      g.add_enemies([400,500] => :enemy1, [110, 410] => :enemy2)
+      g.add_enemies([400,440] => :enemy1, [110, 440] => :enemy2)
 
       g.add_items({[150,700] => :chicken, [500, 550] => :meat, [350,700] => :chicken, [600, 550] => :meat})
 
-      g.add_object(Models::Tree.new([250,400], [170,300]))
+      g.add_object(Models::Tree.new([250,370], [170,300]))
 
       g.background = (Configuration.instance.pix_root + 'background.png')
     end

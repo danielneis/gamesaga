@@ -66,9 +66,9 @@ class World < States::State
     @screen.update
   end
 
-  def add_player(position)
+  def add_player(position, name)
 
-    @player = Models::Player.new(position, 'panda.png')
+    @player = Models::Player.new(position, name.to_s)
 
     @player.on :player_death do
       if @player.lives > 0
@@ -85,10 +85,10 @@ class World < States::State
     @player.revive
   end
 
-  def add_enemies(positions_and_types)
+  def add_enemies(positions_and_names)
 
-    positions_and_types.each do |pos, type|
-      @enemies.push  Models::Enemy.new(pos, type.to_s)
+    positions_and_names.each do |pos, name|
+      @enemies.push  Models::Enemy.new(pos, name.to_s)
     end
 
     callback = lambda do |enemy|
