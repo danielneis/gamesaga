@@ -28,7 +28,7 @@ class Character < Model
     # 3. For each monster, the `initialize' method
     #    should use the default number for each trait.
     class_eval do
-      define_method( :initialize ) do |pos, image|
+      define_method( :initialize ) do |pos, images_dir|
 
         super()
 
@@ -38,11 +38,14 @@ class Character < Model
           instance_variable_set("@#{k}", v)
         end
 
-        @still_image = Rubygame::Surface.load_image(config.pix_root + image)
+        pix_path = config.pix_root + images_dir
+        @still_image = Rubygame::Surface.load_image(pix_path + 'still.png')
         @still_image.set_colorkey(@still_image.get_at([0,0]))
 
-        @attack_image = Rubygame::Surface.load_image(config.pix_root + 'panda.attack.png')
-        @attack_image.set_colorkey(@attack_image.get_at([0,0]))
+        if File.exists? pix_path + 'attack.png'
+          @attack_image = Rubygame::Surface.load_image(pix_path + 'attack.png')
+          @attack_image.set_colorkey(@attack_image.get_at([0,0]))
+        end
         
         @image = @still_image
         @rect = @image.make_rect

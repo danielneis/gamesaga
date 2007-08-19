@@ -8,8 +8,8 @@ class Enemy < Character
   speed 3
   jump_s 6
 
-  def initialize(pos, image)
-    super(pos, 'enemies/' + image + '.png')
+  def initialize(pos, name)
+    super(pos, 'enemies/' + name + '/')
   end
 
   def update(*collidables)

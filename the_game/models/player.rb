@@ -10,8 +10,8 @@ class Player < Character
 
   attr_reader :lives
 
-  def initialize(pos, image)
-    super(pos, 'player/' + image + '.png')
+  def initialize(pos, name)
+    super(pos, 'player/')
 
     @lives = 2
   end
