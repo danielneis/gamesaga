@@ -42,7 +42,7 @@ class Character < Model
         @still_image = Rubygame::Surface.load_image(pix_path + 'still.png')
         @still_image.set_colorkey(@still_image.get_at([0,0]))
 
-        if File.exists? pix_path + 'attack.png'
+        if File.exist? pix_path + 'attack.png'
           @attack_image = Rubygame::Surface.load_image(pix_path + 'attack.png')
           @attack_image.set_colorkey(@attack_image.get_at([0,0]))
         end
