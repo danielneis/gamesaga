@@ -23,7 +23,6 @@ module Components
       update_background
 
       @text = text
-      @output = nil
       if @text == ''
         @output = nil
       else
