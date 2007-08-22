@@ -10,5 +10,9 @@ module Console
       @buffer.delete_at 0 if @buffer.size == @size
       @buffer << content
     end
+
+    def last
+      @buffer.last
+    end
   end
 end

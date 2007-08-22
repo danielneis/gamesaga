@@ -26,7 +26,7 @@ class World < States::State
     @ih = InputsHandler.new do |ih|
       ih.ignore = [Rubygame::MouseMotionEvent, Rubygame::MouseDownEvent, Rubygame::MouseUpEvent]
 
-      ih.key_down = {Rubygame::K_ESCAPE => lambda do throw :exit end,
+      ih.key_down = {Rubygame::K_ESCAPE => lambda do notify :open_console end,
                      Rubygame::K_RETURN => lambda do notify :pause end,
                      Rubygame::K_LEFT   => lambda do @player.walk :left end,
                      Rubygame::K_RIGHT  => lambda do @player.walk :right end,
@@ -40,12 +40,6 @@ class World < States::State
                    Rubygame::K_UP    => lambda do @player.stop_walk :up end,
                    Rubygame::K_DOWN  => lambda do @player.stop_walk :down end}
     end
-
-    # Create the life bar, FPS display etc.
-    @fps_display = Display.new('FPS:', [0,0])
-    @life_display =  Display.new('Life:', [250,0])
-    @kills_display =  Display.new('Kills:', [400,0])
-    @kills = 0
 
     @enemies = Rubygame::Sprites::Group.new
     @items   = Rubygame::Sprites::Group.new
@@ -139,10 +133,6 @@ class World < States::State
     @clock.tick()
 
     @all_sprites.undraw(@screen, @background)
-
-    @life_display.update(@player.life.to_s)
-    @fps_display.update(@clock.framerate.to_i.to_s)
-    @kills_display.update(@kills.to_s)
 
     @ih.handle
 

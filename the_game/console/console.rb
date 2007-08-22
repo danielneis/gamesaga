@@ -1,35 +1,20 @@
 require File.dirname(__FILE__) + '/buffer'
+require File.dirname(__FILE__) + '/../lib/state.rb'
+require File.dirname(__FILE__) + '/../lib/eventdispatcher'
 
 module Console
-  class BaseConsole
+  class BaseConsole < States::State
+
+    include EventDispatcher
 
     def initialize(buffer_size = 30)
       @command_buffer = Buffer.new buffer_size
-      @command_line = nil
-      @output = nil
+      @command_line = ''
+      setup_listeners
     end
 
-    def method_missing(method)
-      puts "#{method} is an invalid command"
-    end
-
-    def handle_input
-      temp = @command_line
-
-      if (input.key == Rubygame::K_BACKSPACE)
-        @command_line.chop!
-        update_background
-      elsif (input.key == Rubygame::K_ENTER)
-        pass_intro
-      elsif (@command_line.size <= @max_lenght && !input.string[/[a-z]*[A-Z]*[0-9]*\ */].empty?)
-        @command_line += input.string
-      end
-
-      if (@command_line.empty?) 
-        @output = Rubygame::Surface.new([0,0])
-      else
-        @output = @renderer.render(@command_line, true, [0,0,0]) unless (@command_line.equal? temp && @command_line.nil?)
-      end
+    def method_missing(*method)
+      puts "<#{method.first}> is an invalid command"
     end
 
     private
@@ -41,7 +26,7 @@ module Console
       @command_buffer.add_content(@command_line)
       actual_command = tokenize(@command_line)
       execute actual_command
-      @command_line = nil
+      @command_line = ''
     end
 
     def tokenize(line)
@@ -50,7 +35,7 @@ module Console
     
     def execute(command)
       method = command.first
-      arguments = command.values_at(1..(a.index a.last))
+      arguments = command.values_at(1..(command.index command.last))
       send(method, *arguments)
     end
   end

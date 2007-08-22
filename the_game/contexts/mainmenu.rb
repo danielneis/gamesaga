@@ -44,6 +44,7 @@ module Contexts
       @background.fill([0,0,0])
 
       setup_background_images
+      @screen.update()
     end
 
     def execute

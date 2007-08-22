@@ -3,6 +3,7 @@ require 'rubygame/sfont'
 
 require 'config/config.rb'
 require 'lib/automata'
+require 'console/text.console'
 require 'contexts/mainmenu'
 require 'contexts/options'
 require 'contexts/pause'
@@ -37,8 +38,8 @@ class Game
     options = []
     options.push(Rubygame::FULLSCREEN) if config.fullscreen
 
-    screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, options)
-    screen.title = title
+    @screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, options)
+    @screen.title = title
 
     yield self if block_given?
 
@@ -71,9 +72,10 @@ class Game
 
   def start_game
     raise ConstructionError, 'You should set world to start a game' if @world_definition.nil?
-    @world = @world_definition.call(self)
+    @world = @world_definition.call
 
     @world.on :pause do pause_game end
+    @world.on :open_console do open_console end
 
     @world.game = self
 
@@ -92,6 +94,18 @@ class Game
   def restart_game
     @world.revive_player
     resume_game
+  end
+
+  def open_console
+    @console ||= Console::TextConsole.new
+
+    catch :close_console do
+      loop do
+        @console.update
+        @console.draw(@screen)
+        @screen.update_rects([@console.rect])
+      end
+    end
   end
 
   def change_to_options

@@ -33,7 +33,7 @@ module Models
     end
   end
 
-  class Meat <Item
+  class Meat < Item
 
     def initialize(pos)
       super(pos, 'meat', {:life => 5})
