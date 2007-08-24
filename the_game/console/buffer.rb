@@ -6,7 +6,7 @@ module Console
       @size = size
     end
 
-    def add_content(content)
+    def add(content)
       @buffer.delete_at 0 if @buffer.size == @size
       @buffer << content
     end

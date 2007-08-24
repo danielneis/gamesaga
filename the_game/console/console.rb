@@ -24,7 +24,7 @@ module Console
     end
 
     def parse_command_line
-      @command_buffer.add_content(@command_line)
+      @command_buffer.add @command_line
       command, parameters = tokenize(@command_line)
       execute(command, parameters)
 

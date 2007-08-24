@@ -10,7 +10,6 @@ module Console
 
       config = Configuration.instance
 
-
       Rubygame::TTF.setup()
       @renderer = Rubygame::TTF.new(config.font_root + 'default.ttf', 25)
 

@@ -6,9 +6,9 @@ module Console
 
     attr_reader :rect
 
-    def initialize(lines = 4, buffer_size = 10, mark = '$ ')
-      super()
+    def initialize(lines = 5, buffer_size = 10, mark = '$ ')
 
+      super()
 
       @lines = lines
 
