@@ -7,9 +7,10 @@ module Console
 
     include EventDispatcher
 
-    def initialize(buffer_size = 30)
+    def initialize(buffer_size = 30, commands = {})
       @command_buffer = Buffer.new buffer_size
       @command_line = ''
+      @commands = commands
       setup_listeners
     end
 
@@ -24,19 +25,28 @@ module Console
 
     def parse_command_line
       @command_buffer.add_content(@command_line)
-      actual_command = tokenize(@command_line)
-      execute actual_command
+      command, parameters = tokenize(@command_line)
+      execute(command, parameters)
+
+      
       @command_line = ''
     end
 
     def tokenize(line)
-      line.split ' '
+      line = line.split ' '
+      return line.first.to_sym, [line.values_at(1..(line.index line.last))]
     end
-    
-    def execute(command)
-      method = command.first
-      arguments = command.values_at(1..(command.index command.last))
-      send(method, *arguments)
+
+    def execute(command, parameters)
+      if @commands.has_key? command
+        if @commands[command].respond_to? :call
+          @commands[command].call(*parameters)
+        elsif self.respond_to? command
+          send(command, *parameters)
+        end
+      else
+        puts "<#{command}> is an invalid command"
+      end
     end
   end
 end

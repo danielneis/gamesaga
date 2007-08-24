@@ -14,5 +14,13 @@ module Console
     def last
       @buffer.last
     end
+
+    def empty?
+      @buffer.empty?
+    end
+
+    def size_used
+      @buffer.size
+    end
   end
 end

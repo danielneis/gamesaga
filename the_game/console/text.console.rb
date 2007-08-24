@@ -1,12 +1,16 @@
 require File.dirname(__FILE__) + '/console'
+require File.dirname(__FILE__) + '/visual.buffer'
 
 module Console
   class TextConsole < BaseConsole
 
     attr_reader :rect
 
-    def initialize(buffer_size = 30)
-      super(buffer_size)
+    def initialize(lines = 4, buffer_size = 10, mark = '$ ')
+      super()
+
+
+      @lines = lines
 
       config = Configuration.instance
 
@@ -14,14 +18,17 @@ module Console
 
       Rubygame::TTF.setup()
       @renderer = Rubygame::TTF.new(config.font_root + 'default.ttf', 25)
+      @mark = @renderer.render(mark, true, [0,0,0])
 
-      @background = Rubygame::Surface.new([config.screen_width, config.screen_height / 2])
+      @background = Rubygame::Surface.new([config.screen_width, @lines * @renderer.height])
       @background_color = [255,255,255]
 
       @rect = @background.make_rect
       @current_line = 0
 
       update_background
+
+      @command_buffer = VisualBuffer.new buffer_size, @background.width, @lines
 
       @ih = InputsHandler.new do |ih|
         ih.ignore = [Rubygame::MouseMotionEvent, Rubygame::MouseDownEvent, Rubygame::MouseUpEvent]
@@ -39,11 +46,17 @@ module Console
     end
 
     def draw(destination)
+      @mark.blit(@background, [0, top]) 
       if (@command_line.empty?) 
         @output = nil
       else
         @output = @renderer.render(@command_line, true, [0,0,0]) unless (@command_line.equal?(@command_buffer.last) && @command_line.empty?)
-        @output.blit(@background, [0,top])
+        @output.blit(@background, [@mark.width,top])
+      end
+
+      unless @command_buffer.empty?
+        buffer_output = @command_buffer.draw
+        buffer_output.blit(@background, [0, buffer_top])
       end
       @background.blit(@screen, [0,0])
     end
@@ -55,7 +68,6 @@ module Console
       if !input.string[/[a-z]*[A-Z]*[0-9]*\ */].empty?
         @command_line += input.string
       end
-
     end
 
     def handle_backspace
@@ -65,8 +77,10 @@ module Console
 
     def handle_return
       pass_intro
-      @current_line += 1
-      update_background(:current)
+      if @current_line < @lines - 1
+        @current_line += 1
+      end
+      update_background(:all)
       @output = nil
     end
 
@@ -80,6 +94,10 @@ module Console
 
     def top
       @current_line * @renderer.height
+    end
+
+    def buffer_top
+      top - (@command_buffer.size_used * @renderer.height)
     end
   end
 end
