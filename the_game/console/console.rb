@@ -8,14 +8,10 @@ module Console
     include EventDispatcher
 
     def initialize(buffer_size = 30, commands = {})
-      @command_buffer = Buffer.new buffer_size
+      @history_buffer = Buffer.new buffer_size
       @command_line = ''
       @commands = commands
       setup_listeners
-    end
-
-    def method_missing(*method)
-      puts "<#{method.first}> is an invalid command"
     end
 
     private
@@ -24,10 +20,9 @@ module Console
     end
 
     def parse_command_line
-      @command_buffer.add @command_line
+      @history_buffer.add @command_line
       command, parameters = tokenize(@command_line)
       execute(command, parameters)
-
       
       @command_line = ''
     end
@@ -45,7 +40,7 @@ module Console
           send(command, *parameters)
         end
       else
-        puts "<#{command}> is an invalid command"
+        raise NoMethodError, "<#{command}> is an invalid command"
       end
     end
   end

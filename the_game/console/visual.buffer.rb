@@ -25,8 +25,10 @@ module Console
       top = bg_height - @renderer.height
       @buffer.reverse[0..(@lines -1)].each do |line|
 
-        current_line = @renderer.render(line, true, [0,0,0])
-        current_line.blit(@background, [0, top])
+        unless line.empty?
+          current_line = @renderer.render(line, true, [0,0,0])
+          current_line.blit(@background, [0, top])
+        end
 
         top -= @renderer.height
       end

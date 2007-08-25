@@ -28,7 +28,7 @@ module Console
 
       update_background
 
-      @command_buffer = VisualBuffer.new buffer_size, @background.width, @lines
+      @visual_buffer = VisualBuffer.new buffer_size, @background.width, @lines
 
       @ih = InputsHandler.new do |ih|
         ih.ignore = [Rubygame::MouseMotionEvent, Rubygame::MouseDownEvent, Rubygame::MouseUpEvent]
@@ -36,6 +36,8 @@ module Console
         ih.key_down = {Rubygame::K_ESCAPE    => lambda do throw :close_console end,
                        Rubygame::K_BACKSPACE => lambda do handle_backspace end,
                        Rubygame::K_RETURN    => lambda do handle_return end,
+                       Rubygame::K_UP        => lambda do handle_up_arrow end,
+                       Rubygame::K_DOWN      => lambda do handle_down_arrow end,
                        :any                  => lambda do |event| handle_generic_input event end}
       end
 
@@ -50,13 +52,13 @@ module Console
       if (@command_line.empty?) 
         @output = nil
       else
-        @output = @renderer.render(@command_line, true, [0,0,0]) unless (@command_line.equal?(@command_buffer.last) && @command_line.empty?)
+        @output = @renderer.render(@command_line, true, [0,0,0]) unless (@command_line.equal?(@visual_buffer.last) && @command_line.empty?)
         @output.blit(@background, [@mark.width,top])
       end
 
-      unless @command_buffer.empty?
-        buffer_output = @command_buffer.draw
-        buffer_output.blit(@background, [0, buffer_top])
+      unless @visual_buffer.empty?
+        buffer_output = @visual_buffer.draw
+        buffer_output.blit(@background, [0, visual_buffer_top])
       end
       @background.blit(@screen, [0,0])
     end
@@ -76,12 +78,32 @@ module Console
     end
 
     def handle_return
-      pass_intro
+
+      @visual_buffer.add @command_line
+      begin
+        pass_intro
+      rescue NoMethodError => boom
+        @visual_buffer.add boom.message
+      ensure
+        @command_line = ''
+      end
+
       if @current_line < @lines - 1
         @current_line += 1
       end
+
       update_background(:all)
       @output = nil
+    end
+
+    def handle_up_arrow
+      @command_line = @history_buffer.previous
+      update_background(:current)
+    end
+
+    def handle_down_arrow
+      @command_line = @history_buffer.next
+      update_background(:current)
     end
 
     def update_background(line = :all)
@@ -96,8 +118,8 @@ module Console
       @current_line * @renderer.height
     end
 
-    def buffer_top
-      top - (@command_buffer.size_used * @renderer.height)
+    def visual_buffer_top
+      top - (@visual_buffer.size_used * @renderer.height)
     end
   end
 end
