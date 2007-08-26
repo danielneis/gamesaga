@@ -7,11 +7,13 @@ module Console
 
     include EventDispatcher
 
-    def initialize(buffer_size = 30, commands = {})
+    def initialize(buffer_size = 30)
       @history_buffer = Buffer.new buffer_size
       @command_line = ''
-      @commands = commands
       setup_listeners
+
+      @commands = {:help => lambda do help end}
+      yield @commands
     end
 
     private
@@ -22,9 +24,8 @@ module Console
     def parse_command_line
       @history_buffer.add @command_line
       command, parameters = tokenize(@command_line)
-      execute(command, parameters)
-      
       @command_line = ''
+      execute(command, parameters)
     end
 
     def tokenize(line)
@@ -42,6 +43,11 @@ module Console
       else
         raise NoMethodError, "<#{command}> is an invalid command"
       end
+    end
+
+    def help
+      c = @commands.keys
+      c.inspect.gsub ':', ''
     end
   end
 end

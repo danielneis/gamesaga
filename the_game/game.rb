@@ -97,7 +97,10 @@ class Game
   end
 
   def open_console
-    @console ||= Console::TextConsole.new
+    @console ||= Console::TextConsole.new do |commands|
+      commands[:spawn_enemy] = lambda do spawn_enemy end
+      commands[:spawn_item]  = lambda do spawn_item end 
+    end
 
     catch :close_console do
       loop do
@@ -119,5 +122,13 @@ class Game
 
   def game_over
     @state_machine.change_state(@game_over)
+  end
+
+  def spawn_enemy
+    @world.add_enemies([410,310] => :enemy1)
+  end
+  
+  def spawn_item
+    @world.add_items([510,420] => :meat)
   end
 end

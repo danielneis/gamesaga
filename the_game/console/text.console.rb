@@ -8,7 +8,7 @@ module Console
 
     def initialize(lines = 5, buffer_size = 10, mark = '$ ')
 
-      super()
+      super(buffer_size)
 
       @lines = lines
 
@@ -67,7 +67,7 @@ module Console
     def handle_generic_input(input)
       @command_line
 
-      if !input.string[/[a-z]*[A-Z]*[0-9]*\ */].empty?
+      if input.key >= 32 && input.key <= 255
         @command_line += input.string
       end
     end
@@ -80,8 +80,10 @@ module Console
     def handle_return
 
       @visual_buffer.add @command_line
+
       begin
-        pass_intro
+        result = pass_intro
+        @visual_buffer.add result if result.is_a? String
       rescue NoMethodError => boom
         @visual_buffer.add boom.message
       ensure
