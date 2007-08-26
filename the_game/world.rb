@@ -89,7 +89,6 @@ class World < States::State
       @dirty_rects.push(enemy.undraw(@screen, @background))
       @all_sprites.delete(enemy)
       @enemies.delete(enemy)
-      @kills += 1
     end
 
     @enemies.each do |enemy| 
