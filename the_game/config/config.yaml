@@ -1,8 +1,8 @@
 --- 
 fullscreen: false
 pix_root: /home/daniel/jogo.wc/the_game/pix/
-font_root: /home/daniel/jogo.wc/the_game/fonts/
 color_depth: 0
-screen_height: 768
-screen_width: 1024
+font_root: /home/daniel/jogo.wc/the_game/fonts/
 game_root: /home/daniel/jogo.wc/the_game
+screen_width: 1024
+screen_height: 768

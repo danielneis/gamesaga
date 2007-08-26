@@ -26,7 +26,7 @@ class World < States::State
     @ih = InputsHandler.new do |ih|
       ih.ignore = [Rubygame::MouseMotionEvent, Rubygame::MouseDownEvent, Rubygame::MouseUpEvent]
 
-      ih.key_down = {Rubygame::K_ESCAPE => lambda do notify :open_console end,
+      ih.key_down = {Rubygame::K_ESCAPE => lambda do open_console end,
                      Rubygame::K_RETURN => lambda do notify :pause end,
                      Rubygame::K_LEFT   => lambda do @player.walk :left end,
                      Rubygame::K_RIGHT  => lambda do @player.walk :right end,
@@ -46,6 +46,8 @@ class World < States::State
     @objects = Rubygame::Sprites::Group.new
 
     @screen.show_cursor = false
+
+    @console_open = false
 
     yield self if block_given?
   end
@@ -133,9 +135,11 @@ class World < States::State
 
     @all_sprites.undraw(@screen, @background)
 
-    @ih.handle
+    unless @console_open
+      @ih.handle
+      @player.update(@enemies, @items, @objects)
+    end
 
-    @player.update(@enemies, @items, @objects)
     @enemies.update(@player)
 
     @all_sprites.sort! { |a,b| a.ground.end <=> b.ground.end }
@@ -145,5 +149,14 @@ class World < States::State
     @screen.update_rects(@dirty_rects)
 
     @dirty_rects.clear
+  end
+
+  def open_console
+    notify :open_console
+    @console_open = true
+  end
+
+  def close_console
+    @console_open = false
   end
 end

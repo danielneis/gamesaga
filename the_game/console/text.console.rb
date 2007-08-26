@@ -4,8 +4,6 @@ require File.dirname(__FILE__) + '/visual.buffer'
 module Console
   class TextConsole < BaseConsole
 
-    attr_reader :rect
-
     def initialize(lines = 5, buffer_size = 10, mark = '$ ')
 
       super(buffer_size)
@@ -33,7 +31,7 @@ module Console
       @ih = InputsHandler.new do |ih|
         ih.ignore = [Rubygame::MouseMotionEvent, Rubygame::MouseDownEvent, Rubygame::MouseUpEvent]
 
-        ih.key_down = {Rubygame::K_ESCAPE    => lambda do throw :close_console end,
+        ih.key_down = {Rubygame::K_ESCAPE    => lambda do notify :close end,
                        Rubygame::K_BACKSPACE => lambda do handle_backspace end,
                        Rubygame::K_RETURN    => lambda do handle_return end,
                        Rubygame::K_UP        => lambda do handle_up_arrow end,
@@ -41,10 +39,6 @@ module Console
                        :any                  => lambda do |event| handle_generic_input event end}
       end
 
-    end
-
-    def update
-      @ih.handle
     end
 
     def draw(destination)
@@ -61,6 +55,12 @@ module Console
         buffer_output.blit(@background, [0, visual_buffer_top])
       end
       @background.blit(@screen, [0,0])
+    end
+
+    def update
+      @ih.handle
+      draw(@screen)
+      @screen.update_rects([@rect])
     end
 
     private 

@@ -102,13 +102,17 @@ class Game
       commands[:spawn_item]  = lambda do spawn_item end 
     end
 
-    catch :close_console do
-      loop do
-        @console.update
-        @console.draw(@screen)
-        @screen.update_rects([@console.rect])
-      end
+    @console.on :close do
+      close_console
     end
+
+    @state_machine.start_parallel_state(@console)
+  end
+
+  def close_console
+    @world.close_console
+    @state_machine.stop_parallel_state(@console)
+    @screen.update
   end
 
   def change_to_options

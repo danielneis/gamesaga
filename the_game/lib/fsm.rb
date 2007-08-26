@@ -15,6 +15,7 @@ class FiniteStateMachine
     @current_state.enter
 
     @next_state = nil
+    @parallel_state = nil
   end
 
   def next_state=(state)
@@ -57,5 +58,22 @@ class FiniteStateMachine
     @global_state.execute
 
     @current_state.execute
+
+    @parallel_state.update if is_parallel_active?
+  end
+
+  def start_parallel_state(state)
+    @parallel_state = state
+    @parallel_state.enter
+  end
+
+  def stop_parallel_state(state)
+    state.exit
+    @parallel_state = nil
+  end
+
+  private
+  def is_parallel_active?
+    !@parallel_state.nil?
   end
 end
