@@ -77,7 +77,13 @@ class Game
     @world.on :pause do pause_game end
     @world.on :open_console do open_console end
 
-    @world.game = self
+    @world.on :player_death do |player|
+      if player.lives > 0
+        request_continue
+      else
+        game_over
+      end
+    end
 
     @state_machine.change_state(@world)
   end
@@ -94,6 +100,20 @@ class Game
   def restart_game
     @world.revive_player
     resume_game
+  end
+
+  def change_to_options
+    raise ConstructionError, 'You should set options to access it' if @options.nil?
+    @state_machine.change_state(@options)
+  end
+
+  private
+  def game_over
+    @state_machine.change_state(@game_over)
+  end
+
+  def request_continue
+    @state_machine.change_state(@continue)
   end
 
   def open_console
@@ -115,19 +135,9 @@ class Game
     @screen.update
   end
 
-  def change_to_options
-    raise ConstructionError, 'You should set options to access it' if @options.nil?
-    @state_machine.change_state(@options)
-  end
-
-  def request_continue
-    @state_machine.change_state(@continue)
-  end
-
-  def game_over
-    @state_machine.change_state(@game_over)
-  end
-
+  ##
+  # methods to the console
+  ##
   def spawn_enemy
     @world.add_enemies([410,310] => :enemy1)
   end

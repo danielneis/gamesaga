@@ -55,6 +55,7 @@ class FiniteStateMachine
   end
 
   def update
+
     @global_state.execute
 
     @current_state.execute

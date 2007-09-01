@@ -8,8 +8,6 @@ class World < States::State
 
   include EventDispatcher
 
-  attr_writer :game
-
   def initialize
 
     @item_types = {:chicken => Models::Chicken, :meat => Models::Meat}
@@ -59,20 +57,14 @@ class World < States::State
     @background = @background.zoom_to(config.screen_width, config.screen_height)
     @background.blit(@screen, [0,0])
 
-    @screen.update
+    @screen.update()
   end
 
   def add_player(position, name)
 
     @player = Models::Player.new(position, name.to_s)
 
-    @player.on :player_death do
-      if @player.lives > 0
-        @game.request_continue
-      else
-        @game.game_over
-      end
-    end
+    @player.on :player_death  do notify :player_death, @player end
 
     @all_sprites << @player
   end
