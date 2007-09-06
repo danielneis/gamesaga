@@ -1,8 +1,6 @@
 module UI
 class Menu < Rubygame::Sprites::Group
 
-  include Rubygame::Sprites::UpdateGroup
-
   attr_reader :width, :height
 
   def initialize(orientation, margin = 10)
@@ -20,7 +18,7 @@ class Menu < Rubygame::Sprites::Group
 
     super(*args)
 
-    each do |component|
+    args.each do |component|
       @component_height = component.height if component.height > @component_height
       @component_width = component.width if component.width > @component_width
       # special case to radiobuttons: need a group to manage them
