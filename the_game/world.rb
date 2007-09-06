@@ -56,8 +56,6 @@ class World < States::State
 
     @background = @background.zoom_to(config.screen_width, config.screen_height)
     @background.blit(@screen, [0,0])
-
-    @screen.update()
   end
 
   def add_player(position, name)

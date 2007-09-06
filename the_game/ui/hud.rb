@@ -10,8 +10,6 @@ class Hud
     @horizontal_align = horizontal_align
 
     @hud_surface = Rubygame::Surface.new(@menu.size)
-    @hud_surface.set_alpha(255)
-    @hud_surface.fill([123,123,123])
     @hud_surface.set_colorkey(@hud_surface.get_at([0,0]))
 
     align
