@@ -108,7 +108,7 @@ class World < States::State
   end
 
   def add_object(*objects)
-    @objects.push *objects
+    @objects += objects
 
     objects.each do |obj|
       @all_sprites << obj

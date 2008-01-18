@@ -65,8 +65,6 @@ module Console
 
     private 
     def handle_generic_input(input)
-      @command_line
-
       if input.key >= 32 && input.key <= 255
         @command_line += input.string
       end

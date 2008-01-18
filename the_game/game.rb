@@ -1,5 +1,4 @@
 require 'rubygame'
-require 'rubygame/sfont'
 
 require 'config/config.rb'
 require 'lib/automata'
