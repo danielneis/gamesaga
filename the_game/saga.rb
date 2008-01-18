@@ -1,27 +1,25 @@
 #!/usr/bin/env ruby
 require 'game'
 
-Game.new('Saga') do |game|
+Game.new "Saga" do
 
-  game.start_context = Contexts::Main
+  start_at Contexts::Main
 
-  game.pause = Contexts::Pause
+  pause_is Contexts::Pause
 
-  game.options = Contexts::Options
+  options_is Contexts::Options
 
-  game.set_world do
-    
-    World.new do |g|
+  world do World.new do
 
-      g.add_player([650,300], :player1)
+    add_player([650,300], :player1)
 
-      g.add_enemies([400,440] => :enemy1, [110, 440] => :enemy2)
+    add_enemies([400,440] => :enemy1, [110, 440] => :enemy2)
 
-      g.add_items({[150,700] => :chicken, [500, 550] => :meat, [350,700] => :chicken, [600, 550] => :meat})
+    add_items({[150,700] => :chicken, [500, 550] => :meat, [350,700] => :chicken, [600, 550] => :meat})
 
-      g.add_object(Models::Tree.new([250,370], [170,300]))
+    add_object(Models::Tree.new([250,370], [170,300]))
 
-      g.background = (Configuration.instance.pix_root + 'background.png')
-    end
+    use_background (Configuration.instance.pix_root + 'background.png')
+  end
   end
 end.start

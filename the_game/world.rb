@@ -8,7 +8,7 @@ class World < States::State
 
   include EventDispatcher
 
-  def initialize
+  def initialize(&block)
 
     @item_types = {:chicken => Models::Chicken, :meat => Models::Meat}
 
@@ -47,7 +47,7 @@ class World < States::State
 
     @console_open = false
 
-    yield self if block_given?
+    instance_eval(&block)
   end
 
   def enter
@@ -115,7 +115,7 @@ class World < States::State
     end
   end
 
-  def background=(image)
+  def use_background image
     @background = Rubygame::Surface.load_image(image)
   end
 

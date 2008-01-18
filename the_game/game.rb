@@ -16,15 +16,11 @@ class ConstructionError < StandardError; end
 class Game
 
   include Automata
-  attr_writer :start_context, :pause, :options, :game_over, :continue
   
-  def initialize(title = 'game')
+  def initialize(title = 'game', &block)
 
     Rubygame.init()
 
-    @start_context = nil
-    @world = nil
-    @options = nil
     @game_over = Contexts::GameOver
     @continue = Contexts::Continue
 
@@ -40,9 +36,21 @@ class Game
     @screen = Rubygame::Screen.new([config.screen_width, config.screen_height], config.color_depth, options)
     @screen.title = title
 
-    yield self if block_given?
+    instance_eval(&block)
 
-    raise ConstructionError, 'You should set start_context' if @start_context.nil?
+    raise(ConstructionError, 'You should set start_context') if @start_context.nil?
+  end
+
+  def start_at context
+    @start_context = context
+  end
+
+  def pause_is context
+    @pause = context
+  end
+
+  def options_is context
+    @options = context
   end
   
   def start
@@ -65,8 +73,8 @@ class Game
     @state_machine.change_state(@start_context)
   end
 
-  def set_world(&callback)
-    @world_definition = callback
+  def world(&block)
+    @world_definition = block 
   end
 
   def start_game
